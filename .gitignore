@@ -41,3 +41,4 @@ ipch
 *.VC.VC.opendb
 
 *.exe
+*.ipch
