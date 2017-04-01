@@ -3,5 +3,5 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES CppCatchDaFlagMTA/main.cpp)
+set(SOURCE_FILES GameProject/main.cpp)
 add_executable(untitled ${SOURCE_FILES})
