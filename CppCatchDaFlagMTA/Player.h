@@ -17,5 +17,7 @@ public:
 	void setName(string name) {
 		_name = name;
 	}
-
+	string getName() {
+		return _name;
+	}
 };
