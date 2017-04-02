@@ -16,6 +16,7 @@ class Board {
 	void printBoardline();
 	void printhedline();
 	void printCell(int cell);
+	void configBoardCells();
 		
 public:
 	Board(int rowSize, int colSize) : _rowSize(rowSize), _colSize(colSize) {
@@ -24,9 +25,9 @@ public:
 			boardCells[i] = new int[colSize];
 			for (int j = 0; j < colSize; ++j)
 				boardCells[i][j] = EMPTY;
-		}	
+		}
+		Board::configBoardCells();
 	}
-	void configBoardCells();
 
 	void printBoard();
 

@@ -48,7 +48,7 @@ void Board::configBoardCells()
 	boardCells[6][9] = SEA;
 	boardCells[7][9] = SEA;
 	boardCells[8][9] = SEA;
-	boardCells[0][10] = FlgB;
+	boardCells[0][10] = FlgA;
 	boardCells[6][10] = SEA;
 	boardCells[7][10] = SEA;
 	boardCells[8][10] = SEA;

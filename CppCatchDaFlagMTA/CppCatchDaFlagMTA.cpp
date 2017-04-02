@@ -3,13 +3,13 @@
 
 #include "stdafx.h"
 #include "Menu.h"
+#include "Board.h"
 
 int main()
 {
 	Menu menu;
-	menu.ShowMenu();
+	//menu.ShowMenu();
 	Board b = { 13,13 };
-	b.configBoardCells();
 	b.printBoard();
     return 0;
 }
