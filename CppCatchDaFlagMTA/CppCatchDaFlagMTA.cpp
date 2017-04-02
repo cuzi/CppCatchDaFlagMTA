@@ -9,6 +9,7 @@ int main()
 	//Menu menu;
 	//menu.InitGame();
 	Board b = { 13,13 };
+	b.configBoardCells();
 	b.printBoard();
     return 0;
 }

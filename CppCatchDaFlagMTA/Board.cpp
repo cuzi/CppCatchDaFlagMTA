@@ -28,7 +28,32 @@ void Board::printhedline()
 
 void Board::configBoardCells()
 {
+	boardCells[6][0] = FR;
+	boardCells[7][0] = FR;
 	boardCells[3][2] = FR;
+	boardCells[12][1] = FlgB;
+	boardCells[4][2] = FR;
+	boardCells[5][2] = FR;
+	boardCells[6][2] = FR;
+	boardCells[5][3] = FR;
+	boardCells[6][3] = FR;
+	boardCells[7][3] = FR;
+	boardCells[8][3] = FR;
+	boardCells[5][7] = SEA;
+	boardCells[4][8] = SEA;
+	boardCells[5][8] = SEA;
+	boardCells[3][9] = SEA;
+	boardCells[4][9] = SEA;
+	boardCells[5][9] = SEA;
+	boardCells[6][9] = SEA;
+	boardCells[7][9] = SEA;
+	boardCells[8][9] = SEA;
+	boardCells[0][10] = FlgB;
+	boardCells[6][10] = SEA;
+	boardCells[7][10] = SEA;
+	boardCells[8][10] = SEA;
+	boardCells[7][11] = SEA;
+
 }
 
 void Board::printCell(int cell)
@@ -36,18 +61,18 @@ void Board::printCell(int cell)
 	switch (cell) {
 
 	case FR:
-			cout << setw(BOARD_TAB) << "FR" << "|";
+			cout << "FR" << setw(BOARD_TAB-2) << "|";
 			break;
 
 	case SEA:
-			cout << setw(BOARD_TAB) << "SEA" << "|";
+			cout << "SEA" << setw(BOARD_TAB-3) << "|";
 			break;
 	case FlgA:
-		cout << setw(BOARD_TAB) << "FlgA" << "|";
+		cout  << "FlgA" << setw(BOARD_TAB-4) << "|";
 		break;
 
 	case FlgB:
-		cout << setw(BOARD_TAB) << "FlgB" << "|";
+		cout << "FlgB" << setw(BOARD_TAB-4) << "|";
 		break;
 
 	case EMPTY:
@@ -65,7 +90,7 @@ void Board::printBoard()
 	for (int i = 0; i < _rowSize; i++) {
 		// print the first character as part of the opener.
 		cout << setw(2) << i + 1 << setw(2) << "|";
-		for (int j = 1; j < _colSize; j++) {
+		for (int j = 0; j < _colSize -1; j++) {
 			// only add spaces for subsequent characters.
 			Board::printCell(boardCells[i][j]);
 		}
