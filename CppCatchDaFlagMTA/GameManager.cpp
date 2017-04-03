@@ -19,6 +19,7 @@ void GameManager::run() {
 		Sleep(80);
 		if (_kbhit()) {
 			ch = _getch();
+			
 		}
 	}
 }

@@ -1,6 +1,4 @@
 #pragma once
-
-#include <iostream>
 #include "Utils.h"
 #include "Direction.h"
 
@@ -41,7 +39,6 @@ public:
 	}
 	
 	void move();
-	
 	
 	void setDirection(Direction d) {
 		switch (d) {

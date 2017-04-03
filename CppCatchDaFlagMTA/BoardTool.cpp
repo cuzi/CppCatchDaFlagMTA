@@ -1,8 +1,8 @@
-#include "BoardTool.h"
 #include "stdafx.h"
+#include "BoardTool.h"
 
 void BoardTool::move()
-{
+{		
 	_x = _x + _dir_x;
 	_y = _y + _dir_y;
 	if (_x < MIN_X) {

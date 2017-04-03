@@ -1,11 +1,7 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
 #include "Utils.h"
 #include "stdafx.h"
-
+#include "Windows.h"
+#include <iostream>
 using namespace std;
 
 void setTextColor(int foreground_color, int background_color) {
