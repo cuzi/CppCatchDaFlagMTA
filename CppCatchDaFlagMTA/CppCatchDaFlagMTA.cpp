@@ -14,7 +14,7 @@ int main()
 	Player pa{ b,"Player A",RED}, pb{ b,"Player B",BLUE};
 	b.setBoardCell(3, 3, Board::A);
 
-	b.printBoard();
+	b.printBoard(pa,pb);
     return 0;
 }
 

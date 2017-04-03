@@ -3,10 +3,9 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "Player.h"
 #include "stdafx.h"
-#include "Board.h"
 #include "Utils.h"
+
 using namespace std;
 
 class Board {

@@ -64,7 +64,7 @@ private:
 		case START_REVERSE_GAME:
 			break;
 		case SHOW_BOARD:
-			b.printBoard();
+			b.printBoard(pa,pb);
 		case RESET_SCORE:
 			_resetScore();
 			break;
