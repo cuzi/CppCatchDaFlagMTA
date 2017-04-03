@@ -1,11 +1,5 @@
-#include "stdafx.h"
 #include "Board.h"
-#include <iostream>
-#include <iomanip>
-using namespace std;
-#include <vector>
-#include "Utils.h"
-#include <string.h>
+#include "stdafx.h"
 
 void Board::printBoardline()
 {
@@ -65,7 +59,7 @@ void Board::configBoardCells()
 
 }
 
-void Board::printCell(int cell)
+void Board::printCell(int cell, int colorA, int colorB)
 {
 	switch (cell) {
 
@@ -84,6 +78,8 @@ void Board::printCell(int cell)
 		cout << "FlgB" << setw(BOARD_TAB - 4) << "|";
 		break;
 
+	setTextColor(colorA);
+
 	case A:
 		cout << "1" << setw(BOARD_TAB - 1) << "|";
 		break;
@@ -93,6 +89,9 @@ void Board::printCell(int cell)
 	case C:
 		cout << "3" << setw(BOARD_TAB - 1) << "|";
 		break;
+
+	setTextColor(colorB);
+
 	case E:
 		cout << "7" << setw(BOARD_TAB - 1) << "|";
 		break;
@@ -103,13 +102,15 @@ void Board::printCell(int cell)
 		cout << "9" << setw(BOARD_TAB - 1) << "|";
 		break;
 
+	setTextColor(WHITE);
+
 	case EMPTY:
 		cout << setw(BOARD_TAB) << "|";
 		break;
 	}
 }
 
-void Board::printBoard()
+void Board::printBoard(Player a, Player b)
 {
 	Board::printhedline();
 	cout << setw(2) << endl << "   ";
@@ -120,7 +121,7 @@ void Board::printBoard()
 		cout << setw(2) << i + 1 << setw(2) << "|";
 		for (int j = 0; j < _colSize - 1; j++) {
 			// only add spaces for subsequent characters.
-			Board::printCell(boardCells[i][j]);
+			Board::printCell(boardCells[i][j], a.getColor(),b.getColor());
 		}
 		cout << setw(BOARD_TAB) << "|" << setw(2) << endl << "   ";
 		Board::printBoardline();

@@ -1,20 +1,26 @@
 #pragma once
-#include <iostream>
 #include <string>
-
-
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include "Player.h"
+#include "stdafx.h"
+#include "Board.h"
+#include "Utils.h"
 using namespace std;
 
 class Board {
+	
 	//Data members
 	int _rowSize;;
 	int _colSize;
 	const int BOARD_TAB = 5;
 	int** boardCells;
+	
 	//Private Functions
 	void printBoardline();
 	void printhedline();
-	void printCell(int cell);
+	void printCell(int cell, int colorA, int colorB);
 	void configBoardCells();
 		
 public:
@@ -38,7 +44,7 @@ public:
 		return _rowSize;
 	}
 	
-	void printBoard();
+	void printBoard(Player a, Player b);
 
 	bool isCellEmpty(int x, int y) {
 		return (boardCells[x][y] == EMPTY);

@@ -21,6 +21,10 @@ public:
 	void setScore(int score) {
 		_score = score;
 	}
+
+	int getColor() {
+		return _color;
+	}
 	
 	void setName(string name) {
 		_name = name;
