@@ -7,7 +7,6 @@ using namespace std;
 
 class Board {
 	//Data members
-	enum { FR = 0, SEA = 1, FlgA = 2, FlgB=3 ,EMPTY=4};
 	int _rowSize;;
 	int _colSize;
 	const int BOARD_TAB = 5;
@@ -19,6 +18,8 @@ class Board {
 	void configBoardCells();
 		
 public:
+	enum { FR = 0, SEA = 1, FlgA = 2, FlgB = 3, EMPTY = 4, A = 5, B = 6, C = 7, E = 8, F = 9, G = 10 };
+
 	Board(int rowSize, int colSize) : _rowSize(rowSize), _colSize(colSize) {
 		boardCells = new int*[rowSize];
 		for (int i = 0; i < rowSize; ++i) {
@@ -29,6 +30,22 @@ public:
 		Board::configBoardCells();
 	}
 
+	int getBoardWidth() {
+		return _colSize;
+	}
+
+	int getBoardHeigth() {
+		return _rowSize;
+	}
+	
 	void printBoard();
+
+	bool isCellEmpty(int x, int y) {
+		return (boardCells[x][y] == EMPTY);
+	}
+
+	void setBoardCell(int x, int y, char c) {
+		boardCells[x][y] = c;
+	}
 
 };

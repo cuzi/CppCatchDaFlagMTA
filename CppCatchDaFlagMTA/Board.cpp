@@ -84,6 +84,25 @@ void Board::printCell(int cell)
 		cout << "FlgB" << setw(BOARD_TAB - 4) << "|";
 		break;
 
+	case A:
+		cout << "1" << setw(BOARD_TAB - 1) << "|";
+		break;
+	case B:
+		cout << "2" << setw(BOARD_TAB - 1) << "|";
+		break;
+	case C:
+		cout << "3" << setw(BOARD_TAB - 1) << "|";
+		break;
+	case E:
+		cout << "7" << setw(BOARD_TAB - 1) << "|";
+		break;
+	case F:
+		cout << "8" << setw(BOARD_TAB - 1) << "|";
+		break;
+	case G:
+		cout << "9" << setw(BOARD_TAB - 1) << "|";
+		break;
+
 	case EMPTY:
 		cout << setw(BOARD_TAB) << "|";
 		break;

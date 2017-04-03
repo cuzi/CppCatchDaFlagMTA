@@ -6,9 +6,10 @@
 using namespace std;
 
 class Menu {
-	enum {PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, EXIT = 9};
-	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","","","","", "Exit" };
-	Player a{ "a" }, b{ "b" };
+	enum {PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4,SHOW_BOARD = 5, EXIT = 9};
+	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Show Board","","","", "Exit" };
+	Board b = { 13,13 };
+	Player pa{b, "a", RED}, pb{b, "b", BLUE};
 
 public:
 	Menu() {}
@@ -37,13 +38,13 @@ private:
 		}
 	}
 	void _resetScore() {
-		a.setScore(0);
-		b.setScore(0);
+		pa.setScore(0);
+		pb.setScore(0);
 	} 
 	
 	void _pickNames() {
-		_pickName(a);
-		_pickName(b);
+		_pickName(pa);
+		_pickName(pb);
 	}	
 	void _pickName(Player p) {
 		string name = "";
@@ -62,6 +63,8 @@ private:
 			break;
 		case START_REVERSE_GAME:
 			break;
+		case SHOW_BOARD:
+			b.printBoard();
 		case RESET_SCORE:
 			_resetScore();
 			break;

@@ -8,7 +8,7 @@ class BoardTool {
 	enum { MIN_X = 0, MAX_X = 79, MIN_Y = 0, MAX_Y = 24 };
 	int _x = 10, _y = 10;
 	char _c = '*';
-	int _dir_x = 1, _dir_y = 0;
+	int _dir_x = 0, _dir_y = 0;
 
 public:
 	BoardTool() {}
@@ -19,13 +19,24 @@ public:
 		return _x == p._x && _y == p._y;
 	}
 	
-	void set(int x, int y, int dir_x = 1, int dir_y = 0) {
+	void set(int x, int y, int dir_x = 0, int dir_y = 0) {
 		_x = x;
 		_y = y;
 		_dir_x = dir_x;
 		_dir_y = dir_y;
 	}
 	
+	int getX() {
+		return _x;
+	}
+
+	char getC() {
+		return _c;
+	}
+
+	int getY() {
+		return _y;
+	}
 	void setChar(char c) {
 		_c = c;
 	}
