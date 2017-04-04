@@ -29,6 +29,10 @@ public:
 		return _color;
 	}
 	
+	int getKey() {
+		return _key;
+	}
+
 	void setName(string name) {
 		_name = name;
 	}

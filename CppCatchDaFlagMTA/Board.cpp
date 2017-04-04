@@ -33,6 +33,7 @@ void Board::configBoardCells()
 	boardCells[6][0] = FR;
 	boardCells[7][0] = FR;
 	boardCells[3][2] = FR;
+	boardCells[6][1] = FR;
 	boardCells[12][1] = FlgB;
 	boardCells[4][2] = FR;
 	boardCells[5][2] = FR;

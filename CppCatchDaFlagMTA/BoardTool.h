@@ -10,12 +10,13 @@ class BoardTool {
 	enum { MIN_X = 0, MAX_X = 79, MIN_Y = 0, MAX_Y = 24 };
 	int _x = 10, _y = 10;
 	char _c = '*';
+	bool isVisible = false;
 	int _dir_x = 0, _dir_y = 0;
 
 public:
 	BoardTool() {}
 	
-	BoardTool(int x, int y, char ch = '*') : _x(x), _y(y), _c(ch) {}
+	BoardTool(int x, int y, char ch = '*',bool isVisible = false) : _x(x), _y(y), _c(ch) {}
 	
 	bool operator==(const BoardTool& p) {
 		return _x == p._x && _y == p._y;

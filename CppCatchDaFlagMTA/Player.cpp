@@ -3,14 +3,25 @@
 void Player::saveBoardTools(Board *b) {
 
 	for (auto &tool : playerTools) {
-		cout << tool.getC() << endl;
 		b->setBoardCell(tool.getX(), tool.getY(), tool.getC());
 	}
 }
 
 void Player::getCellPos(Board *b, BoardTool *bt) {
+	int key = getKey();
+
+	switch (key) {
+
+	case Player::A:
+		key = 0;
+		break;
+	case Player::E:
+		key = 8;
+		break;
+	}
+
 	do {
-		bt->set(rand() % 6, rand() % 12);
+		bt->set(rand() % 5 + key, rand() % 12);
 	} while (!b->isCellEmpty(bt->getX(), bt->getY()));
 }
 
