@@ -77,34 +77,49 @@ void Board::printCell(int cell, int colorA, int colorB)
 		cout << "FlgB" << setw(BOARD_TAB - 4) << "|";
 		break;
 
-	setTextColor(colorA);
-
 	case A:
-		cout << "1" << setw(BOARD_TAB - 1) << "|";
+		setTextColor(colorA);
+		cout << "1" << setw(BOARD_TAB - 1);
+		setTextColor(WHITE);
+		cout << "|";
 		break;
 	case B:
-		cout << "2" << setw(BOARD_TAB - 1) << "|";
+		setTextColor(colorA);
+		cout << "2" << setw(BOARD_TAB - 1);
+		setTextColor(WHITE);
+		cout << "|";
 		break;
 	case C:
-		cout << "3" << setw(BOARD_TAB - 1) << "|";
+		setTextColor(colorA);
+		cout << "3" << setw(BOARD_TAB - 1);
+		setTextColor(WHITE);
+		cout << "|";
 		break;
-
-	setTextColor(colorB);
-
 	case E:
-		cout << "7" << setw(BOARD_TAB - 1) << "|";
+		setTextColor(colorB);
+		cout << "7" << setw(BOARD_TAB - 1);
+		setTextColor(WHITE);
+		cout << "|";
 		break;
 	case F:
-		cout << "8" << setw(BOARD_TAB - 1) << "|";
+		setTextColor(colorB);
+		cout << "8" << setw(BOARD_TAB - 1) ;
+		setTextColor(WHITE);
+		cout << "|";
 		break;
 	case G:
-		cout << "9" << setw(BOARD_TAB - 1) << "|";
+		setTextColor(colorB);
+		cout << "9" << setw(BOARD_TAB - 1);
+		setTextColor(WHITE);
+		cout << "|";
 		break;
 
-	setTextColor(WHITE);
-
 	case EMPTY:
-		cout << setw(BOARD_TAB) << "|";
+		setTextColor(WHITE);
+		cout << setw(BOARD_TAB);
+		cout << "|";
+		setTextColor(WHITE);
+
 		break;
 	}
 }

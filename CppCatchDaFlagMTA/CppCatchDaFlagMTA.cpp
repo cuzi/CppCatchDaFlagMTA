@@ -11,9 +11,7 @@ int main()
 	Menu menu;
 	//menu.ShowMenu();
 	Board b = { 13,13 };
-	Player pa{ &b,"Player A",RED}, pb{ &b,"Player B",BLUE};
-	b.setBoardCell(3, 3, Board::A);
-
+	Player pa{ &b,"Player A",Player::A,RED }, pb{ &b,"Player B", Player::E, BLUE };
 	b.printBoard(pa,pb);
     return 0;
 }
