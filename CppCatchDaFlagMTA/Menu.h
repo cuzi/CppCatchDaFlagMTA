@@ -9,7 +9,7 @@ class Menu {
 	enum {PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4,SHOW_BOARD = 5, EXIT = 9};
 	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Show Board","","","", "Exit" };
 	Board b = { 13,13 };
-	Player pa{b, "a", RED}, pb{b, "b", BLUE};
+	Player pa{&b, "a", RED}, pb{&b, "b", BLUE};
 
 public:
 	Menu() {}

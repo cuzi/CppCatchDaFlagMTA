@@ -1,5 +1,4 @@
 #include "Board.h"
-#include "stdafx.h"
 
 void Board::printBoardline()
 {

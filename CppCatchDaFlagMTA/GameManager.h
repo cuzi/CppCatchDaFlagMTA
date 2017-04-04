@@ -1,4 +1,8 @@
 #pragma once
+
+#include <Windows.h>
+#include <conio.h>
+#include "stdafx.h"
 #include "BoardTool.h"
 
 class GameManager {

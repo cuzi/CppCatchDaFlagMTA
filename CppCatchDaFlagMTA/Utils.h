@@ -1,9 +1,13 @@
 #pragma once
+
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include "stdafx.h"
+
+using namespace std;
 
 enum { BLACK, DARK_BLUE, DARK_GREEN, DARK_CYAN, DARK_RED, DARK_PURPLE, OLIVE, WHITE, GREY, BLUE, GREEN, CYAN, RED, PURPLE, YELLOW };
 

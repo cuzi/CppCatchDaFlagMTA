@@ -1,12 +1,16 @@
 #pragma once
+
 #include <string>
 #include <iostream>
 #include <iomanip>
 #include <vector>
 #include "stdafx.h"
 #include "Utils.h"
+#include "Player.h"
 
 using namespace std;
+
+class Player;
 
 class Board {
 	

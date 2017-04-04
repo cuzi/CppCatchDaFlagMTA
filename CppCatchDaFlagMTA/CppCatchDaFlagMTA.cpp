@@ -1,5 +1,5 @@
 // 203539564 - Tomer Abenheimer
-// 203838495 - Ben Fishman
+// 203838495 - Ben Fishman = 0
 
 #include "stdafx.h"
 #include "Menu.h"
@@ -11,7 +11,7 @@ int main()
 	Menu menu;
 	//menu.ShowMenu();
 	Board b = { 13,13 };
-	Player pa{ b,"Player A",RED}, pb{ b,"Player B",BLUE};
+	Player pa{ &b,"Player A",RED}, pb{ &b,"Player B",BLUE};
 	b.setBoardCell(3, 3, Board::A);
 
 	b.printBoard(pa,pb);

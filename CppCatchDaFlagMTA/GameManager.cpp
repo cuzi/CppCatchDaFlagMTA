@@ -1,6 +1,3 @@
-#include <Windows.h>
-#include <conio.h>
-#include "stdafx.h"
 #include "GameManager.h"
 
 void GameManager::run() {
