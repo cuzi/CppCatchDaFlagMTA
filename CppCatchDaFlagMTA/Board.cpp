@@ -9,15 +9,15 @@ void Board::printBoardline()
 	cout << endl;
 }
 
-void Board::printhedline()
+void Board::printhedline(Player a, Player b)
 {
 	char rowIdx = 'a';
 
 	gotoxy(BOARD_TAB - 1, 0);
-	setTextColor(BLUE);
+	setTextColor(a.getColor());
 	cout << "A:" << "0";
 	gotoxy(_colSize*BOARD_TAB, 0);
-	setTextColor(RED);
+	setTextColor(b.getColor());
 	cout << "B:" << "0";
 	setTextColor(WHITE);
 
@@ -80,37 +80,37 @@ void Board::printCell(int cell, int colorA, int colorB)
 
 	case A:
 		setTextColor(colorA);
-		cout << "1" << setw(BOARD_TAB - 1);
+		cout << " 1" << setw(BOARD_TAB - 2);
 		setTextColor(WHITE);
 		cout << "|";
 		break;
 	case B:
 		setTextColor(colorA);
-		cout << "2" << setw(BOARD_TAB - 1);
+		cout << " 2" << setw(BOARD_TAB - 2);
 		setTextColor(WHITE);
 		cout << "|";
 		break;
 	case C:
 		setTextColor(colorA);
-		cout << "3" << setw(BOARD_TAB - 1);
+		cout << " 3" << setw(BOARD_TAB - 2);
 		setTextColor(WHITE);
 		cout << "|";
 		break;
 	case E:
 		setTextColor(colorB);
-		cout << "7" << setw(BOARD_TAB - 1);
+		cout << " 7" << setw(BOARD_TAB - 2);
 		setTextColor(WHITE);
 		cout << "|";
 		break;
 	case F:
 		setTextColor(colorB);
-		cout << "8" << setw(BOARD_TAB - 1) ;
+		cout << " 8" << setw(BOARD_TAB - 2) ;
 		setTextColor(WHITE);
 		cout << "|";
 		break;
 	case G:
 		setTextColor(colorB);
-		cout << "9" << setw(BOARD_TAB - 1);
+		cout << " 9" << setw(BOARD_TAB - 2);
 		setTextColor(WHITE);
 		cout << "|";
 		break;
@@ -125,9 +125,9 @@ void Board::printCell(int cell, int colorA, int colorB)
 	}
 }
 
-void Board::printBoard(Player a, Player b)
+void Board::printBoard(Player pa, Player pb)
 {
-	Board::printhedline();
+	Board::printhedline(pa,pb);
 	cout << setw(2) << endl << "   ";
 	Board::printBoardline();
 
@@ -136,7 +136,7 @@ void Board::printBoard(Player a, Player b)
 		cout << setw(2) << i + 1 << setw(2) << "|";
 		for (int j = 0; j < _colSize - 1; j++) {
 			// only add spaces for subsequent characters.
-			Board::printCell(boardCells[i][j], a.getColor(),b.getColor());
+			Board::printCell(boardCells[i][j], pa.getColor(),pb.getColor());
 		}
 		cout << setw(BOARD_TAB) << "|" << setw(2) << endl << "   ";
 		Board::printBoardline();

@@ -22,7 +22,7 @@ class Board {
 	
 	//Private Functions
 	void printBoardline();
-	void printhedline();
+	void printhedline(Player pa, Player pb);
 	void printCell(int cell, int colorA, int colorB);
 	void configBoardCells();
 		
