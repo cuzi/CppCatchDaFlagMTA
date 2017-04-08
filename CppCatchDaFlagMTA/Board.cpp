@@ -1,31 +1,31 @@
+#include "stdafx.h"
 #include "Board.h"
 
-void Board::printBoardline()
-{
-	for (int i = 0; i < _rowSize; i++) {
 
-		cout << setw(BOARD_TAB) << "----";
-	}
-	cout << endl;
+string Board::getScoreString(Player p) {
+	return p.getName() + ": " + to_string(p.getScore());
 }
 
-void Board::printhedline(Player a, Player b)
-{
-	char rowIdx = 'a';
+void Board::printScoreBoard(Player a, Player b) {
+	int halfWidth = (BOARD_TAB * _colSize + 1) / 2;
 
-	gotoxy(BOARD_TAB - 1, 0);
+	gotoxy(0, 0);
 	setTextColor(a.getColor());
-	cout << "A:" << "0";
-	gotoxy(_colSize*BOARD_TAB, 0);
+	cout << left << setw(halfWidth) << getScoreString(a);
 	setTextColor(b.getColor());
-	cout << "B:" << "0";
+	cout << right << setw(halfWidth) << getScoreString(b) << endl;
 	setTextColor(WHITE);
+}
+void Board::printheadline(Player a, Player b)
+{
+	gotoxy(0, 1);
 
-	gotoxy(BOARD_TAB, 1);
-
+	printCell(" "); // print empty cell
 	for (int i = 0; i < _colSize; i++) {
-		cout << " " << (char)(rowIdx + i) << setw(BOARD_TAB - 1);
+		printCell(string(1, 'a' + i));
 	}
+	cout << endl;
+	printBoardline();
 }
 
 void Board::configBoardCells()
@@ -64,81 +64,47 @@ void Board::printCell(int cell, int colorA, int colorB)
 	switch (cell) {
 
 	case FR:
-		cout << "FR" << setw(BOARD_TAB - 2) << "|";
+		printCell("FR");
 		break;
-
 	case SEA:
-		cout << "SEA" << setw(BOARD_TAB - 3) << "|";
+		printCell("SEA");
 		break;
 	case FlgA:
-		cout << "FlgA" << setw(BOARD_TAB - 4) << "|";
+		printCell("FlgA");
 		break;
-
 	case FlgB:
-		cout << "FlgB" << setw(BOARD_TAB - 4) << "|";
+		printCell("FlgB");
 		break;
 
 	case A:
-		setTextColor(colorA);
-		cout << " 1" << setw(BOARD_TAB - 2);
-		setTextColor(WHITE);
-		cout << "|";
-		break;
 	case B:
-		setTextColor(colorA);
-		cout << " 2" << setw(BOARD_TAB - 2);
-		setTextColor(WHITE);
-		cout << "|";
-		break;
 	case C:
-		setTextColor(colorA);
-		cout << " 3" << setw(BOARD_TAB - 2);
-		setTextColor(WHITE);
-		cout << "|";
+		printCell(string(1,'A' +  cell - A), colorA);
 		break;
 	case E:
-		setTextColor(colorB);
-		cout << " 7" << setw(BOARD_TAB - 2);
-		setTextColor(WHITE);
-		cout << "|";
-		break;
 	case F:
-		setTextColor(colorB);
-		cout << " 8" << setw(BOARD_TAB - 2) ;
-		setTextColor(WHITE);
-		cout << "|";
-		break;
 	case G:
-		setTextColor(colorB);
-		cout << " 9" << setw(BOARD_TAB - 2);
-		setTextColor(WHITE);
-		cout << "|";
+		printCell(string(1, 'A' + cell - A + 1), colorB);
 		break;
 
 	case EMPTY:
-		setTextColor(WHITE);
-		cout << setw(BOARD_TAB);
-		cout << "|";
-		setTextColor(WHITE);
-
+		printCell(" ");
 		break;
 	}
 }
-
 void Board::printBoard(Player pa, Player pb)
 {
-	Board::printhedline(pa,pb);
-	cout << setw(2) << endl << "   ";
-	Board::printBoardline();
+	cleanBoard();
+	printScoreBoard(pa, pb);
+	printheadline(pa, pb);
 
 	for (int i = 0; i < _rowSize; i++) {
-		// print the first character as part of the opener.
-		cout << setw(2) << i + 1 << setw(2) << "|";
-		for (int j = 0; j < _colSize - 1; j++) {
-			// only add spaces for subsequent characters.
-			Board::printCell(boardCells[i][j], pa.getColor(),pb.getColor());
+		printCellNumber(to_string(1 + i));
+		for (int j = 0; j < _colSize ; j++) {
+			printCell(boardCells[i][j], pa.getColor(),pb.getColor());
 		}
-		cout << setw(BOARD_TAB) << "|" << setw(2) << endl << "   ";
-		Board::printBoardline();
+		cout << endl ;
+		printBoardline();
 	}
+	cin.get();
 }

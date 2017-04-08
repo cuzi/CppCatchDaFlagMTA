@@ -14,7 +14,7 @@ class Player {
 	string _name;
 	int _key;
 	int _color = WHITE;
-	int _score;
+	int _score = 0;
 
 public:
 	enum { A = 5, B = 6, C = 7, E = 8, F = 9, G = 10 };
@@ -31,6 +31,9 @@ public:
 	
 	int getKey() {
 		return _key;
+	}
+	int getScore() {
+		return _score;
 	}
 
 	void setName(string name) {

@@ -9,10 +9,10 @@
 int main()
 {
 	Menu menu;
-	//menu.ShowMenu();
-	Board b = { 13,13 };
-	Player pa{ &b,"Player A",Player::A,RED }, pb{ &b,"Player B", Player::E, BLUE };
-	b.printBoard(pa,pb);
+	menu.ShowMenu();
+
+	cin.get();
+
     return 0;
 }
 

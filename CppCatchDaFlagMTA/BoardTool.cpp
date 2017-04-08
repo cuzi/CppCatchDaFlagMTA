@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "BoardTool.h"
 
 void BoardTool::move()
