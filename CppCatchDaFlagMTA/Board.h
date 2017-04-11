@@ -18,6 +18,7 @@ class Board {
 	int _rowSize;;
 	int _colSize;
 	const int BOARD_TAB = 5;
+	const int HEADER_HEIGHT = 3;
 	int** boardCells;
 	
 	//Private Functions
@@ -27,6 +28,7 @@ class Board {
 			cout << right << setw(BOARD_TAB) << setfill('-') << " ";
 		cout << endl;
 	}
+	
 
 	void printCell(string str) {
 		printCell(str, WHITE);
@@ -47,9 +49,8 @@ class Board {
 	void printCell(int cell, int colorA, int colorB);
 	void configBoardCells();
 	string getScoreString(Player p);
-		
 public:
-	enum { FR = 0, SEA = 1, FlgA = 2, FlgB = 3, EMPTY = 4, A = 5, B = 6, C = 7, E = 8, F = 9, G = 10 };
+	enum { FR = 4, SEA = 5, FlgA = 6, FlgB = 10, EMPTY = 0, A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
 
 	Board(int rowSize, int colSize) : _rowSize(rowSize), _colSize(colSize) {
 		boardCells = new int*[rowSize];
@@ -68,19 +69,27 @@ public:
 	int getBoardHeigth() {
 		return _rowSize;
 	}
+	void clearLine(int line) {
+		gotoxy(0, line);
+		for (int j = 0; j < _colSize; j++) {
+			cout << setw(BOARD_TAB)<< setfill(' ') << " ";
+		}
+
+		gotoxy(0, line);
+	}
 	void cleanBoard() {
 		gotoxy(0, 0);
-		for (int i = 0; i < _rowSize; i++) {
-			for (int j = 0; j < _colSize; j++) {
-				cout << setw(BOARD_TAB) << " ";
-			}
-			cout << "\n";
+		for (int i = 0; i < _rowSize + 5; i++) {
+			clearLine(i);
 		}
 		gotoxy(0, 0);		
 	}
 
 	bool isCellEmpty(int x, int y) {
-		return (boardCells[x][y] == EMPTY);
+		return (boardCells[y][x] == EMPTY);
+	}
+	int GetCell(int x, int y) {
+		return boardCells[y][x];
 	}
 
 	void setBoardCell(int x, int y, char c) {
@@ -88,4 +97,7 @@ public:
 	}
 
 	void printBoard(Player a, Player b);
+	char getBoardChar(string str);
+	void printCellByPos(char c, int x, int y, int color);
+	void resetCellByPos(int x, int y);
 };

@@ -1,23 +1,24 @@
 #include "stdafx.h"
 #include "GameManager.h"
 
-void GameManager::run() {
-	// run code is ugly, you should refactor
+void GameManager::start(Player pa, Player pb) {
+	_b->printBoard(pa,pb);
 	char ch = 0;
-	//starToEat.draw();
-	while (ch != ESC) {
-		if (1==2) {
-			std::cout << "Snake 1 Won!" << endl;
-			break;
-		}
-		else if (1==1) {
-			std::cout << "Snake 2 Won!" << endl;
-			break;
-		}
-		Sleep(80);
-		if (_kbhit()) {
-			ch = _getch();
-			
-		}
+	Player *playing;
+	int i = 0, tool;
+	while (1==1) {
+		playing = (i % 2 ? &pb : &pa);
+		setTextColor(playing->getColor());
+		ch = _b->getBoardChar(playing->getName() + " Choose your Game Tool: ");
+		tool = ch - '0';
+
+		ch = _b->getBoardChar(("Tool " + string(1, ch)) + " plays, choose your move: ");
+		
+		playing->moveTool(ch, tool, _b);
+
+		i++;
+		
 	}
+
+	setTextColor(WHITE);
 }

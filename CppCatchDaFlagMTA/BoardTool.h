@@ -6,12 +6,13 @@
 
 using namespace std;
 
+class Board;
+
 class BoardTool {
-	enum { MIN_X = 0, MAX_X = 79, MIN_Y = 0, MAX_Y = 24 };
+	enum { MIN_X = 0, MAX_X = 13, MIN_Y = 0, MAX_Y = 13 };
 	int _x = 10, _y = 10;
 	char _c = '*';
 	bool isVisible = false;
-	int _dir_x = 0, _dir_y = 0;
 
 public:
 	BoardTool() {}
@@ -22,11 +23,9 @@ public:
 		return _x == p._x && _y == p._y;
 	}
 	
-	void set(int x, int y, int dir_x = 0, int dir_y = 0) {
+	void set(int x, int y) {
 		_x = x;
 		_y = y;
-		_dir_x = dir_x;
-		_dir_y = dir_y;
 	}
 	
 	int getX() {
@@ -52,39 +51,8 @@ public:
 		draw(' ');
 	}
 	
-	void move();
+	void move(Direction dir, Board *b, int color);
 	
-	void setDirection(Direction d) {
-		switch (d) {
-		case Direction::UP:
-			_dir_x = 0;
-			_dir_y = -1;
-			break;
-		case Direction::DOWN:
-			_dir_x = 0;
-			_dir_y = 1;
-			break;
-		case Direction::LEFT:
-			_dir_x = -1;
-			_dir_y = 0;
-			break;
-		case Direction::RIGHT:
-			_dir_x = 1;
-			_dir_y = 0;
-			break;
-		}
-	}
-	
-	void stop() {
-		_dir_x = 0;
-		_dir_y = 0;
-	}
-	
-	void changeDir() {
-		int dir = rand() % 4;
-		setDirection((Direction)dir);
-	}
-
 private:
 	void draw(char c) {
 		gotoxy(_x, _y);

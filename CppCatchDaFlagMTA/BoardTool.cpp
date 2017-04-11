@@ -1,20 +1,29 @@
 #include "stdafx.h"
+#include "Board.h"
 #include "BoardTool.h"
 
-void BoardTool::move()
-{		
-	_x = _x + _dir_x;
-	_y = _y + _dir_y;
-	if (_x < MIN_X) {
-		_x = MAX_X;
+void BoardTool::move(Direction dir, Board *b, int color)
+{	
+	b->resetCellByPos(_x, _y);
+	switch (dir) {
+	case Direction::UP:
+		_y--;
+		break;
+
+	case Direction::DOWN:
+		_y++;
+		break;
+
+	case Direction::RIGHT:
+		_x++;
+		break;
+
+	case Direction::LEFT:
+		_x--;
+		break;
 	}
-	else if (_x > MAX_X) {
-		_x = MIN_X;
-	}
-	if (_y < MIN_Y) {
-		_y = MAX_Y;
-	}
-	else if (_y > MAX_Y) {
-		_y = MIN_Y;
-	}
+
+
+	b->printCellByPos(_c, _x, _y, color);
+
 }

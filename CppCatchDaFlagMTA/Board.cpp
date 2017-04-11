@@ -7,7 +7,7 @@ string Board::getScoreString(Player p) {
 }
 
 void Board::printScoreBoard(Player a, Player b) {
-	int halfWidth = (BOARD_TAB * _colSize + 1) / 2;
+	int halfWidth = (BOARD_TAB * (_colSize + 1) + 1) / 2;
 
 	gotoxy(0, 0);
 	setTextColor(a.getColor());
@@ -58,7 +58,14 @@ void Board::configBoardCells()
 	boardCells[7][11] = SEA;
 
 }
-
+void Board::printCellByPos(char c, int x, int y, int color) {
+	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
+	printCell(string(1, c), color);
+}
+void Board::resetCellByPos(int x, int y) {
+	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
+	printCell(GetCell(x,y), WHITE, WHITE);
+}
 void Board::printCell(int cell, int colorA, int colorB)
 {
 	switch (cell) {
@@ -79,12 +86,12 @@ void Board::printCell(int cell, int colorA, int colorB)
 	case A:
 	case B:
 	case C:
-		printCell(string(1,'A' +  cell - A), colorA);
+		printCell(string(1, '0' + cell), colorA);
 		break;
 	case E:
 	case F:
 	case G:
-		printCell(string(1, 'A' + cell - A + 1), colorB);
+		printCell(string(1, '0' + cell ), colorB);
 		break;
 
 	case EMPTY:
@@ -106,5 +113,17 @@ void Board::printBoard(Player pa, Player pb)
 		cout << endl ;
 		printBoardline();
 	}
-	cin.get();
+	pa.printToolsOnBoard(this);
+	pb.printToolsOnBoard(this);
+
+}
+
+char Board::getBoardChar(string str)
+{
+	char c;
+	int writeLineI = (_rowSize) * 2 + HEADER_HEIGHT;
+	clearLine(writeLineI);
+	cout << str;
+	cin >> c;
+	return c;
 }

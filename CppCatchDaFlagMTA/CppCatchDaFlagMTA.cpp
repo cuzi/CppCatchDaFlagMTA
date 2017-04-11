@@ -11,7 +11,6 @@ int main()
 	Menu menu;
 	menu.ShowMenu();
 
-	cin.get();
 
     return 0;
 }
