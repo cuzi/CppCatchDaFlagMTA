@@ -24,12 +24,16 @@ public:
 
 	Player(Board *b, string name,int key, int color);
 	
-	void setScore(int score) {
-		_score = score;
-	}
-
 	int getScore() {
 		return _score;
+	}
+
+	void resetScore() {
+		_score = 0;
+	}
+
+	void win() {
+		++_score;
 	}
 
 	int getColor() {
@@ -46,7 +50,8 @@ public:
 
 	void printToolsOnBoard(Board * b);
 
-	void moveTool(char dir, int tool, Board *b) {
+	// if flag catched return true
+	bool moveTool(char dir, int tool, Board *b) {
 		Direction d;
 		BoardTool bt;
 		switch (_key) {
@@ -60,7 +65,7 @@ public:
 			break;
 		}
 
-		bt.move(d, b, _color);
+		return bt.move(d, b, _color);
 	}
 	
 	string getName() {
@@ -101,4 +106,5 @@ private:
 	void saveBoardTools(Board *b);
 
 	void setToolPos(Board *b, BoardTool *bt);
+	
 };

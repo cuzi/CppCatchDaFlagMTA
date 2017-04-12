@@ -118,7 +118,7 @@ void Board::printBoard(Player pa, Player pb)
 
 }
 
-char Board::getBoardChar(string str)
+char Board::getCharFromWriteLine(string str)
 {
 	char c;
 	int writeLineI = (_rowSize) * 2 + HEADER_HEIGHT;

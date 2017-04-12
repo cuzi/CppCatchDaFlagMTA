@@ -21,7 +21,8 @@ void Player::setToolPos(Board *b, BoardTool *bt) {
 
 void Player::printToolsOnBoard(Board * b) {
 	for (auto &tool : playerTools) {
-		b->printCellByPos(tool.getC(), tool.getX(), tool.getY(), _color);
+		if (tool.isLive())
+			b->printCellByPos(tool.getC(), tool.getX(), tool.getY(), _color);
 	}
 }
 void Player::getRandBoardTools(Board *b,int key) {

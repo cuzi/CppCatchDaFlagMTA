@@ -97,7 +97,7 @@ public:
 	}
 
 	void printBoard(Player a, Player b);
-	char getBoardChar(string str);
+	char getCharFromWriteLine(string str);
 	void printCellByPos(char c, int x, int y, int color);
 	void resetCellByPos(int x, int y);
 };

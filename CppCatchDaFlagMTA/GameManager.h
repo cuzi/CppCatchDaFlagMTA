@@ -12,4 +12,7 @@ class GameManager {
 public:
 	GameManager(Board * b) : _b(b) {}
 	void start(Player a, Player b);
+private:
+	bool gameStatus(Player a, Player b);
+
 };

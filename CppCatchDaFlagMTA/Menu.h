@@ -51,8 +51,8 @@ private:
 	}
 	 
 	void _resetScore() {
-		pa.setScore(0);
-		pb.setScore(0);
+		pa.resetScore();
+		pb.resetScore();
 	} 
 	
 	void _triggerAction(int option) {
