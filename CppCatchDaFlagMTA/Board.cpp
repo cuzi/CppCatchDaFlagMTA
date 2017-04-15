@@ -2,21 +2,21 @@
 #include "Board.h"
 
 
-string Board::getScoreString(Player p) {
-	return p.getName() + ": " + to_string(p.getScore());
+string Board::getScoreString(Player* p) {
+	return p->getName() + ": " + to_string(p->getScore());
 }
 
-void Board::printScoreBoard(Player a, Player b) {
+void Board::printScoreBoard(Player* a, int aColor, Player* b, int bColor) {
 	int halfWidth = (BOARD_TAB * (_colSize + 1) + 1) / 2;
 
 	gotoxy(0, 0);
-	setTextColor(a.getColor());
+	setTextColor(aColor);
 	cout << left << setw(halfWidth) << getScoreString(a);
-	setTextColor(b.getColor());
+	setTextColor(bColor);
 	cout << right << setw(halfWidth) << getScoreString(b) << endl;
 	setTextColor(WHITE);
 }
-void Board::printheadline(Player a, Player b)
+void Board::printheadline()
 {
 	gotoxy(0, 1);
 
@@ -99,22 +99,20 @@ void Board::printCell(int cell, int colorA, int colorB)
 		break;
 	}
 }
-void Board::printBoard(Player pa, Player pb)
+void Board::printBoard(Player* pa, int aColor, Player* pb, int bColor)
 {
 	cleanBoard();
-	printScoreBoard(pa, pb);
-	printheadline(pa, pb);
+	printScoreBoard(pa,aColor, pb, bColor);
+	printheadline();
 
 	for (int i = 0; i < _rowSize; i++) {
 		printCellNumber(to_string(1 + i));
 		for (int j = 0; j < _colSize ; j++) {
-			printCell(boardCells[i][j], pa.getColor(),pb.getColor());
+			printCell(boardCells[i][j], aColor, bColor);
 		}
 		cout << endl ;
 		printBoardline();
 	}
-	pa.printToolsOnBoard(this);
-	pb.printToolsOnBoard(this);
 
 }
 

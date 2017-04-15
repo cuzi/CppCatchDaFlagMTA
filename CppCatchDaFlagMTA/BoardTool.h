@@ -9,20 +9,29 @@ using namespace std;
 class Board;
 
 class BoardTool {
-	int _x = 10, _y = 10;
+	int _x = 10, _y = 10, _dir_x = 0, _dir_y = 0;
 	char _c = '*';
-	bool _isLive = true;
+	bool _isLive = false;
+	int _color = WHITE;
 
 public:
 	BoardTool() {}
 	
-	BoardTool(int x, int y, char ch = '*',bool isLive = true) : _x(x), _y(y), _c(ch), _isLive(isLive) {}
+	BoardTool(int x, int y, char ch = '*',int color = WHITE) : _x(x), _y(y), _c(ch), _color(color) {}
 	
 	bool operator==(const BoardTool& p) {
 		return _x == p._x && _y == p._y;
 	}
+
+	void init() {
+		stop();
+		_isLive = true;
+	}
 	bool isLive() {
 		return _isLive;
+	}
+	bool isOnPos(int x, int y) {
+		return  _isLive && x == _x && y == _y;
 	}
 	void die() {
 		_isLive = false;
@@ -39,6 +48,12 @@ public:
 	char getC() {
 		return _c;
 	}
+	int getColor() {
+		return _color;
+	}
+	void setColor(int color) {
+		_color = color;;
+	}
 
 	int getY() {
 		return _y;
@@ -47,16 +62,41 @@ public:
 		_c = c;
 	}
 	
-	void draw() {
-		draw(_c);
+	void stop() {
+		_dir_x = 0;
+		_dir_y = 0;
 	}
-	
-	void erase() {
-		draw(' ');
+
+	bool setDirection(Direction d) {
+		switch (d) {
+		case Direction::UP:
+			_dir_x = 0;
+			_dir_y = -1;
+			break;
+		case Direction::DOWN:
+			_dir_x = 0;
+			_dir_y = 1;
+			break;
+		case Direction::LEFT:
+			_dir_x = -1;
+			_dir_y = 0;
+			break;
+		case Direction::RIGHT:
+			_dir_x = 1;
+			_dir_y = 0;
+			break;
+		default:
+			return false;
+		}
+
+		return true;
 	}
+
 	
-	bool move(Direction dir, Board *b, int color);
-	
+	bool move(Board *b);
+
+	bool isElgibleToPos(int x, int y, Board* b);
+
 private:
 	void draw(char c) {
 		gotoxy(_x, _y);
@@ -64,5 +104,4 @@ private:
 		// make sure it gets to screen on time
 		cout.flush();
 	}
-	bool isElgibleToPos(int x, int y, Board* b);
 };

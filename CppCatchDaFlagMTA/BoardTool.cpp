@@ -3,40 +3,24 @@
 #include "BoardTool.h"
 
 // return true only when winning
-bool BoardTool::move(Direction dir, Board *b, int color)
+bool BoardTool::move(Board *b)
 {	
-	signed int x = _x, y = _y, catched;
-
-	switch (dir) {
-	case Direction::UP:
-		y--;
-		break;
-
-	case Direction::DOWN:
-		y++;
-		break;
-
-	case Direction::RIGHT:
-		x++;
-		break;
-
-	case Direction::LEFT:
-		x--;
-		break;
-	}
+	signed int x = _x + _dir_x, y = _y + _dir_y, catched;
 
 	if ( isElgibleToPos(x, y, b) && _isLive) {
 		b->resetCellByPos(_x, _y);
 		_x = x;
 		_y = y;
-		b->printCellByPos(_c, _x, _y, color);
+
+		cout.flush();
+		b->printCellByPos(_c, _x, _y, _color);
 
 		catched = b->GetCell(_x, _y);
 
-		return !!(catched == Board::FlgA || catched == Board::FlgB);
+		return (catched == Board::FlgA || catched == Board::FlgB);
 	}
 	else {
-		cout << '\a';
+		stop();
 	}
 	return false;
 }

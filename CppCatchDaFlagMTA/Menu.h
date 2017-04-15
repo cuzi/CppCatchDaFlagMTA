@@ -7,11 +7,11 @@
 using namespace std;
 
 class Menu {
+	Board b = { 13,13 };
+	GameManager gm{ &b };
+	Player pa{"Player A"}, pb{ "Player B"};
 	enum {PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, EXIT = 9};
 	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","","","","", "Exit" };
-	Board b = { 13,13 };
-	GameManager gm{&b};
-	Player pa{&b, "Player A",Player::A, RED}, pb{&b, "Player B",Player::E, BLUE};
 
 public:
 	Menu() {}
@@ -61,16 +61,17 @@ private:
 			_pickNames();
 			break;
 		case START_GAME:
-			gm.start(pa, pb);
+			gm.start(&pa, &pb);
 			break;
 		case START_REVERSE_GAME:
-			gm.start(pb, pa);
+			gm.start(&pb, &pa);
 			break;
 		case RESET_SCORE:
 			_resetScore();
 			break;
 		case EXIT:
 			cout << "Bye Bye!\n";
+			Sleep(500);
 			exit(0);
 		}
 		ShowMenu();

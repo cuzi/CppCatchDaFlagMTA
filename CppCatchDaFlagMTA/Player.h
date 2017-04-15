@@ -11,18 +11,13 @@ using namespace std;
 class Board;
 
 class Player {
-
-	static const int TOOLS_COUNT = 3;
-	BoardTool playerTools[TOOLS_COUNT];
 	string _name;
-	int _key;
-	int _color = WHITE;
 	int _score = 0;
 
 public:
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
 
-	Player(Board *b, string name,int key, int color);
+	Player(string name) : _name(name) {};
 	
 	int getScore() {
 		return _score;
@@ -35,25 +30,36 @@ public:
 	void win() {
 		++_score;
 	}
+		
 
-	int getColor() {
-		return _color;
-	}
-	
-	int getKey() {
-		return _key;
-	}
-
-	void setName(string name) {
+	void setName(string name) { 
 		_name = name;
 	}
 
-	void printToolsOnBoard(Board * b);
+	string getName() {
+		return _name;
+	}
+/*	void printToolsOnBoard(Board* b);
 
 	// if flag catched return true
-	bool moveTool(char dir, int tool, Board *b) {
+	bool moveTool(int tool, Board *b) {
+
+		BoardTool bt;
+		switch (_key) {
+		case E:
+			bt = playerTools[tool - E];
+			break;
+		case A:
+			bt = playerTools[tool - A];
+			break;
+		}
+
+		return bt.move(b, _color);
+	}
+	void changeToolDir(char dir, int tool) {
 		Direction d;
 		BoardTool bt;
+
 		switch (_key) {
 		case E:
 			d = getDirE((Direction_E)dir);
@@ -64,16 +70,13 @@ public:
 			bt = playerTools[tool - A];
 			break;
 		}
-
-		return bt.move(d, b, _color);
+		if (d != Direction::NONE)
+		bt.setDirection(d);
 	}
 	
-	string getName() {
-		return _name;
-	}
-	void initPos(Board *b);
+	void initPos(Board *b);*/
 private:
-	Direction getDirE(Direction_E dir) {
+	/*Direction getDirE(Direction_E dir) {
 		switch (dir) {
 		case Direction_E::UP:
 			return Direction::UP;
@@ -84,7 +87,7 @@ private:
 		case Direction_E::RIGHT:
 			return Direction::RIGHT;
 		default: // TODO: Change it to NULL
-			return Direction::RIGHT;
+			return Direction::NONE;
 		}
 	}
 	Direction getDirA(Direction_A dir) {
@@ -98,13 +101,13 @@ private:
 		case Direction_A::RIGHT:
 			return Direction::RIGHT;
 		default: // TODO: Change it to NULL
-			return Direction::RIGHT;
+			return Direction::NONE;
 		}
 	}
 	void getRandBoardTools(Board *b, int key);
 
 	void saveBoardTools(Board *b);
 
-	void setToolPos(Board *b, BoardTool *bt);
+	void setToolPos(Board *b, BoardTool *bt);*/
 	
 };

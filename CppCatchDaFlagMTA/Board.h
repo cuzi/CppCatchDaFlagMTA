@@ -44,11 +44,11 @@ class Board {
 		cout << right << setw(BOARD_TAB - 1) << setfill(' ') << str;
 		cout << "|";
 	}
-	void printScoreBoard(Player pa, Player pb);
-	void printheadline(Player pa, Player pb);
+	void printScoreBoard(Player* pa, int aColor, Player* b, int bColor);
+	void printheadline();
 	void printCell(int cell, int colorA, int colorB);
 	void configBoardCells();
-	string getScoreString(Player p);
+	string getScoreString(Player* p);
 public:
 	enum { FR = 4, SEA = 5, FlgA = 6, FlgB = 10, EMPTY = 0, A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
 
@@ -71,15 +71,15 @@ public:
 	}
 	void clearLine(int line) {
 		gotoxy(0, line);
-		for (int j = 0; j < _colSize; j++) {
-			cout << setw(BOARD_TAB)<< setfill(' ') << " ";
+		for (int j = 0; j <= _colSize; j++) {
+			cout << setw(BOARD_TAB) << setfill(' ') << " ";
 		}
 
 		gotoxy(0, line);
 	}
 	void cleanBoard() {
 		gotoxy(0, 0);
-		for (int i = 0; i < _rowSize + 5; i++) {
+		for (int i = 0; i < _rowSize * 2 + HEADER_HEIGHT; i++) {
 			clearLine(i);
 		}
 		gotoxy(0, 0);		
@@ -96,7 +96,7 @@ public:
 		boardCells[x][y] = c;
 	}
 
-	void printBoard(Player a, Player b);
+	void printBoard(Player* pa, int aColor, Player* pb, int bColor);
 	char getCharFromWriteLine(string str);
 	void printCellByPos(char c, int x, int y, int color);
 	void resetCellByPos(int x, int y);
