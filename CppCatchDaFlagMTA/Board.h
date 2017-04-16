@@ -34,11 +34,28 @@ class Board {
 		printCell(str, WHITE);
 	}
 
-	void printCell(string str, int color) {
-		setTextColor(color);
+	int getBGcellColor(int x, int y) {
+		int cell = GetCell(x, y);
+
+		switch (cell)
+		{
+		case SEA:
+			return CYAN;
+		case FR:
+			return GREEN;
+		default:
+			return BLACK;
+		}
+	}
+
+	void printCell(string str, int color, int bgColor) {
+		setTextColor(color, bgColor);
 		cout << left << setw(BOARD_TAB - 1) << setfill(' ') << str;
-		setTextColor(WHITE);
+		setTextColor(WHITE, BLACK);
 		cout << "|";
+	}
+	void printCell(string str, int color) {
+		printCell(str, color, BLACK);
 	}
 	void printCellNumber(string str) {
 		cout << right << setw(BOARD_TAB - 1) << setfill(' ') << str;

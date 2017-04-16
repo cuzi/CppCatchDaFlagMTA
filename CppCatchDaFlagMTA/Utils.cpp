@@ -11,7 +11,6 @@ void setTextColor(int foreground_color, int background_color) {
 void setTextColor(int foreground_color) {
 	setTextColor(foreground_color, 0);
 }
-
 void clearScreen() {
 	system("cls");
 }

@@ -41,6 +41,7 @@ public:
 
 	void start(Player* pa, Player *pb);
 	bool isFriends(BoardTool* bta, BoardTool* btb);
+	void fight(BoardTool* bta, BoardTool* btb);
 	BoardTool* getToolInPos(int x, int y);
 
 	bool isAnyToolInPos(int x, int y) {

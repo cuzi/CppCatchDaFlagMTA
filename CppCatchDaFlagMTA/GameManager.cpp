@@ -148,9 +148,9 @@ void GameManager::_setToolPos(Board *b, BoardTool *bt, int key) {
 bool GameManager::isInToolInA(BoardTool* bt) {
 	switch (bt->getC())
 	{
-	case 'A':
-	case 'B':
-	case 'C':
+	case '1':
+	case '2':
+	case '3':
 		return true;
 	default:
 		return false;
@@ -170,6 +170,10 @@ BoardTool* GameManager::getToolInPos(int x, int y) {
 
 bool GameManager::isFriends(BoardTool* bta, BoardTool* btb) {
 	return isInToolInA(bta) == isInToolInA(btb);
+}
+
+void GameManager::fight(BoardTool* bta, BoardTool* btb) {
+
 }
 
 bool GameManager::_moveTools(int key) {

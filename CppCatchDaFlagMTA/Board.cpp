@@ -60,7 +60,7 @@ void Board::configBoardCells()
 }
 void Board::printCellByPos(char c, int x, int y, int color) {
 	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
-	printCell(string(1, c), color);
+	printCell(string(1, c), color, getBGcellColor(x, y));
 }
 void Board::resetCellByPos(int x, int y) {
 	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
@@ -71,16 +71,16 @@ void Board::printCell(int cell, int colorA, int colorB)
 	switch (cell) {
 
 	case FR:
-		printCell("FR");
+		printCell("^^^^", BLACK, GREEN);
 		break;
 	case SEA:
-		printCell("SEA");
+		printCell("~~~~", BLACK, CYAN);
 		break;
 	case FlgA:
-		printCell("FlgA");
+		printCell("FlgA", BLACK, BLUE);
 		break;
 	case FlgB:
-		printCell("FlgB");
+		printCell("FlgB", BLACK, RED);
 		break;
 
 	case A:
