@@ -49,7 +49,7 @@ public:
 	}
 private:
 	bool gameStatus(Player* pa, Player* pb);
-
+	void toolHit(BoardTool* bt, BoardTool* btb);
 	// If submenu return true the game need to be stopped
 	bool showSubMenu(Player* pa, Player* pb);
 	void _setTools(BoardTool* playerTools, int color, int key);
@@ -58,7 +58,7 @@ private:
 	void printToolsOnBoard(BoardTool * playerTools);
 	BoardTool *_getTools(int key);
 	void _setToolPos(Board *b, BoardTool *bt, int key);
-	bool isInToolInA(BoardTool* bt);
+	bool isToolInA(BoardTool* bt);
 	bool _moveTools(int key);
 	void _changeDir(char c);
 	void keyPressed(char c);

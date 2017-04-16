@@ -145,7 +145,7 @@ void GameManager::_setToolPos(Board *b, BoardTool *bt, int key) {
 	bt->set(x, y);
 }
 
-bool GameManager::isInToolInA(BoardTool* bt) {
+bool GameManager::isToolInA(BoardTool* bt) {
 	switch (bt->getC())
 	{
 	case '1':
@@ -169,12 +169,46 @@ BoardTool* GameManager::getToolInPos(int x, int y) {
 }
 
 bool GameManager::isFriends(BoardTool* bta, BoardTool* btb) {
-	return isInToolInA(bta) == isInToolInA(btb);
+	return isToolInA(bta) == isToolInA(btb);
 }
 
 void GameManager::fight(BoardTool* bta, BoardTool* btb) {
-
+	if (isFriends(bta, btb))
+		return;
+	if (isToolInA(bta))
+		toolHit(bta, btb);
+	else
+		toolHit(btb, bta);
 }
+
+void GameManager::toolHit(BoardTool* Atool, BoardTool* Btool) {
+
+	int x = Atool->getX(), y = Atool->getY();
+
+	switch (Atool->getC())
+	{
+	case A + '0':
+		if (x == 3 || (y >= 9 && y < 13))
+			Atool->die();
+		else Btool->die();
+			break;
+	case B + '0':
+		if (Btool->getC() != G + '0' && (x == 6 || y == 2 || y == 3) )
+			Btool->die();
+		else Atool->die();
+
+		break;
+	case C + '0':
+		if (x == 3 || y == 7)
+			Btool->die();
+		else Atool->die();
+		break;
+	default:
+		break;
+	}
+}
+
+
 
 bool GameManager::_moveTools(int key) {
 	bool win = false;

@@ -22,6 +22,9 @@ bool BoardTool::move(Board *b, GameManager *gm)
 		}
 		else {
 			stop();
+			if (!_isLive) {
+				b->resetCellByPos(_x, _y);
+			}
 		}
 	}
 	return false;
@@ -80,6 +83,9 @@ bool BoardTool::isElgibleToPos(int x, int y, Board *b, GameManager *gm) {
 		if (gm->isFriends(this, bt) && bt->getC() != _c) {
 			return false;
 		}
+
+		gm->fight(this, bt);
+
 	}
 
 	return true;
