@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "Board.h"
 #include "BoardTool.h"
+#include "GameManager.h"
 
 // return true only when winning
-bool BoardTool::move(Board *b)
+bool BoardTool::move(Board *b, GameManager *gm)
 {	
 	signed int x = _x + _dir_x, y = _y + _dir_y, catched;
 
-	if ( isElgibleToPos(x, y, b) && _isLive) {
+	if ( isElgibleToPos(x, y, b, gm) && _isLive) {
 		b->resetCellByPos(_x, _y);
 		_x = x;
 		_y = y;
@@ -25,9 +26,7 @@ bool BoardTool::move(Board *b)
 	return false;
 }
 
-bool BoardTool::isElgibleToPos(int x, int y, Board *b) {
-	// TODO: need to validate that there is no other player on position
-
+bool BoardTool::isElgibleToPos(int x, int y, Board *b, GameManager *gm) {
 	if (x < 0 || x >= b->getBoardWidth())
 		return false;
 	if (y < 0 || y >= b->getBoardHeigth())
@@ -73,6 +72,13 @@ bool BoardTool::isElgibleToPos(int x, int y, Board *b) {
 		}
 		break;
 
+	}
+	if (gm->isAnyToolInPos(x, y)) {
+		BoardTool* bt = gm->getToolInPos(x, y);
+
+		if (gm->isFriends(this, bt)) {
+			return false;
+		}
 	}
 
 	return true;

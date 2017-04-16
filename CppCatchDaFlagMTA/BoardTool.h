@@ -3,10 +3,12 @@
 #include "stdafx.h"
 #include "Utils.h"
 #include "Direction.h"
+#include "GameManager.h"
 
 using namespace std;
 
 class Board;
+class GameManager;
 
 class BoardTool {
 	int _x = 10, _y = 10, _dir_x = 0, _dir_y = 0;
@@ -93,9 +95,9 @@ public:
 	}
 
 	
-	bool move(Board *b);
+	bool move(Board *b, GameManager *gm);
 
-	bool isElgibleToPos(int x, int y, Board* b);
+	bool isElgibleToPos(int x, int y, Board* b, GameManager *gm);
 
 private:
 	void draw(char c) {
