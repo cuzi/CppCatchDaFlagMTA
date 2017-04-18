@@ -44,13 +44,11 @@ void GameManager::start(Player* pa, Player* pb) {
 	setTextColor(WHITE);
 }
 
-
 bool GameManager::gameStatus(Player* pa, Player* pb) {
 	// TODO check logic in tools positions if there is tools in same position 
 	//		need to check who win and return false if some player have no tools
 	return true;
 }
-
 
 bool GameManager::showSubMenu(Player* pa, Player* pb) {
 	int i;
@@ -111,7 +109,6 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	_b->printBoard(pa, aColor, pb, bColor);
 	printToolsOnBoard();
 }
-
 
 void GameManager::printToolsOnBoard(BoardTool * playerTools) {
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
@@ -207,8 +204,6 @@ void GameManager::toolHit(BoardTool* Atool, BoardTool* Btool) {
 		break;
 	}
 }
-
-
 
 bool GameManager::_moveTools(int key) {
 	bool win = false;

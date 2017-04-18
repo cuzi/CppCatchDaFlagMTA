@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include "Player.h"
+#include "Utils.h"
 #include "GameManager.h"
 
 using namespace std;
@@ -37,6 +38,7 @@ private:
 	}
 
 	void _printMenu() {
+		hideCursor();
 		b.cleanBoard();
 		cout << "Choose from the following:\n";
 		for (int i = 0; i < EXIT; ++i) {
