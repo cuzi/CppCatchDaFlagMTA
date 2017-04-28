@@ -20,7 +20,7 @@ void GameManager::start(Player* pa, Player* pb) {
 
 	while (gameOn && gameStatus(pa, pb)) {
 		playing = (i % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
-		
+
 		Sleep(200);
 
 		if (_kbhit()) {
@@ -40,7 +40,7 @@ void GameManager::start(Player* pa, Player* pb) {
 	}
 
 	_gameWin(playing == Player::A ? pa : pb);
-	
+
 	setTextColor(WHITE);
 }
 
@@ -188,9 +188,9 @@ void GameManager::toolHit(BoardTool* Atool, BoardTool* Btool) {
 		if (x == 3 || (y >= 9 && y < 13))
 			Atool->die();
 		else Btool->die();
-			break;
+		break;
 	case B + '0':
-		if (Btool->getC() != G + '0' && (x == 6 || y == 2 || y == 3) )
+		if (Btool->getC() != G + '0' && (x == 6 || y == 2 || y == 3))
 			Btool->die();
 		else Atool->die();
 

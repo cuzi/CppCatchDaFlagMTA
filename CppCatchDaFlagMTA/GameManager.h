@@ -95,7 +95,7 @@ private:
 			return Direction::LEFT;
 		case Direction_E::RIGHT:
 			return Direction::RIGHT;
-		default: 
+		default:
 			return Direction::NONE;
 		}
 	}
@@ -110,7 +110,7 @@ private:
 			return Direction::LEFT;
 		case Direction_A::RIGHT:
 			return Direction::RIGHT;
-		default: 
+		default:
 			return Direction::NONE;
 		}
 	}

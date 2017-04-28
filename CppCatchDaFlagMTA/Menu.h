@@ -3,16 +3,18 @@
 #include <iostream>
 #include "Player.h"
 #include "Utils.h"
+#include "Board.h"
 #include "GameManager.h"
 
 using namespace std;
 
 class Menu {
-	Board b = { 13,13 };
+	bool IS_RAND = true;
+	Board b = Board(13, 13, IS_RAND);
 	GameManager gm{ &b };
-	Player pa{"Player A"}, pb{ "Player B"};
-	enum {PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, EXIT = 9};
-	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","","","","", "Exit" };
+	Player pa{ "Player A" }, pb{ "Player B" };
+	enum { PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, LOAD_FILE = 5, EXIT = 9 };
+	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Load Board from file","","","", "Exit" };
 
 public:
 	Menu() {}
@@ -51,13 +53,15 @@ private:
 			cout << "  " << (i + 1) << " - " << txt[i] << endl;
 		}
 	}
-	 
+
 	void _resetScore() {
 		pa.resetScore();
 		pb.resetScore();
-	} 
-	
+	}
+
 	void _triggerAction(int option) {
+		int err;
+
 		switch (option) {
 		case PICK_NAMES:
 			_pickNames();
@@ -71,11 +75,23 @@ private:
 		case RESET_SCORE:
 			_resetScore();
 			break;
+		case LOAD_FILE:
+			//b.cleanBoard();
+			IS_RAND = true;
+			//b = Board(13 , 13, IS_RAND);
+			err = b.loadFromFile("C:\\Users\\benf\\Downloads\\board_ok_1.gboard");
+			if (!err) {
+				// failed to load board, generate new random one
+				IS_RAND = false;
+				b = Board(13, 13, IS_RAND);
+			}
+			break;
+
 		case EXIT:
 			cout << "Bye Bye!\n";
 			Sleep(500);
 			exit(0);
 		}
-		ShowMenu();
+		//ShowMenu();
 	}
 };

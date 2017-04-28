@@ -6,6 +6,46 @@ string Board::getScoreString(Player* p) {
 	return p->getName() + ": " + to_string(p->getScore());
 }
 
+void Board::LoadBoardLine(std::string line, int lineNumber) {
+	for (unsigned i = 0; i < line.length(); ++i)
+	{
+		switch (line.at(i)) {
+		case 'T':
+			boardCells[lineNumber][i] = FR;
+			break;
+		case 'S':
+			boardCells[lineNumber][i] = SEA;
+			break;
+		case 'A':
+			boardCells[lineNumber][i] = FlgA;
+			break;
+		case 'B':
+			boardCells[lineNumber][i] = FlgB;
+			break;
+		case '1':
+			boardCells[lineNumber][i] = A;
+			break;
+		case '2':
+			boardCells[lineNumber][i] = B;
+			break;
+		case '3':
+			boardCells[lineNumber][i] = C;
+			break;
+		case '7':
+			boardCells[lineNumber][i] = E;
+			break;
+		case '8':
+			boardCells[lineNumber][i] = F;
+			break;
+		case '9':
+			boardCells[lineNumber][i] = G;
+			break;
+		default:
+			// leave cell EMPTY
+			break;
+		}
+	}
+}
 void Board::printScoreBoard(Player* a, int aColor, Player* b, int bColor) {
 	int halfWidth = (BOARD_TAB * (_colSize + 1) + 1) / 2;
 
@@ -27,7 +67,6 @@ void Board::printheadline()
 	cout << endl;
 	printBoardline();
 }
-
 void Board::configBoardCells()
 {
 	boardCells[6][0] = FR;
@@ -58,13 +97,48 @@ void Board::configBoardCells()
 	boardCells[7][11] = SEA;
 
 }
+void Board::freeBoardMat()
+{
+	// free dynamically allocated memory
+	for (int i = 0; i < _rowSize; i++)
+	{
+		delete[] boardCells[i]; // delete array within matrix
+	}
+	// delete actual matrix
+	delete[] boardCells;
+}
 void Board::printCellByPos(char c, int x, int y, int color) {
 	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
 	printCell(string(1, c), color, getBGcellColor(x, y));
 }
 void Board::resetCellByPos(int x, int y) {
 	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
-	printCell(GetCell(x,y), WHITE, WHITE);
+	printCell(GetCell(x, y), WHITE, WHITE);
+}
+int Board::loadFromFile(string filePath)
+{
+	std::ifstream bfile;
+	bfile.open(filePath, ios::in);
+	if (bfile.is_open()) {
+		std::string str;
+		int lineIdx = 0;
+		while (std::getline(bfile, str) && lineIdx < _rowSize)
+		{
+			std::string board_line = str.substr(0, _colSize);
+			LoadBoardLine(board_line, lineIdx);
+			++lineIdx;
+		}
+	}
+	else {
+		char buffer[255];
+		strerror_s(buffer, errno);
+		cout << "Error opening file: " << filePath << endl;
+		cerr << "err_msg:" << buffer << endl;
+		return errno;
+	}
+
+
+	return 0;
 }
 void Board::printCell(int cell, int colorA, int colorB)
 {
@@ -91,7 +165,7 @@ void Board::printCell(int cell, int colorA, int colorB)
 	case E:
 	case F:
 	case G:
-		printCell(string(1, '0' + cell ), colorB);
+		printCell(string(1, '0' + cell), colorB);
 		break;
 
 	case EMPTY:
@@ -102,20 +176,19 @@ void Board::printCell(int cell, int colorA, int colorB)
 void Board::printBoard(Player* pa, int aColor, Player* pb, int bColor)
 {
 	cleanBoard();
-	printScoreBoard(pa,aColor, pb, bColor);
+	printScoreBoard(pa, aColor, pb, bColor);
 	printheadline();
 
 	for (int i = 0; i < _rowSize; i++) {
 		printCellNumber(to_string(1 + i));
-		for (int j = 0; j < _colSize ; j++) {
+		for (int j = 0; j < _colSize; j++) {
 			printCell(boardCells[i][j], aColor, bColor);
 		}
-		cout << endl ;
+		cout << endl;
 		printBoardline();
 	}
 
 }
-
 char Board::getCharFromWriteLine(string str)
 {
 	char c;
