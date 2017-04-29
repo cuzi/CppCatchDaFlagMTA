@@ -9,8 +9,7 @@
 using namespace std;
 
 class Menu {
-	bool IS_RAND = true;
-	Board b = Board(13, 13, IS_RAND);
+	Board b = Board(13, 13, false);
 	GameManager gm{ &b };
 	Player pa{ "Player A" }, pb{ "Player B" };
 	enum { PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, LOAD_FILE = 5, EXIT = 9 };
@@ -60,7 +59,6 @@ private:
 	}
 
 	void _triggerAction(int option) {
-		int err;
 
 		switch (option) {
 		case PICK_NAMES:
@@ -77,14 +75,7 @@ private:
 			break;
 		case LOAD_FILE:
 			//b.cleanBoard();
-			IS_RAND = true;
-			//b = Board(13 , 13, IS_RAND);
-			err = b.loadFromFile("C:\\Users\\benf\\Downloads\\board_ok_1.gboard");
-			if (!err) {
-				// failed to load board, generate new random one
-				IS_RAND = false;
-				b = Board(13, 13, IS_RAND);
-			}
+			gm.setBoard("C:\\Users\\benf\\Downloads\\board_ok_1.gboard");
 			break;
 
 		case EXIT:
@@ -92,6 +83,6 @@ private:
 			Sleep(500);
 			exit(0);
 		}
-		//ShowMenu();
+		ShowMenu();
 	}
 };

@@ -10,6 +10,7 @@
 #include "stdafx.h"
 #include "Utils.h"
 #include "Player.h"
+#include "Position.h"
 
 using namespace std;
 
@@ -63,10 +64,9 @@ class Board {
 	void printScoreBoard(Player* pa, int aColor, Player* b, int bColor);
 	void printheadline();
 	void printCell(int cell, int colorA, int colorB);
-	void configBoardCells();
 	void freeBoardMat();
 	string getScoreString(Player* p);
-	void LoadBoardLine(std::string line, int lineIdx);
+	void LoadBoardLine(std::string line, int lineIdx, Position* APositions, Position* BPositions);
 
 public:
 	enum { FR = 4, SEA = 5, FlgA = 6, FlgB = 10, EMPTY = 0, A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
@@ -79,7 +79,7 @@ public:
 				boardCells[i][j] = EMPTY;
 		}
 		if (is_random)
-			Board::configBoardCells();
+			Board::configRandBoardCells();
 	}
 	Board(const Board &b2) {
 		_rowSize = b2._rowSize;
@@ -96,6 +96,7 @@ public:
 	}
 	~Board() { freeBoardMat(); };
 
+	void configRandBoardCells();
 	int getBoardWidth() {
 		return _colSize;
 	}
@@ -130,5 +131,5 @@ public:
 	char getCharFromWriteLine(string str);
 	void printCellByPos(char c, int x, int y, int color);
 	void resetCellByPos(int x, int y);
-	int loadFromFile(string filePath);
+	int loadFromFile(string filePath, Position* APositions, Position* BPositions);
 };

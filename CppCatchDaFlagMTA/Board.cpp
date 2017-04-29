@@ -6,7 +6,7 @@ string Board::getScoreString(Player* p) {
 	return p->getName() + ": " + to_string(p->getScore());
 }
 
-void Board::LoadBoardLine(std::string line, int lineNumber) {
+void Board::LoadBoardLine(std::string line, int lineNumber, Position* APositions, Position* BPositions) {
 	for (unsigned i = 0; i < line.length(); ++i)
 	{
 		switch (line.at(i)) {
@@ -23,22 +23,22 @@ void Board::LoadBoardLine(std::string line, int lineNumber) {
 			boardCells[lineNumber][i] = FlgB;
 			break;
 		case '1':
-			boardCells[lineNumber][i] = A;
+			APositions[0].set(lineNumber, i, A);
 			break;
 		case '2':
-			boardCells[lineNumber][i] = B;
+			APositions[1].set(lineNumber, i, B);
 			break;
 		case '3':
-			boardCells[lineNumber][i] = C;
+			APositions[2].set(lineNumber, i, C);
 			break;
 		case '7':
-			boardCells[lineNumber][i] = E;
+			BPositions[0].set(lineNumber, i, E);
 			break;
 		case '8':
-			boardCells[lineNumber][i] = F;
+			BPositions[1].set(lineNumber, i, F);
 			break;
 		case '9':
-			boardCells[lineNumber][i] = G;
+			BPositions[2].set(lineNumber, i, G);
 			break;
 		default:
 			// leave cell EMPTY
@@ -67,7 +67,7 @@ void Board::printheadline()
 	cout << endl;
 	printBoardline();
 }
-void Board::configBoardCells()
+void Board::configRandBoardCells()
 {
 	boardCells[6][0] = FR;
 	boardCells[7][0] = FR;
@@ -108,14 +108,14 @@ void Board::freeBoardMat()
 	delete[] boardCells;
 }
 void Board::printCellByPos(char c, int x, int y, int color) {
-	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
+	gotoxy((y + 1) * BOARD_TAB, HEADER_HEIGHT + (x * 2));
 	printCell(string(1, c), color, getBGcellColor(x, y));
 }
 void Board::resetCellByPos(int x, int y) {
 	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
 	printCell(GetCell(x, y), WHITE, WHITE);
 }
-int Board::loadFromFile(string filePath)
+int Board::loadFromFile(string filePath, Position* APositions, Position* BPositions)
 {
 	std::ifstream bfile;
 	bfile.open(filePath, ios::in);
@@ -125,7 +125,7 @@ int Board::loadFromFile(string filePath)
 		while (std::getline(bfile, str) && lineIdx < _rowSize)
 		{
 			std::string board_line = str.substr(0, _colSize);
-			LoadBoardLine(board_line, lineIdx);
+			LoadBoardLine(board_line, lineIdx, APositions, BPositions);
 			++lineIdx;
 		}
 	}

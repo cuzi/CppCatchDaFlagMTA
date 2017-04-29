@@ -6,6 +6,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "BoardTool.h"
+#include "Position.h"
 
 class Player;
 class Board;
@@ -16,7 +17,7 @@ class GameManager {
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
 
 	char* txt[9] = { "Resume", "Restart Game", "", "","","","","Main Menu", "Exit Game" };
-
+	string boardFilePath;
 	static const int TOOLS_COUNT = 3;
 
 	BoardTool* ATools;
@@ -43,7 +44,10 @@ public:
 	bool isFriends(BoardTool* bta, BoardTool* btb);
 	void fight(BoardTool* bta, BoardTool* btb);
 	BoardTool* getToolInPos(int x, int y);
+	void setBoard(string filePath) {
+		boardFilePath = filePath;
 
+	}
 	bool isAnyToolInPos(int x, int y) {
 		return getToolInPos(x, y) != NULL;
 	}
@@ -52,31 +56,28 @@ private:
 	void toolHit(BoardTool* bt, BoardTool* btb);
 	// If submenu return true the game need to be stopped
 	bool showSubMenu(Player* pa, Player* pb);
-	void _setTools(BoardTool* playerTools, int color, int key);
+	void _setRandomTools(BoardTool* playerTools, int color, int key);
 	void _gameWin(Player *p);
 	void _initGame(Player* pa, Player* pb);
 	void printToolsOnBoard(BoardTool * playerTools);
 	BoardTool *_getTools(int key);
-	void _setToolPos(Board *b, BoardTool *bt, int key);
+	void _setRandomToolPos(Board *b, BoardTool *bt, int key);
 	bool isToolInA(BoardTool* bt);
 	bool _moveTools(int key);
 	void _changeDir(char c);
 	void keyPressed(char c);
 	void _printSubMenu();
-
 	void _printLine(int i) {
 		if (txt[i] != "") {
 			cout << "  " << (i + 1) << " - " << txt[i] << endl;
 		}
 	}
-
 	void _printGameOver() {
 		cout << "\n  ___    __    __  __  ____    _____  _  _  ____  ____ \n";
 		cout << " / __)  /__\\  (  \\/  )( ___)  (  _  )( \\/ )( ___)(  _ \\\n";
 		cout << "( (_-. /(__)\\  )    (  )__)    )(_)(  \\  /  )__)  )   /\n";
 		cout << " \\___/(__)(__)(_/\\/\\_)(____)  (_____)  \\/  (____)(_)\\_)\n\n";
 	}
-
 	void _playWinSound() {
 		Beep(2060, 400);
 		Beep(2060, 400);
@@ -84,7 +85,6 @@ private:
 		Beep(3087, 400);
 		Beep(2183, 1200);
 	}
-
 	Direction getDirB(Direction_E dir) {
 		switch (dir) {
 		case Direction_E::UP:
@@ -99,7 +99,6 @@ private:
 			return Direction::NONE;
 		}
 	}
-
 	Direction getDirA(Direction_A dir) {
 		switch (dir) {
 		case Direction_A::UP:
@@ -114,9 +113,10 @@ private:
 			return Direction::NONE;
 		}
 	}
-
 	void printToolsOnBoard() {
 		printToolsOnBoard(ATools);
 		printToolsOnBoard(BTools);
 	}
+	void _setTools(BoardTool* playerTools, int color, Position* aPos);
+	void _setToolPos(Board *b, BoardTool *bt, Position p);
 };

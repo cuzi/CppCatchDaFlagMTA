@@ -81,12 +81,22 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 	}
 }
 
-void GameManager::_setTools(BoardTool* playerTools, int color, int key) {
+void GameManager::_setTools(BoardTool* playerTools, int color, Position* p) {
+
+	for (int i = 0; i < TOOLS_COUNT; ++i) {
+		(playerTools + i)->setColor(color);
+		(playerTools + i)->setChar('0' + p[i].getC());
+		_setToolPos(_b, (playerTools + i), p[i]);
+		(playerTools + i)->init();
+	}
+}
+
+void GameManager::_setRandomTools(BoardTool* playerTools, int color, int key) {
 
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
 		(playerTools + i)->setColor(color);
 		(playerTools + i)->setChar('0' + i + key);
-		_setToolPos(_b, (playerTools + i), key);
+		_setRandomToolPos(_b, (playerTools + i), key);
 		(playerTools + i)->init();
 	}
 }
@@ -104,8 +114,21 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	ATools = new BoardTool[TOOLS_COUNT];
 	BTools = new BoardTool[TOOLS_COUNT];
 
-	_setTools(ATools, aColor, A_KEY);
-	_setTools(BTools, bColor, B_KEY);
+	// load board
+	if (boardFilePath != "") {
+		Position APositions[TOOLS_COUNT];
+		Position BPositions[TOOLS_COUNT];
+
+		_b->loadFromFile(boardFilePath, APositions, BPositions);
+		_setTools(ATools, aColor, APositions);
+		_setTools(BTools, bColor, BPositions);
+	}
+	// random board
+	else {
+		_setRandomTools(ATools, aColor, A_KEY);
+		_setRandomTools(BTools, bColor, B_KEY);
+		_b->configRandBoardCells();
+	}
 	_b->printBoard(pa, aColor, pb, bColor);
 	printToolsOnBoard();
 }
@@ -122,7 +145,7 @@ BoardTool* GameManager::_getTools(int key) {
 	return (key == A_KEY ? ATools : BTools);
 }
 
-void GameManager::_setToolPos(Board *b, BoardTool *bt, int key) {
+void GameManager::_setRandomToolPos(Board *b, BoardTool *bt, int key) {
 	int _key = 0, x, y;
 	switch (key) {
 	case A_KEY:
@@ -139,6 +162,15 @@ void GameManager::_setToolPos(Board *b, BoardTool *bt, int key) {
 	} while (!bt->isElgibleToPos(x, y, _b, this)
 		|| isAnyToolInPos(x, y));
 
+	bt->set(x, y);
+}
+
+void GameManager::_setToolPos(Board *b, BoardTool *bt, Position p) {
+	int x = p.getX();
+	int y = p.getY();
+	if (!bt->isElgibleToPos(x, y, _b, this) || isAnyToolInPos(x,y)) {
+		bt->set(x, y);
+	 }
 	bt->set(x, y);
 }
 
