@@ -129,14 +129,8 @@ int Board::loadFromFile(string filePath, Position* APositions, Position* BPositi
 			++lineIdx;
 		}
 	}
-	else {
-		char buffer[255];
-		strerror_s(buffer, errno);
-		cout << "Error opening file: " << filePath << endl;
-		cerr << "err_msg:" << buffer << endl;
+	else 
 		return errno;
-	}
-
 
 	return 0;
 }

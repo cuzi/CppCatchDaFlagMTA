@@ -7,6 +7,10 @@
 #include "Player.h"
 #include "BoardTool.h"
 #include "Position.h"
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include <errno.h>
 
 class Player;
 class Board;
@@ -15,6 +19,8 @@ class BoardTool;
 class GameManager {
 	enum { RESUME = 1, RESTART = 2, MAIN_MENU = 8, EXIT = 9 };
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
+
+	std::vector< string > err_stack;
 
 	char* txt[9] = { "Resume", "Restart Game", "", "","","","","Main Menu", "Exit Game" };
 	string boardFilePath;
@@ -40,6 +46,9 @@ public:
 	GameManager(Board * b) : _b(b) {}
 	~GameManager();
 
+	void addErrorMsg(string msg) {
+		err_stack.push_back(msg);
+	}
 	void start(Player* pa, Player *pb);
 	bool isFriends(BoardTool* bta, BoardTool* btb);
 	void fight(BoardTool* bta, BoardTool* btb);
@@ -119,4 +128,15 @@ private:
 	}
 	void _setTools(BoardTool* playerTools, int color, Position* aPos);
 	void _setToolPos(Board *b, BoardTool *bt, Position p);
+	void printStackTrace();
+	bool CheckBoard();
+	void pushErrMsg(string msg) {
+		if (std::find(err_stack.begin(), err_stack.end(), msg) == err_stack.end()) {
+			// msg not in err_stack, add it
+			err_stack.push_back(msg);
+		}
+	}
+	void clearCls() {
+		system("cls");
+	}
 };

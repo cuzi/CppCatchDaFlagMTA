@@ -52,7 +52,7 @@ bool GameManager::gameStatus(Player* pa, Player* pb) {
 
 bool GameManager::showSubMenu(Player* pa, Player* pb) {
 	int i;
-
+	clearCls();
 	_printSubMenu();
 
 	cin >> i;
@@ -82,12 +82,13 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 }
 
 void GameManager::_setTools(BoardTool* playerTools, int color, Position* p) {
-
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
-		(playerTools + i)->setColor(color);
-		(playerTools + i)->setChar('0' + p[i].getC());
-		_setToolPos(_b, (playerTools + i), p[i]);
-		(playerTools + i)->init();
+		if (p[i].isPositionSet()) {
+			(playerTools + i)->setColor(color);
+			(playerTools + i)->setChar('0' + p[i].getC());
+			_setToolPos(_b, (playerTools + i), p[i]);
+			(playerTools + i)->init();
+		}
 	}
 }
 
@@ -111,6 +112,9 @@ void GameManager::_gameWin(Player *p) {
 }
 
 void GameManager::_initGame(Player* pa, Player* pb) {
+	bool err = false;
+	int errCode;
+
 	ATools = new BoardTool[TOOLS_COUNT];
 	BTools = new BoardTool[TOOLS_COUNT];
 
@@ -118,10 +122,21 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	if (boardFilePath != "") {
 		Position APositions[TOOLS_COUNT];
 		Position BPositions[TOOLS_COUNT];
+		errCode = _b->loadFromFile(boardFilePath, APositions, BPositions);
 
-		_b->loadFromFile(boardFilePath, APositions, BPositions);
-		_setTools(ATools, aColor, APositions);
-		_setTools(BTools, bColor, BPositions);
+		if (!errCode) {
+			_setTools(ATools, aColor, APositions);
+			_setTools(BTools, bColor, BPositions);
+			err = CheckBoard();
+		}
+		// faild to load file location
+		else {
+			char buffer[255];
+			strerror_s(buffer, errCode);
+			pushErrMsg(boardFilePath + "\n" + buffer);
+			err = true;
+		}
+			
 	}
 	// random board
 	else {
@@ -129,8 +144,26 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 		_setRandomTools(BTools, bColor, B_KEY);
 		_b->configRandBoardCells();
 	}
-	_b->printBoard(pa, aColor, pb, bColor);
-	printToolsOnBoard();
+
+	if (!err) {
+		_b->printBoard(pa, aColor, pb, bColor);
+		printToolsOnBoard();
+	}
+	else {
+		_b->cleanBoard();
+		printStackTrace();
+		cout << endl << "Press ESC to return back" << endl;
+	}
+}
+
+void GameManager::printStackTrace() {
+	// eliminate duplicate values
+	std::ostream_iterator< string > output(cout, "\n");
+	//endLocation = std::unique(err_stack.begin(), err_stack.end());
+	cout << "An error occoured while trying to load game board:";
+	cout << endl;
+	std::copy(err_stack.begin(), err_stack.end(), output);
+	err_stack.clear();
 }
 
 void GameManager::printToolsOnBoard(BoardTool * playerTools) {
@@ -171,6 +204,40 @@ void GameManager::_setToolPos(Board *b, BoardTool *bt, Position p) {
 	if (bt->isElgibleToPos(x, y, _b, this) && !(isAnyToolInPos(x,y))) {
 		bt->set(x, y);
 	 }
+}
+
+bool GameManager::CheckBoard()
+{
+	bool err = false;
+	int aFlgCnt = 0, bFlgCnt = 0;
+	for (int i = 0;i < TOOLS_COUNT;i++) {
+		if (!ATools[i].isLive()) {
+			err = true;
+			pushErrMsg("Wrong settings for player A tools in file " + boardFilePath);
+		}
+		if (!BTools[i].isLive()) {
+			err = true;
+			pushErrMsg("Wrong settings for player B tools in file " + boardFilePath);
+		}
+	}
+	for (int i = 0;i < _b->getBoardHeigth();i++) {
+		for (int j = 0; j < _b->getBoardWidth(); j++) {
+			if (_b->GetCell(i, j) == Board::FlgA)
+				aFlgCnt++;
+			if (_b->GetCell(i, j) == Board::FlgB)
+				bFlgCnt++;
+		}
+	}
+
+	if (bFlgCnt != 1) {
+		pushErrMsg(to_string(bFlgCnt) + " Flags of type B is configured in file " + boardFilePath);
+		err = true;
+	}
+	if (aFlgCnt != 1) {
+		pushErrMsg(to_string(aFlgCnt) + " Flags of type A is configured in file " + boardFilePath);
+		err = true;
+	}
+	return err;
 }
 
 bool GameManager::isToolInA(BoardTool* bt) {
