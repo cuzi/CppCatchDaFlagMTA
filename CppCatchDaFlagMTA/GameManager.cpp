@@ -240,6 +240,42 @@ bool GameManager::CheckBoard()
 	return err;
 }
 
+int GameManager::loadMoves(string filePath, int playerKey)
+{
+	vector<Move>& moves = (playerKey == 'A')? aMoves : bMoves;
+	std::ifstream bfile;
+	bfile.open(filePath, ios::in);
+	if (bfile.is_open()) {
+		std::string str;
+		while (std::getline(bfile, str))
+		{
+			moves.push_back(_parseMove(str));
+		}
+	}
+	else
+		return errno;
+
+	return 0;
+}
+
+Move GameManager::_parseMove(string move)
+{
+	string arr[3];
+	int i = 0;
+	std::string delimiter = ",";
+	size_t pos = 0;
+	std::string token;
+
+	while ((pos = move.find(delimiter)) != std::string::npos) {
+		token = move.substr(0, pos);
+		arr[i] = token;
+		move.erase(0, pos + delimiter.length());
+		++i;
+	}
+
+	return Move(std::stoi(arr[0]), std::stoi(arr[1]), arr[2][0]);
+}
+
 bool GameManager::isToolInA(BoardTool* bt) {
 	switch (bt->getC())
 	{

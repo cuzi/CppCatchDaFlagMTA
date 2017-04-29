@@ -11,6 +11,7 @@
 #include <iterator>
 #include <algorithm>
 #include <errno.h>
+#include "Move.h"
 
 class Player;
 class Board;
@@ -24,6 +25,9 @@ class GameManager {
 
 	char* txt[9] = { "Resume", "Restart Game", "", "","","","","Main Menu", "Exit Game" };
 	string boardFilePath;
+	vector<Move> aMoves;
+	vector<Move> bMoves;
+
 	static const int TOOLS_COUNT = 3;
 
 	BoardTool* ATools;
@@ -139,4 +143,6 @@ private:
 	void clearCls() {
 		system("cls");
 	}
+	int loadMoves(string filePath, int playerKey);
+	Move _parseMove(string move);
 };
