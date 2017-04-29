@@ -36,7 +36,7 @@ void GameManager::start(Player* pa, Player* pb) {
 				return;
 			ch = 0;
 		}
-
+		std::cin.clear();
 	}
 
 	_gameWin(playing == Player::A ? pa : pb);
