@@ -118,10 +118,10 @@ public:
 		gotoxy(0, 0);
 	}
 	bool isCellEmpty(int x, int y) {
-		return (boardCells[y][x] == EMPTY);
+		return (boardCells[x][y] == EMPTY);
 	}
 	int GetCell(int x, int y) {
-		return boardCells[y][x];
+		return boardCells[x][y];
 	}
 	void setBoardCell(int x, int y, char c) {
 		boardCells[x][y] = c;

@@ -72,20 +72,20 @@ public:
 	bool setDirection(Direction d) {
 		switch (d) {
 		case Direction::UP:
-			_dir_x = 0;
-			_dir_y = -1;
-			break;
-		case Direction::DOWN:
-			_dir_x = 0;
-			_dir_y = 1;
-			break;
-		case Direction::LEFT:
 			_dir_x = -1;
 			_dir_y = 0;
 			break;
-		case Direction::RIGHT:
+		case Direction::DOWN:
 			_dir_x = 1;
 			_dir_y = 0;
+			break;
+		case Direction::LEFT:
+			_dir_x = 0;
+			_dir_y = -1;
+			break;
+		case Direction::RIGHT:
+			_dir_x = 0;
+			_dir_y = 1;
 			break;
 		default:
 			return false;

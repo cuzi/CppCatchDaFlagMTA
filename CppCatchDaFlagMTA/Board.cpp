@@ -112,7 +112,7 @@ void Board::printCellByPos(char c, int x, int y, int color) {
 	printCell(string(1, c), color, getBGcellColor(x, y));
 }
 void Board::resetCellByPos(int x, int y) {
-	gotoxy((x + 1) * BOARD_TAB, HEADER_HEIGHT + (y * 2));
+	gotoxy((y + 1) * BOARD_TAB, HEADER_HEIGHT + (x * 2));
 	printCell(GetCell(x, y), WHITE, WHITE);
 }
 int Board::loadFromFile(string filePath, Position* APositions, Position* BPositions)

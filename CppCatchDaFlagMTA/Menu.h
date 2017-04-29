@@ -75,7 +75,7 @@ private:
 			break;
 		case LOAD_FILE:
 			//b.cleanBoard();
-			gm.setBoard("C:\\Users\\benf\\Downloads\\board_bad_3.gboard");
+			gm.setBoard("C:\\Users\\benf\\Downloads\\board_ok_1.gboard");
 			break;
 
 		case EXIT:
