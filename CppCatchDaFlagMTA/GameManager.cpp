@@ -168,10 +168,9 @@ void GameManager::_setRandomToolPos(Board *b, BoardTool *bt, int key) {
 void GameManager::_setToolPos(Board *b, BoardTool *bt, Position p) {
 	int x = p.getX();
 	int y = p.getY();
-	if (!bt->isElgibleToPos(x, y, _b, this) || isAnyToolInPos(x,y)) {
+	if (bt->isElgibleToPos(x, y, _b, this) && !(isAnyToolInPos(x,y))) {
 		bt->set(x, y);
 	 }
-	bt->set(x, y);
 }
 
 bool GameManager::isToolInA(BoardTool* bt) {

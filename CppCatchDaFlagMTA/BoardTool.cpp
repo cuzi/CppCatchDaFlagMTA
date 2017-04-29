@@ -31,9 +31,9 @@ bool BoardTool::move(Board *b, GameManager *gm)
 }
 
 bool BoardTool::isElgibleToPos(int x, int y, Board *b, GameManager *gm) {
-	if (x < 0 || x >= b->getBoardWidth())
+	if (x < 0 || x >= b->getBoardHeigth())
 		return false;
-	if (y < 0 || y >= b->getBoardHeigth())
+	if (y < 0 || y >= b->getBoardWidth())
 		return false;
 
 	int newPosContent = b->GetCell(x, y);
