@@ -55,7 +55,7 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 }
 
 Move GameManager::getNextMove(int playerKey) {
-	vector<Move>& moves = (playerKey == 'A') ? aMoves : bMoves;
+	vector<Move>& moves = (playerKey == A_KEY) ? aMoves : bMoves;
 
 	if (!moves.empty()) {
 		Move move = moves.front();
@@ -84,7 +84,7 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 
 		Sleep(200);
 		if (aNextMove.getClockTime() == -1 && bNextMove.getClockTime() == -1) {
-			gameOn = false;
+			gameOn = true;
 		}
 		else {
 			if (i == aNextMove.getClockTime()) {
@@ -95,7 +95,7 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 			if (i == bNextMove.getClockTime()) {
 				keyPressed(bNextMove.getTool());
 				keyPressed(bNextMove.getDir());
-				aNextMove = getNextMove(B_KEY);
+				bNextMove = getNextMove(B_KEY);
 			}
 
 			gameOn = !_moveTools(playing);
@@ -313,7 +313,7 @@ bool GameManager::CheckBoard()
 
 int GameManager::loadMoves(string filePath, int playerKey)
 {
-	vector<Move>& moves = (playerKey == 'A')? aMoves : bMoves;
+	vector<Move>& moves = (playerKey == A_KEY)? aMoves : bMoves;
 	std::ifstream bfile;
 	bfile.open(filePath, ios::in);
 	if (bfile.is_open()) {
@@ -347,7 +347,7 @@ Move GameManager::_parseMove(string move)
 	token = move.substr(0, pos);
 	arr[i] = token;
 
-	return Move(std::stoi(arr[0]), std::stoi(arr[1]), arr[2][0]);
+	return Move(std::stoi(arr[0]), arr[1][0], arr[2][0]);
 }
 
 bool GameManager::isToolInA(BoardTool* bt) {

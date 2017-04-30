@@ -3,10 +3,10 @@
 #include <string>
 class Move {
 	int _clockTime = -1;
-	int _boardTool = -1;
+	char _boardTool = -1;
 	char _direction = 0;
 public:
-	Move(int ct, int bt, char d) : _clockTime(ct), _boardTool(bt), _direction(d) {};
+	Move(int ct, char bt, char d) : _clockTime(ct), _boardTool(bt), _direction(tolower(d)) {};
 	Move() {};
 	operator int() const
 	{
@@ -14,7 +14,7 @@ public:
 	}
 	void set(int ct, int bt, char d) {
 		_clockTime = ct;
-		_boardTool = bt;
+		_boardTool = tolower(bt);
 		_direction = tolower(d);
 	}
 	int getClockTime() {
