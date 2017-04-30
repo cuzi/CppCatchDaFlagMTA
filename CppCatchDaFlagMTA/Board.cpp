@@ -138,7 +138,14 @@ int Board::saveToFile(string filePath){
 	std::ofstream bfile;
 	bfile.open(filePath, ios::out);
 	if (bfile.is_open()) {
-		bfile << this;
+		for (int i = 0;i<_colSize;i++) {
+			for (int j = 0;j < _rowSize;j++) {
+				bfile << boardCells[i][j];
+			}
+			bfile << "# " << to_string(i + 1) << endl;
+		}
+		bfile << "-------------" << endl;
+		bfile << "ABCDEFGHIJKLM" << endl;
 	}
 	else
 		return errno;

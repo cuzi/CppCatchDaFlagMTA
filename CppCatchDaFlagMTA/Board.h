@@ -95,6 +95,33 @@ public:
 	}
 	~Board() { freeBoardMat(); };
 	void configRandBoardCells();
+	static char getBoardChar(int key) {
+		switch (key)
+		{
+		case FR:
+			return 'T';
+		case SEA:
+			return 'S';
+		case EMPTY:
+			return ' ';
+		case FlgA:
+			return 'A';
+		case FlgB:
+			return 'B';
+		case A:
+			return '1';
+		case B:
+			return '2';
+		case C:
+			return '3';
+		case E:
+			return '7';
+		case F:
+			return '8';
+		case G:
+			return '9';
+		}
+	}
 	const int getBoardWidth() {
 		return _colSize;
 	}
@@ -134,7 +161,7 @@ public:
 	friend std::ostream &operator<<(std::ostream &cout, Board const &b) {
 		for (int i = 0;i<b._colSize;i++) {
 			for (int j = 0;j < b._rowSize;j++) {
-				cout << b.boardCells[i][j];
+				cout << Board::getBoardChar(b.boardCells[i][j]);
 			}
 			cout << '# ' << to_string(i + 1) << endl;
 		}
