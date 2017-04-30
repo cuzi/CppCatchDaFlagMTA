@@ -8,12 +8,25 @@ GameManager::~GameManager() {
 
 void GameManager::start(Player* pa, Player* pb) {
 	// set vars
-	bool gameOn = true;
-	char ch = 0;
-	int i = 0;
+	int winner;
 
 	// init game
 	_initGame(pa, pb);
+
+	if(LOADED)
+		winner = autoGameLoop(pa, pb);
+	else
+		winner = gameLoop(pa, pb);
+
+	_gameWin(winner == Player::A ? pa : pb);
+
+	setTextColor(WHITE);
+}
+
+int GameManager::gameLoop(Player* pa, Player* pb) {
+	bool gameOn = true;
+	char ch = 0;
+	int i = 0;
 
 	// set first player
 	int playing = (i % 2 ? A_KEY : B_KEY);
@@ -33,16 +46,73 @@ void GameManager::start(Player* pa, Player* pb) {
 
 		if (ch == ESC) {
 			if (showSubMenu(pa, pb))
-				return;
+				return -1;
 			ch = 0;
 		}
 		std::cin.clear();
 	}
-
-	_gameWin(playing == Player::A ? pa : pb);
-
-	setTextColor(WHITE);
+	return playing;
 }
+
+Move GameManager::getNextMove(int playerKey) {
+	vector<Move>& moves = (playerKey == 'A') ? aMoves : bMoves;
+
+	if (!moves.empty()) {
+		Move move = moves.front();
+		moves.erase(moves.begin());
+		return move;
+	}
+	else
+		// no moves left
+		// return dummy move
+		return Move(-1, -1,'0');
+}
+
+int GameManager::autoGameLoop(Player* pa, Player* pb) {
+	bool gameOn = true;
+	char ch = 0;
+	int i = 0;
+	Move aNextMove = getNextMove(A_KEY);
+	Move bNextMove = getNextMove(B_KEY);
+
+	// set first player
+	int playing = (i % 2 ? A_KEY : B_KEY);
+
+	while (gameOn && gameStatus(pa, pb)) {
+		playing = (i % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
+		
+
+		Sleep(200);
+		if (aNextMove.getClockTime() == -1 && bNextMove.getClockTime() == -1) {
+			gameOn = false;
+		}
+		else {
+			if (i == aNextMove.getClockTime()) {
+				keyPressed(aNextMove.getTool());
+				keyPressed(aNextMove.getDir());
+				aNextMove = getNextMove(A_KEY);
+			}
+			if (i == bNextMove.getClockTime()) {
+				keyPressed(bNextMove.getTool());
+				keyPressed(bNextMove.getDir());
+				aNextMove = getNextMove(B_KEY);
+			}
+
+			gameOn = !_moveTools(playing);
+			i++;
+
+			if (ch == ESC) {
+				if (showSubMenu(pa, pb))
+					return -1;
+				ch = 0;
+			}
+			std::cin.clear();
+		}
+		
+	}
+	return playing;
+}
+
 
 bool GameManager::gameStatus(Player* pa, Player* pb) {
 	// TODO check logic in tools positions if there is tools in same position 
@@ -119,11 +189,13 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	BTools = new BoardTool[TOOLS_COUNT];
 
 	// load board
-	if (boardFilePath != "") {
+	if (LOADED) {
 		Position APositions[TOOLS_COUNT];
 		Position BPositions[TOOLS_COUNT];
 		errCode = _b->loadFromFile(boardFilePath, APositions, BPositions);
-
+		loadMoves(moveAFilePath, A_KEY);
+		loadMoves(moveBFilePath, B_KEY);
+		
 		if (!errCode) {
 			_setTools(ATools, aColor, APositions);
 			_setTools(BTools, bColor, BPositions);

@@ -21,10 +21,16 @@ class GameManager {
 	enum { RESUME = 1, RESTART = 2, MAIN_MENU = 8, EXIT = 9 };
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
 
+	//if loaded game
+	bool LOADED = false;
+
 	std::vector< string > err_stack;
 
 	char* txt[9] = { "Resume", "Restart Game", "", "","","","","Main Menu", "Exit Game" };
 	string boardFilePath;
+	string moveAFilePath;
+	string moveBFilePath;
+
 	vector<Move> aMoves;
 	vector<Move> bMoves;
 
@@ -40,7 +46,7 @@ class GameManager {
 	static const int B_KEY = E;
 
 	int selectedA = -1, selectedB = -1;
-
+	
 
 	enum { ESC = 27 };
 
@@ -59,12 +65,21 @@ public:
 	BoardTool* getToolInPos(int x, int y);
 	void setBoard(string filePath) {
 		boardFilePath = filePath;
+		LOADED = true;
+	}
+	void setMoves(string playerAmoves="", string playerBmoves="") {
+		moveAFilePath = playerAmoves;
+		moveBFilePath = playerBmoves;
+		LOADED = true;
 
 	}
 	bool isAnyToolInPos(int x, int y) {
 		return getToolInPos(x, y) != NULL;
 	}
 private:
+	Move GameManager::getNextMove(int playerKey);
+	int GameManager::autoGameLoop(Player* pa, Player* pb);
+	int GameManager::gameLoop(Player* pa, Player* pb);
 	bool gameStatus(Player* pa, Player* pb);
 	void toolHit(BoardTool* bt, BoardTool* btb);
 	// If submenu return true the game need to be stopped
