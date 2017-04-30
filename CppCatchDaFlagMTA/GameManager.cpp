@@ -113,7 +113,6 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	return playing;
 }
 
-
 bool GameManager::gameStatus(Player* pa, Player* pb) {
 	// TODO check logic in tools positions if there is tools in same position 
 	//		need to check who win and return false if some player have no tools
@@ -344,6 +343,9 @@ Move GameManager::_parseMove(string move)
 		move.erase(0, pos + delimiter.length());
 		++i;
 	}
+
+	token = move.substr(0, pos);
+	arr[i] = token;
 
 	return Move(std::stoi(arr[0]), std::stoi(arr[1]), arr[2][0]);
 }
