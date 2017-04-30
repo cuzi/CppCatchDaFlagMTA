@@ -44,6 +44,8 @@ class GameManager {
 	int aColor = BLUE;
 	int bColor = RED;
 
+	int clock = 0;
+
 	static const int A_KEY = A;
 	static const int B_KEY = E;
 

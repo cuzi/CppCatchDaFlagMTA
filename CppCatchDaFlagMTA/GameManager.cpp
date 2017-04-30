@@ -26,13 +26,13 @@ void GameManager::start(Player* pa, Player* pb) {
 int GameManager::gameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
 	char ch = 0;
-	int i = 0;
+	clock = 0;
 
 	// set first player
-	int playing = (i % 2 ? A_KEY : B_KEY);
+	int playing = (clock % 2 ? A_KEY : B_KEY);
 
 	while (gameOn && gameStatus(pa, pb)) {
-		playing = (i % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
+		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 
 		Sleep(200);
 
@@ -42,7 +42,7 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 		}
 
 		gameOn = !_moveTools(playing);
-		i++;
+		clock++;
 
 		if (ch == ESC) {
 			if (showSubMenu(pa, pb))
@@ -79,15 +79,16 @@ bool GameManager::isGameFreezed() {
 int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
 	char ch = 0;
-	int i = 0;
+
+	clock = 0;
 	Move aNextMove = getNextMove(A_KEY);
 	Move bNextMove = getNextMove(B_KEY);
 
 	// set first player
-	int playing = (i % 2 ? A_KEY : B_KEY);
+	int playing = (clock % 2 ? A_KEY : B_KEY);
 
 	while (gameOn && gameStatus(pa, pb)) {
-		playing = (i % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
+		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 		
 
 		Sleep(200);
@@ -95,19 +96,19 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 			gameOn = false;
 		}
 		else {
-			if (i == aNextMove.getClockTime()) {
+			if (clock == aNextMove.getClockTime()) {
 				keyPressed(aNextMove.getTool());
 				keyPressed(Move::getPlayerAdir(aNextMove.getDir()));
 				aNextMove = getNextMove(A_KEY);
 			}
-			if (i == bNextMove.getClockTime()) {
+			if (clock == bNextMove.getClockTime()) {
 				keyPressed(bNextMove.getTool());
 				keyPressed(Move::getPlayerEdir(bNextMove.getDir()));
 				bNextMove = getNextMove(B_KEY);
 			}
 
 			gameOn = !_moveTools(playing);
-			i++;
+			clock++;
 
 			if (ch == ESC) {
 				if (showSubMenu(pa, pb))
@@ -431,13 +432,20 @@ bool GameManager::_moveTools(int key) {
 }
 
 void GameManager::_changeDir(char c) {
+
 	if (selectedA != -1 && getDirA((Direction_A)c) != Direction::NONE) {
-		if (ATools[selectedA].setDirection(getDirA((Direction_A)c)))
+		if (ATools[selectedA].setDirection(getDirA((Direction_A)c))) {
 			selectedA = -1;
+			Move move(clock,selectedA,c);
+			// record move to file
+		}
 	}
 	if (selectedB != -1 && getDirB((Direction_E)c) != Direction::NONE) {
-		if (BTools[selectedB].setDirection(getDirB((Direction_E)c)))
+		if (BTools[selectedB].setDirection(getDirB((Direction_E)c))) {
 			selectedB = -1;
+			Move move(clock, selectedA, c);
+			// record move to file
+		}
 	}
 }
 
