@@ -83,18 +83,18 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 		
 
 		Sleep(200);
-		if (aNextMove.getClockTime() == -1 && bNextMove.getClockTime() == -1) {
+		if (aNextMove.getClockTime() == -31 && bNextMove.getClockTime() == -1) {
 			gameOn = true;
 		}
 		else {
 			if (i == aNextMove.getClockTime()) {
 				keyPressed(aNextMove.getTool());
-				keyPressed(aNextMove.getDir());
+				keyPressed(Move::getPlayerAdir(aNextMove.getDir()));
 				aNextMove = getNextMove(A_KEY);
 			}
 			if (i == bNextMove.getClockTime()) {
 				keyPressed(bNextMove.getTool());
-				keyPressed(bNextMove.getDir());
+				keyPressed(Move::getPlayerEdir(bNextMove.getDir()));
 				bNextMove = getNextMove(B_KEY);
 			}
 
