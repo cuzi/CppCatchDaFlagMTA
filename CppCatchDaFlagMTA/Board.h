@@ -65,7 +65,7 @@ class Board {
 	void printCell(int cell, int colorA, int colorB);
 	void freeBoardMat();
 	string getScoreString(Player* p);
-	void LoadBoardLine(std::string line, int lineIdx, Position* APositions, Position* BPositions);
+	void loadBoardLine(std::string line, int lineIdx, Position* APositions, Position* BPositions);
 
 public:
 	enum { FR = 4, SEA = 5, FlgA = 6, FlgB = 10, EMPTY = 0, A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
@@ -94,12 +94,11 @@ public:
 		return *this;
 	}
 	~Board() { freeBoardMat(); };
-
 	void configRandBoardCells();
-	int getBoardWidth() {
+	const int getBoardWidth() {
 		return _colSize;
 	}
-	int getBoardHeigth() {
+	const int getBoardHeigth() {
 		return _rowSize;
 	}
 	void clearLine(int line) {
@@ -131,4 +130,16 @@ public:
 	void printCellByPos(char c, int x, int y, int color);
 	void resetCellByPos(int x, int y);
 	int loadFromFile(string filePath, Position* APositions, Position* BPositions);
+	int saveToFile(string filePath);
+	friend std::ostream &operator<<(std::ostream &cout, Board const &b) {
+		for (int i = 0;i<b._colSize;i++) {
+			for (int j = 0;j < b._rowSize;j++) {
+				cout << b.boardCells[i][j];
+			}
+			cout << '# ' << to_string(i + 1) << endl;
+		}
+		cout << "-------------" << endl;
+		cout << "ABCDEFGHIJKLM" << endl;
+		return cout;
+	}
 };

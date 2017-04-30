@@ -195,6 +195,8 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	ATools = new BoardTool[TOOLS_COUNT];
 	BTools = new BoardTool[TOOLS_COUNT];
 
+	gameIndex++;
+
 	// load board
 	if (LOADED) {
 		Position APositions[TOOLS_COUNT];
@@ -225,6 +227,9 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	}
 
 	if (!err) {
+		if (isRecording())
+			_b->saveToFile(gamePrefixPath + "_" + to_string(gameIndex) + ".gboard");
+		
 		_b->printBoard(pa, aColor, pb, bColor);
 		printToolsOnBoard();
 	}

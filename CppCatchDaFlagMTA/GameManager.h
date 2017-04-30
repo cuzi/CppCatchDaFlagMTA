@@ -23,13 +23,15 @@ class GameManager {
 
 	//if loaded game
 	bool LOADED = false;
-
+	bool RECORD = false;
 	std::vector< string > err_stack;
 
 	char* txt[9] = { "Resume", "Restart Game", "", "","","","","Main Menu", "Exit Game" };
 	string boardFilePath;
 	string moveAFilePath;
 	string moveBFilePath;
+	string gamePrefixPath;
+	int gameIndex = 0;
 
 	vector<Move> aMoves;
 	vector<Move> bMoves;
@@ -53,6 +55,7 @@ class GameManager {
 	Board* _b;
 
 public:
+	
 	GameManager(Board * b) : _b(b) {}
 	~GameManager();
 
@@ -76,7 +79,18 @@ public:
 	bool isAnyToolInPos(int x, int y) {
 		return getToolInPos(x, y) != NULL;
 	}
+	void startRecord() {
+		RECORD = true;
+	}
+	void endRecord() {
+		RECORD = false;
+	}
+	bool isRecording() {
+		return RECORD;
+	}
+
 private:
+	
 	bool GameManager::isGameFreezed();
 	Move GameManager::getNextMove(int playerKey);
 	int GameManager::autoGameLoop(Player* pa, Player* pb);

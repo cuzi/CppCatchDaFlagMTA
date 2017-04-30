@@ -39,6 +39,7 @@ public:
 		case 'R':
 			return (char)Direction_A::RIGHT;
 		}
+		return -1;
 	}
 	static char getPlayerEdir(char d) {
 		switch (d)
@@ -52,5 +53,10 @@ public:
 		case 'R':
 			return (char)Direction_E::RIGHT;
 		}
+		return -1;
+	}
+	friend std::ostream &operator<<(std::ostream &cout, Move const &m) {
+		cout << to_string(m._clockTime) << ',' << to_string(m._boardTool) << ',' << m._direction << endl;
+		return cout;
 	}
 };

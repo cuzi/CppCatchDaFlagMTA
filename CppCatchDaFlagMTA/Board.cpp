@@ -6,7 +6,7 @@ string Board::getScoreString(Player* p) {
 	return p->getName() + ": " + to_string(p->getScore());
 }
 
-void Board::LoadBoardLine(std::string line, int lineNumber, Position* APositions, Position* BPositions) {
+void Board::loadBoardLine(std::string line, int lineNumber, Position* APositions, Position* BPositions) {
 	for (unsigned i = 0; i < line.length(); ++i)
 	{
 		switch (line.at(i)) {
@@ -125,11 +125,22 @@ int Board::loadFromFile(string filePath, Position* APositions, Position* BPositi
 		while (std::getline(bfile, str) && lineIdx < _rowSize)
 		{
 			std::string board_line = str.substr(0, _colSize);
-			LoadBoardLine(board_line, lineIdx, APositions, BPositions);
+			loadBoardLine(board_line, lineIdx, APositions, BPositions);
 			++lineIdx;
 		}
 	}
 	else 
+		return errno;
+
+	return 0;
+}
+int Board::saveToFile(string filePath){
+	std::ofstream bfile;
+	bfile.open(filePath, ios::out);
+	if (bfile.is_open()) {
+		bfile << this;
+	}
+	else
 		return errno;
 
 	return 0;

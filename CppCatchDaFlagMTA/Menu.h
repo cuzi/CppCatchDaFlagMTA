@@ -12,8 +12,8 @@ class Menu {
 	Board b = Board(13, 13, false);
 	GameManager gm{ &b };
 	Player pa{ "Player A" }, pb{ "Player B" };
-	enum { PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, LOAD_FILE = 5, EXIT = 9 };
-	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Load Board from file","","","", "Exit" };
+	enum { PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, RECORD_GAME = 5, LOAD_FILE = 6, EXIT = 9 };
+	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Start record game","Load Board from file","","", "Exit" };
 
 public:
 	Menu() {}
@@ -73,10 +73,13 @@ private:
 		case RESET_SCORE:
 			_resetScore();
 			break;
+		case RECORD_GAME:
+			txt[4] = (gm.isRecording())? "Stop record game" : "Start record game";
+			(txt[4] == "Start record game") ? gm.startRecord() : gm.endRecord();
+			break;
 		case LOAD_FILE:
-			//b.cleanBoard();
 			gm.setBoard("C:\\Users\\benf\\Downloads\\board_ok_2.gboard");
-			gm.setMoves("C:\\Users\\benf\\Downloads\\board_ok_2.moves-a_small.txt","");
+			gm.setMoves("C:\\Users\\benf\\Downloads\\board_ok_2.moves-a_small","");
 			break;
 
 		case EXIT:
