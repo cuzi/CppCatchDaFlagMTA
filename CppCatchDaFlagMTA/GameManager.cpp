@@ -68,6 +68,14 @@ Move GameManager::getNextMove(int playerKey) {
 		return Move(-1, -1,'0');
 }
 
+bool GameManager::isGameFreezed() {
+	for (int i = 0;i < TOOLS_COUNT;i++) {
+		if (ATools[i].isMoving() || BTools[i].isMoving())
+			return false;
+	}
+	return true;
+}
+
 int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
 	char ch = 0;
@@ -83,8 +91,8 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 		
 
 		Sleep(200);
-		if (aNextMove.getClockTime() == -31 && bNextMove.getClockTime() == -1) {
-			gameOn = true;
+		if (aNextMove.getClockTime() == -1 && bNextMove.getClockTime() == -1 && isGameFreezed()) {
+			gameOn = false;
 		}
 		else {
 			if (i == aNextMove.getClockTime()) {

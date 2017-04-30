@@ -77,6 +77,7 @@ public:
 		return getToolInPos(x, y) != NULL;
 	}
 private:
+	bool GameManager::isGameFreezed();
 	Move GameManager::getNextMove(int playerKey);
 	int GameManager::autoGameLoop(Player* pa, Player* pb);
 	int GameManager::gameLoop(Player* pa, Player* pb);

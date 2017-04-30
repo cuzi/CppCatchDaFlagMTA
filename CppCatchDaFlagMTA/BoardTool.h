@@ -18,7 +18,6 @@ class BoardTool {
 
 public:
 	BoardTool() {}
-	
 	BoardTool(int x, int y, char ch = '*',int color = WHITE) : _x(x), _y(y), _c(ch), _color(color) {}
 	
 	bool operator==(const BoardTool& p) {
@@ -42,11 +41,12 @@ public:
 		_x = x;
 		_y = y;
 	}
-	
+	bool isMoving() {
+		return (_dir_x != 0 || _dir_y != 0);
+	}
 	int getX() {
 		return _x;
 	}
-
 	char getC() {
 		return _c;
 	}
@@ -56,19 +56,16 @@ public:
 	void setColor(int color) {
 		_color = color;;
 	}
-
 	int getY() {
 		return _y;
 	}
 	void setChar(char c) {
 		_c = c;
 	}
-	
 	void stop() {
 		_dir_x = 0;
 		_dir_y = 0;
 	}
-
 	bool setDirection(Direction d) {
 		switch (d) {
 		case Direction::UP:
@@ -93,10 +90,7 @@ public:
 
 		return true;
 	}
-
-	
 	bool move(Board *b, GameManager *gm);
-
 	bool isElgibleToPos(int x, int y, Board* b, GameManager *gm);
 
 private:
