@@ -195,9 +195,6 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	ATools = new BoardTool[TOOLS_COUNT];
 	BTools = new BoardTool[TOOLS_COUNT];
 
-	gameIndex++;
-
-	// load board
 	if (LOADED) {
 		Position APositions[TOOLS_COUNT];
 		Position BPositions[TOOLS_COUNT];
@@ -210,7 +207,6 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 			_setTools(BTools, bColor, BPositions);
 			err = CheckBoard();
 		}
-		// faild to load file location
 		else {
 			char buffer[255];
 			strerror_s(buffer, errCode);
@@ -219,7 +215,6 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 		}
 			
 	}
-	// random board
 	else {
 		_setRandomTools(ATools, aColor, A_KEY);
 		_setRandomTools(BTools, bColor, B_KEY);

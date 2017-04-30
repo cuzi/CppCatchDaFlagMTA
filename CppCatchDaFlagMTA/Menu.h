@@ -74,9 +74,10 @@ private:
 			_resetScore();
 			break;
 		case RECORD_GAME:
-			txt[4] = (gm.isRecording())? "Stop record game" : "Start record game";
-			(txt[4] == "Start record game") ? gm.startRecord() : gm.endRecord();
+			(!gm.isRecording()) ? gm.startRecord() : gm.endRecord();
+			txt[4] = (gm.isRecording()) ? "Stop record game" : "Start record game";
 			break;
+		// TODO: remove this case, only for debug
 		case LOAD_FILE:
 			gm.setBoard("C:\\Users\\benf\\Downloads\\board_ok_2.gboard");
 			gm.setMoves("C:\\Users\\benf\\Downloads\\board_ok_2.moves-a_small","");

@@ -30,8 +30,8 @@ class GameManager {
 	string boardFilePath;
 	string moveAFilePath;
 	string moveBFilePath;
-	string gamePrefixPath;
-	int gameIndex = 0;
+	string gamePrefixPath = "board_ok_";
+	int gameIndex;
 
 	vector<Move> aMoves;
 	vector<Move> bMoves;
@@ -56,7 +56,7 @@ class GameManager {
 
 public:
 	
-	GameManager(Board * b) : _b(b) {}
+	GameManager(Board * b,int idx=0) : _b(b), gameIndex(idx) {}
 	~GameManager();
 
 	void addErrorMsg(string msg) {
