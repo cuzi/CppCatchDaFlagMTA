@@ -38,6 +38,14 @@ public:
 			return (char)Direction_A::LEFT;
 		case 'R':
 			return (char)Direction_A::RIGHT;
+		case (char)Direction_A::UP:
+			return 'U';
+		case (char)Direction_A::DOWN:
+			return 'D';
+		case (char)Direction_A::LEFT:
+			return 'L';
+		case (char)Direction_A::RIGHT:
+			return 'R';
 		}
 		return -1;
 	}
@@ -52,6 +60,14 @@ public:
 			return (char)Direction_E::LEFT;
 		case 'R':
 			return (char)Direction_E::RIGHT;
+		case (char)Direction_E::UP:
+			return 'U';
+		case (char)Direction_E::DOWN:
+			return 'D';
+		case (char)Direction_E::LEFT:
+			return 'L';
+		case (char)Direction_E::RIGHT:
+			return 'R';
 		}
 		return -1;
 	}

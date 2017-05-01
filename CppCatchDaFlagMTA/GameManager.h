@@ -30,8 +30,9 @@ class GameManager {
 	string boardFilePath;
 	string moveAFilePath;
 	string moveBFilePath;
-	string gamePrefixPath = "board_ok_";
 
+	string gamePrefixPath = "CatchTheFlage_" + to_string(gameIndex);
+	
 	vector<Move> aMoves;
 	vector<Move> bMoves;
 
@@ -92,11 +93,12 @@ public:
 	}
 
 private:
-	int GameManager::saveToFile(string filePath, Player* pa, Player* pb);
-	bool GameManager::isGameFreezed();
-	Move GameManager::getNextMove(int playerKey);
-	int GameManager::autoGameLoop(Player* pa, Player* pb);
-	int GameManager::gameLoop(Player* pa, Player* pb);
+	int saveBoardToFile(string filePath, Player* pa, Player* pb);
+	int GameManager::saveMoveToFile(string filePath, Move m);
+	bool isGameFreezed();
+	Move getNextMove(int playerKey);
+	int autoGameLoop(Player* pa, Player* pb);
+	int gameLoop(Player* pa, Player* pb);
 	bool gameStatus(Player* pa, Player* pb);
 	void toolHit(BoardTool* bt, BoardTool* btb);
 	// If submenu return true the game need to be stopped

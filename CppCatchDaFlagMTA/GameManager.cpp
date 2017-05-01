@@ -6,13 +6,24 @@ GameManager::~GameManager() {
 	free(BTools);
 }
 
-int GameManager::saveToFile(string filePath, Player* pa, Player* pb) {
+int GameManager::saveBoardToFile(string filePath, Player* pa, Player* pb) {
 	std::ofstream bfile;
 	bfile.open(filePath, ios::out);
 	if (bfile.is_open()) {
 		_markPlayersOnBoard(pa, pb);
 		bfile << *_b;
 		_unMarkPlayersOnBoard(pa, pb);
+	}
+	else
+		return errno;
+	return 0;
+}
+
+int GameManager::saveMoveToFile(string filePath,Move m) {
+	std::ofstream bfile;
+	bfile.open(filePath, ios::app);
+	if (bfile.is_open()) {
+		bfile << m;
 	}
 	else
 		return errno;
@@ -240,7 +251,7 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 
 	if (!err) {
 		if (isRecording())
-			saveToFile(gamePrefixPath + "_" + to_string(gameIndex) + ".gboard", pa, pb);
+			saveBoardToFile(gamePrefixPath + ".gboard", pa, pb);
 		
 		_b->printBoard(pa, aColor, pb, bColor);
 		printToolsOnBoard();
@@ -469,16 +480,17 @@ void GameManager::_changeDir(char c) {
 
 	if (selectedA != -1 && getDirA((Direction_A)c) != Direction::NONE) {
 		if (ATools[selectedA].setDirection(getDirA((Direction_A)c))) {
-			selectedA = -1;
-			Move move(clock,selectedA,c);
-			// record move to file
+			Move(clock, selectedA, c);
+			if (RECORD)
+				saveMoveToFile(gamePrefixPath + ".moves-a_small", Move(clock, selectedA + 1, Move::getPlayerAdir(c)));
+			selectedA = -1;			
 		}
 	}
 	if (selectedB != -1 && getDirB((Direction_E)c) != Direction::NONE) {
 		if (BTools[selectedB].setDirection(getDirB((Direction_E)c))) {
+			if (RECORD)
+				saveMoveToFile(gamePrefixPath + ".moves-b_small", Move(clock, selectedB + 1, Move::getPlayerEdir(c)));
 			selectedB = -1;
-			Move move(clock, selectedA, c);
-			// record move to file
 		}
 	}
 }
