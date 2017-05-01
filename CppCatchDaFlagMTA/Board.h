@@ -95,6 +95,12 @@ public:
 	}
 	~Board() { freeBoardMat(); };
 	void configRandBoardCells();
+	void initBoard() {
+		for (int i = 0; i < _rowSize; ++i) {
+			for (int j = 0; j < _colSize; ++j)
+				boardCells[i][j] = EMPTY;
+		}
+	}
 	static char getBoardChar(int key) {
 		switch (key)
 		{

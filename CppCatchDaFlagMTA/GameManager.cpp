@@ -30,6 +30,9 @@ void GameManager::start(Player* pa, Player* pb) {
 
 		if (winner != -1)
 			_gameWin(winner == Player::A ? pa : pb);
+		
+		LOADED = false;
+		_b->initBoard();
 		setTextColor(WHITE);
 	}	
 }
@@ -158,6 +161,7 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 		break;
 	case MAIN_MENU:
 		LOADED = false;
+		_b->initBoard();
 		return true;
 		break;
 	case EXIT:
