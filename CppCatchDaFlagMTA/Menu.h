@@ -80,7 +80,7 @@ private:
 			txt[4] = (gm.isRecording()) ? "Stop record game" : "Start record game";
 			gm.editSubMenu(4, (gm.isRecording()) ? "Stop record game" : "Start record game");
 			break;
-		// TODO: remove this case, only for debug
+		// TODO: remove this case, only for debug, each gameManager initialization , in load mode- invoke thos function 
 		case LOAD_FILE:
 			gm.setBoard("C:\\Users\\benf\\Downloads\\board_ok_2.gboard");
 			gm.setMoves("C:\\Users\\benf\\Downloads\\board_ok_2.moves-a_small","");
