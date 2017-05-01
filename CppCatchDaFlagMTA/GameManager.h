@@ -18,15 +18,15 @@ class Board;
 class BoardTool;
 
 class GameManager {
-	enum { RESUME = 1, RESTART = 2, MAIN_MENU = 8, EXIT = 9 };
+	enum { RESUME = 1, RESTART = 2,RECORD_GAME=5, MAIN_MENU = 8, EXIT = 9 };
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
+	string txt[9] = { "Resume", "Restart Game", "", "","Start Record Game","","","Main Menu", "Exit Game" };
 
 	//if loaded game
 	bool LOADED = false;
 	bool RECORD = false;
 	std::vector< string > err_stack;
 
-	char* txt[9] = { "Resume", "Restart Game", "", "","","","","Main Menu", "Exit Game" };
 	string boardFilePath;
 	string moveAFilePath;
 	string moveBFilePath;
@@ -64,6 +64,9 @@ public:
 	GameManager(Board * b) : _b(b) { gameIndex++; }
 	~GameManager();
 
+	void editSubMenu(int key, string msg) {
+		txt[key] = msg;
+	}
 	void addErrorMsg(string msg) {
 		err_stack.push_back(msg);
 	}

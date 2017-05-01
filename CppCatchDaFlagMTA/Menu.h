@@ -78,6 +78,7 @@ private:
 		case RECORD_GAME:
 			(!gm.isRecording()) ? gm.startRecord() : gm.endRecord();
 			txt[4] = (gm.isRecording()) ? "Stop record game" : "Start record game";
+			gm.editSubMenu(4, (gm.isRecording()) ? "Stop record game" : "Start record game");
 			break;
 		// TODO: remove this case, only for debug
 		case LOAD_FILE:

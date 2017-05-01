@@ -232,6 +232,13 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 		start(pa, pb);
 		return true;
 		break;
+	case RECORD_GAME:
+		(!isRecording()) ? startRecord() : endRecord();
+		editSubMenu(4, (isRecording()) ? "Stop record game" : "Start record game");
+		_b->printBoard(pa, aColor, pb, bColor);
+		printToolsOnBoard();
+		return false;
+		break;
 	case MAIN_MENU:
 		LOADED = false;
 		_b->initBoard();
