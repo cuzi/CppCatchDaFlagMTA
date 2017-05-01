@@ -31,7 +31,6 @@ class GameManager {
 	string moveAFilePath;
 	string moveBFilePath;
 	string gamePrefixPath = "board_ok_";
-	static int gameIndex = 0;
 
 	vector<Move> aMoves;
 	vector<Move> bMoves;
@@ -57,7 +56,8 @@ class GameManager {
 	Board* _b;
 
 public:
-	
+	static int gameIndex;
+
 	GameManager(Board * b) : _b(b) { gameIndex++; }
 	~GameManager();
 
@@ -92,7 +92,7 @@ public:
 	}
 
 private:
-	
+	int GameManager::saveToFile(string filePath);
 	bool GameManager::isGameFreezed();
 	Move GameManager::getNextMove(int playerKey);
 	int GameManager::autoGameLoop(Player* pa, Player* pb);

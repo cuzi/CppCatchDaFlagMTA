@@ -8,6 +8,8 @@
 
 using namespace std;
 
+int GameManager::gameIndex = 0;
+
 class Menu {
 	Board b = Board(13, 13, false);
 	GameManager gm{ &b };

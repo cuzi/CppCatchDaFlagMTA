@@ -157,13 +157,12 @@ public:
 	void printCellByPos(char c, int x, int y, int color);
 	void resetCellByPos(int x, int y);
 	int loadFromFile(string filePath, Position* APositions, Position* BPositions);
-	int saveToFile(string filePath);
 	friend std::ostream &operator<<(std::ostream &cout, Board const &b) {
 		for (int i = 0;i<b._colSize;i++) {
 			for (int j = 0;j < b._rowSize;j++) {
 				cout << Board::getBoardChar(b.boardCells[i][j]);
 			}
-			cout << '# ' << to_string(i + 1) << endl;
+			cout << "# " << to_string(i + 1) << endl;
 		}
 		cout << "-------------" << endl;
 		cout << "ABCDEFGHIJKLM" << endl;

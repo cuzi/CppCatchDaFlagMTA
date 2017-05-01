@@ -6,6 +6,17 @@ GameManager::~GameManager() {
 	free(BTools);
 }
 
+int GameManager::saveToFile(string filePath) {
+	std::ofstream bfile;
+	bfile.open(filePath, ios::out);
+	if (bfile.is_open()) {
+		bfile << *_b;
+	}
+	else
+		return errno;
+	return 0;
+}
+
 void GameManager::start(Player* pa, Player* pb) {
 	// set vars
 	int winner;
@@ -224,7 +235,7 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 
 	if (!err) {
 		if (isRecording())
-			_b->saveToFile(gamePrefixPath + "_" + to_string(gameIndex) + ".gboard");
+			saveToFile(gamePrefixPath + "_" + to_string(gameIndex) + ".gboard");
 		
 		_b->printBoard(pa, aColor, pb, bColor);
 		printToolsOnBoard();
