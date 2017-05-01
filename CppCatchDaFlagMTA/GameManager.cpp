@@ -6,11 +6,13 @@ GameManager::~GameManager() {
 	free(BTools);
 }
 
-int GameManager::saveToFile(string filePath) {
+int GameManager::saveToFile(string filePath, Player* pa, Player* pb) {
 	std::ofstream bfile;
 	bfile.open(filePath, ios::out);
 	if (bfile.is_open()) {
+		_markPlayersOnBoard(pa, pb);
 		bfile << *_b;
+		_unMarkPlayersOnBoard(pa, pb);
 	}
 	else
 		return errno;
@@ -18,20 +20,18 @@ int GameManager::saveToFile(string filePath) {
 }
 
 void GameManager::start(Player* pa, Player* pb) {
-	// set vars
-	int winner;
+	int winner;	
+	bool is_not_init = _initGame(pa, pb);
+	if (!is_not_init) {
+		if (LOADED)
+			winner = autoGameLoop(pa, pb);
+		else
+			winner = gameLoop(pa, pb);
 
-	// init game
-	_initGame(pa, pb);
-
-	if(LOADED)
-		winner = autoGameLoop(pa, pb);
-	else
-		winner = gameLoop(pa, pb);
-
-	_gameWin(winner == Player::A ? pa : pb);
-
-	setTextColor(WHITE);
+		if (winner != -1)
+			_gameWin(winner == Player::A ? pa : pb);
+		setTextColor(WHITE);
+	}	
 }
 
 int GameManager::gameLoop(Player* pa, Player* pb) {
@@ -157,6 +157,7 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 		return true;
 		break;
 	case MAIN_MENU:
+		LOADED = false;
 		return true;
 		break;
 	case EXIT:
@@ -200,7 +201,7 @@ void GameManager::_gameWin(Player *p) {
 	Sleep(1250);
 }
 
-void GameManager::_initGame(Player* pa, Player* pb) {
+bool GameManager::_initGame(Player* pa, Player* pb) {
 	bool err = false;
 	int errCode;
 
@@ -235,7 +236,7 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 
 	if (!err) {
 		if (isRecording())
-			saveToFile(gamePrefixPath + "_" + to_string(gameIndex) + ".gboard");
+			saveToFile(gamePrefixPath + "_" + to_string(gameIndex) + ".gboard", pa, pb);
 		
 		_b->printBoard(pa, aColor, pb, bColor);
 		printToolsOnBoard();
@@ -243,7 +244,25 @@ void GameManager::_initGame(Player* pa, Player* pb) {
 	else {
 		_b->cleanBoard();
 		printStackTrace();
-		cout << endl << "Press ESC to return back" << endl;
+		Sleep(3500);
+		clearCls();
+	}
+	return err;
+}
+
+void GameManager::_markPlayersOnBoard(Player * pa, Player * pb)
+{
+	for (int i = 0;i < TOOLS_COUNT;i++) {
+		_b->setBoardCell(ATools[i].getX(), ATools[i].getY(), ATools[i].getC());
+		_b->setBoardCell(BTools[i].getX(), BTools[i].getY(), BTools[i].getC());
+	}
+}
+
+void GameManager::_unMarkPlayersOnBoard(Player * pa, Player * pb)
+{
+	for (int i = 0;i < TOOLS_COUNT;i++) {
+		_b->setBoardCell(ATools[i].getX(), ATools[i].getY(), Board::EMPTY);
+		_b->setBoardCell(BTools[i].getX(), BTools[i].getY(), Board::EMPTY);
 	}
 }
 

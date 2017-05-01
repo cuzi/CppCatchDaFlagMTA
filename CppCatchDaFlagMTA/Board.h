@@ -120,6 +120,8 @@ public:
 			return '8';
 		case G:
 			return '9';
+		default:
+			return ' ';
 		}
 	}
 	const int getBoardWidth() {

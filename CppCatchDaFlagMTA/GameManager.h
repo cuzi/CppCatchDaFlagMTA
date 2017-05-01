@@ -92,7 +92,7 @@ public:
 	}
 
 private:
-	int GameManager::saveToFile(string filePath);
+	int GameManager::saveToFile(string filePath, Player* pa, Player* pb);
 	bool GameManager::isGameFreezed();
 	Move GameManager::getNextMove(int playerKey);
 	int GameManager::autoGameLoop(Player* pa, Player* pb);
@@ -103,7 +103,9 @@ private:
 	bool showSubMenu(Player* pa, Player* pb);
 	void _setRandomTools(BoardTool* playerTools, int color, int key);
 	void _gameWin(Player *p);
-	void _initGame(Player* pa, Player* pb);
+	bool _initGame(Player* pa, Player* pb);
+	void _markPlayersOnBoard(Player* pa, Player* pb);
+	void _unMarkPlayersOnBoard(Player* pa, Player* pb);
 	void printToolsOnBoard(BoardTool * playerTools);
 	BoardTool *_getTools(int key);
 	void _setRandomToolPos(Board *b, BoardTool *bt, int key);
