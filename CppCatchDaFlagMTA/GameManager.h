@@ -31,7 +31,9 @@ class GameManager {
 	string moveAFilePath;
 	string moveBFilePath;
 
-	string gamePrefixPath = "CatchTheFlage_" + to_string(gameIndex);
+	// SAVE
+	string gameSavingPath = "";
+	string gamePrefixPath = (gameSavingPath == "") ? "CatchTheFlage_" + to_string(gameIndex) : "/CatchTheFlage_" + to_string(gameIndex);
 	
 	vector<Move> aMoves;
 	vector<Move> bMoves;
@@ -93,6 +95,8 @@ public:
 	}
 
 private:
+	void loadBoardLine(std::string line, int lineIdx, Position* pa, Position* pb);
+	int loadFromFile(string filePath, Position* pa, Position* pb);
 	int saveBoardToFile(string filePath, Player* pa, Player* pb);
 	int GameManager::saveMoveToFile(string filePath, Move m);
 	bool isGameFreezed();

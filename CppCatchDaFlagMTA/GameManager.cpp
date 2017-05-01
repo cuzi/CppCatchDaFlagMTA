@@ -19,6 +19,68 @@ int GameManager::saveBoardToFile(string filePath, Player* pa, Player* pb) {
 	return 0;
 }
 
+void GameManager::loadBoardLine(std::string line, int lineNumber, Position* pa, Position* pb) {
+	
+	for (unsigned i = 0; i < line.length(); ++i)
+	{
+		switch (line.at(i)) {
+		case 'T':
+			_b->setBoardCell(lineNumber, i, Board::FR);
+			break;
+		case 'S':
+			_b->setBoardCell(lineNumber,i,Board::SEA);
+			break;
+		case 'A':
+			_b->setBoardCell(lineNumber, i, Board::FlgA);
+			break;
+		case 'B':
+			_b->setBoardCell(lineNumber, i, Board::FlgB);
+			break;
+		case '1':
+			pa[0].set(lineNumber, i, A);
+			break;
+		case '2':
+			pa[1].set(lineNumber, i, B);
+			break;
+		case '3':
+			pa[2].set(lineNumber, i, C);
+			break;
+		case '7':
+			pb[0].set(lineNumber, i, E);
+			break;
+		case '8':
+			pb[1].set(lineNumber, i, F);
+			break;
+		case '9':
+			pb[2].set(lineNumber, i, G);
+			break;
+		default:
+			// leave cell EMPTY
+			break;
+		}
+	}
+}
+
+int GameManager::loadFromFile(string filePath, Position* pa, Position* pb)
+{
+	std::ifstream bfile;
+	bfile.open(filePath, ios::in);
+	if (bfile.is_open()) {
+		std::string str;
+		int lineIdx = 0;
+		while (std::getline(bfile, str) && lineIdx < _b->getBoardHeigth())
+		{
+			std::string board_line = str.substr(0, _b->getBoardWidth());
+			loadBoardLine(board_line, lineIdx, pa, pb);
+			++lineIdx;
+		}
+	}
+	else
+		return errno;
+
+	return 0;
+}
+
 int GameManager::saveMoveToFile(string filePath,Move m) {
 	std::ofstream bfile;
 	bfile.open(filePath, ios::app);
@@ -226,7 +288,7 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 	if (LOADED) {
 		Position APositions[TOOLS_COUNT];
 		Position BPositions[TOOLS_COUNT];
-		errCode = _b->loadFromFile(boardFilePath, APositions, BPositions);
+		errCode = loadFromFile(boardFilePath, APositions, BPositions);
 		loadMoves(moveAFilePath, A_KEY);
 		loadMoves(moveBFilePath, B_KEY);
 		
@@ -268,8 +330,8 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 void GameManager::_markPlayersOnBoard(Player * pa, Player * pb)
 {
 	for (int i = 0;i < TOOLS_COUNT;i++) {
-		_b->setBoardCell(ATools[i].getX(), ATools[i].getY(), ATools[i].getC());
-		_b->setBoardCell(BTools[i].getX(), BTools[i].getY(), BTools[i].getC());
+		_b->setBoardCell(ATools[i].getX(), ATools[i].getY(), Board::getBoardKey(ATools[i].getC()));
+		_b->setBoardCell(BTools[i].getX(), BTools[i].getY(), Board::getBoardKey(BTools[i].getC()));
 	}
 }
 

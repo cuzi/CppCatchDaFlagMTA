@@ -6,46 +6,6 @@ string Board::getScoreString(Player* p) {
 	return p->getName() + ": " + to_string(p->getScore());
 }
 
-void Board::loadBoardLine(std::string line, int lineNumber, Position* APositions, Position* BPositions) {
-	for (unsigned i = 0; i < line.length(); ++i)
-	{
-		switch (line.at(i)) {
-		case 'T':
-			boardCells[lineNumber][i] = FR;
-			break;
-		case 'S':
-			boardCells[lineNumber][i] = SEA;
-			break;
-		case 'A':
-			boardCells[lineNumber][i] = FlgA;
-			break;
-		case 'B':
-			boardCells[lineNumber][i] = FlgB;
-			break;
-		case '1':
-			APositions[0].set(lineNumber, i, A);
-			break;
-		case '2':
-			APositions[1].set(lineNumber, i, B);
-			break;
-		case '3':
-			APositions[2].set(lineNumber, i, C);
-			break;
-		case '7':
-			BPositions[0].set(lineNumber, i, E);
-			break;
-		case '8':
-			BPositions[1].set(lineNumber, i, F);
-			break;
-		case '9':
-			BPositions[2].set(lineNumber, i, G);
-			break;
-		default:
-			// leave cell EMPTY
-			break;
-		}
-	}
-}
 void Board::printScoreBoard(Player* a, int aColor, Player* b, int bColor) {
 	int halfWidth = (BOARD_TAB * (_colSize + 1) + 1) / 2;
 
@@ -114,25 +74,6 @@ void Board::printCellByPos(char c, int x, int y, int color) {
 void Board::resetCellByPos(int x, int y) {
 	gotoxy((y + 1) * BOARD_TAB, HEADER_HEIGHT + (x * 2));
 	printCell(GetCell(x, y), WHITE, WHITE);
-}
-int Board::loadFromFile(string filePath, Position* APositions, Position* BPositions)
-{
-	std::ifstream bfile;
-	bfile.open(filePath, ios::in);
-	if (bfile.is_open()) {
-		std::string str;
-		int lineIdx = 0;
-		while (std::getline(bfile, str) && lineIdx < _rowSize)
-		{
-			std::string board_line = str.substr(0, _colSize);
-			loadBoardLine(board_line, lineIdx, APositions, BPositions);
-			++lineIdx;
-		}
-	}
-	else 
-		return errno;
-
-	return 0;
 }
 void Board::printCell(int cell, int colorA, int colorB)
 {

@@ -65,7 +65,6 @@ class Board {
 	void printCell(int cell, int colorA, int colorB);
 	void freeBoardMat();
 	string getScoreString(Player* p);
-	void loadBoardLine(std::string line, int lineIdx, Position* APositions, Position* BPositions);
 
 public:
 	enum { FR = 4, SEA = 5, FlgA = 6, FlgB = 10, EMPTY = 0, A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
@@ -130,6 +129,36 @@ public:
 			return ' ';
 		}
 	}
+	static char getBoardKey(char key) {
+		switch (key)
+		{
+		case 'T':
+			return FR;
+		case 'S':
+			return SEA;
+		case ' ':
+			return EMPTY;
+		case 'A':
+			return FlgA;
+		case 'B':
+			return FlgB;
+		case '1':
+			return A;
+		case '2':
+			return B;
+		case '3':
+			return C;
+		case '7':
+			return E;
+		case '8':
+			return F;
+		case '9':
+			return G;
+		default:
+			return ' ';
+		}
+	}
+
 	const int getBoardWidth() {
 		return _colSize;
 	}
@@ -164,7 +193,6 @@ public:
 	char getCharFromWriteLine(string str);
 	void printCellByPos(char c, int x, int y, int color);
 	void resetCellByPos(int x, int y);
-	int loadFromFile(string filePath, Position* APositions, Position* BPositions);
 	friend std::ostream &operator<<(std::ostream &cout, Board const &b) {
 		for (int i = 0;i<b._colSize;i++) {
 			for (int j = 0;j < b._rowSize;j++) {
