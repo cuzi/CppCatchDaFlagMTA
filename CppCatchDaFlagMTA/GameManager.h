@@ -32,6 +32,9 @@ class GameManager {
 	string moveBFilePath;
 
 	// SAVE
+	//TODO: write function that check if file exist on fs , if so, add suffic _new until current file wont exist
+	//TODO: do this check outside and when init GM ctor, give good paths, there is no need to set this vals
+	//TODO: each GM ctor init gameIndex will increased
 	string gameSavingPath = "";
 	string gamePrefixPath = (gameSavingPath == "") ? "CatchTheFlage_" + to_string(gameIndex) : "/CatchTheFlage_" + to_string(gameIndex);
 	
