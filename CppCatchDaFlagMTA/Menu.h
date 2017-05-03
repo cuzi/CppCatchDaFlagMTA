@@ -82,7 +82,7 @@ private:
 			break;
 		// TODO: remove this case, only for debug, each gameManager initialization , in load mode- invoke thos function 
 		case LOAD_FILE:
-			gm.setBoard("C:\\Users\\benf\\Downloads\\board_ok_2.gboard");
+			gm.setBoard("C:\\Users\\benf\\Downloads\\board_bad_3.gboard");
 			gm.setMoves("C:\\Users\\benf\\Downloads\\board_ok_2.moves-a_small","");
 			break;
 

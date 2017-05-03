@@ -81,12 +81,17 @@ public:
 		boardFilePath = filePath;
 		LOADED = true;
 	}
-	void setMoves(string playerAmoves="", string playerBmoves="") {
-		moveAFilePath = playerAmoves;
-		moveBFilePath = playerBmoves;
-		LOADED = true;
+	void unSetBoard() {
+		boardFilePath = "";
+		LOADED = false;
+	}
+	void unSetMoves() {
+		moveAFilePath = "";
+		moveBFilePath = "";
+		LOADED = false;
 
 	}
+	
 	bool isAnyToolInPos(int x, int y) {
 		return getToolInPos(x, y) != NULL;
 	}

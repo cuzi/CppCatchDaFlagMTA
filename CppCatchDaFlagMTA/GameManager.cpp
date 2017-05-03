@@ -328,7 +328,9 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 	else {
 		_b->cleanBoard();
 		printStackTrace();
-		Sleep(3500);
+		unSetBoard();
+		unSetMoves();
+		Sleep(4000);
 		clearCls();
 	}
 	return err;
