@@ -23,6 +23,7 @@ class GameManager {
 	string txt[9] = { "Resume", "Restart Game", "", "","Start Record Game","","","Main Menu", "Exit Game" };
 
 	//if loaded game
+	bool QUIET  = false;
 	bool LOADED = false;
 	bool RECORD = false;
 	std::vector< string > err_stack;
@@ -50,6 +51,9 @@ class GameManager {
 	int bColor = RED;
 
 	int clock = 0;
+	int delay = 20;
+	int _cycle = 0;
+	const int BIG_DELAY = 50;
 
 	static const int A_KEY = A;
 	static const int B_KEY = E;
@@ -63,20 +67,25 @@ class GameManager {
 
 public:
 	static int gameIndex;
-
 	GameManager(Board * b) : _b(b) { gameIndex++; }
 	~GameManager();
+	bool start(Player* pa, Player *pb);
+	bool isFriends(BoardTool* bta, BoardTool* btb);
+	void fight(BoardTool* bta, BoardTool* btb);
+	BoardTool* getToolInPos(int x, int y);
 
+	void setDelay(int delayMs) {
+		delay = delayMs;
+	}
+	void setQuiet() {
+		QUIET = true;
+	}
 	void editSubMenu(int key, string msg) {
 		txt[key] = msg;
 	}
 	void addErrorMsg(string msg) {
 		err_stack.push_back(msg);
 	}
-	void start(Player* pa, Player *pb);
-	bool isFriends(BoardTool* bta, BoardTool* btb);
-	void fight(BoardTool* bta, BoardTool* btb);
-	BoardTool* getToolInPos(int x, int y);
 	void setBoard(string filePath) {
 		boardFilePath = filePath;
 		LOADED = true;
@@ -114,17 +123,17 @@ private:
 	void loadBoardLine(std::string line, int lineIdx, Position* pa, Position* pb);
 	int loadFromFile(string filePath, Position* pa, Position* pb);
 	int saveBoardToFile(string filePath, Player* pa, Player* pb);
-	int GameManager::saveMoveToFile(string filePath, Move m);
+	int saveMoveToFile(string filePath, Move m);
 	bool isGameFreezed();
 	Move getNextMove(int playerKey);
 	int autoGameLoop(Player* pa, Player* pb);
 	int gameLoop(Player* pa, Player* pb);
-	bool gameStatus(Player* pa, Player* pb);
 	void toolHit(BoardTool* bt, BoardTool* btb);
 	// If submenu return true the game need to be stopped
 	bool showSubMenu(Player* pa, Player* pb);
 	void _setRandomTools(BoardTool* playerTools, int color, int key);
 	void _gameWin(Player *p);
+	void _gameWinAuto(Player *p, int totalMoves);
 	bool _initGame(Player* pa, Player* pb);
 	void _markPlayersOnBoard(Player* pa, Player* pb);
 	void _unMarkPlayersOnBoard(Player* pa, Player* pb);
@@ -136,6 +145,11 @@ private:
 	void _changeDir(char c);
 	void keyPressed(char c);
 	void _printSubMenu();
+	void _setTools(BoardTool* playerTools, int color, Position* aPos);
+	void _setToolPos(Board *b, BoardTool *bt, Position p);
+	void printStackTrace();
+	bool CheckBoard();
+
 	void _printLine(int i) {
 		if (txt[i] != "") {
 			cout << "  " << (i + 1) << " - " << txt[i] << endl;
@@ -186,10 +200,6 @@ private:
 		printToolsOnBoard(ATools);
 		printToolsOnBoard(BTools);
 	}
-	void _setTools(BoardTool* playerTools, int color, Position* aPos);
-	void _setToolPos(Board *b, BoardTool *bt, Position p);
-	void printStackTrace();
-	bool CheckBoard();
 	void pushErrMsg(string msg) {
 		if (std::find(err_stack.begin(), err_stack.end(), msg) == err_stack.end()) {
 			// msg not in err_stack, add it

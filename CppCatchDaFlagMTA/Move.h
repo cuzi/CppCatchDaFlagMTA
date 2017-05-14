@@ -1,6 +1,7 @@
 #pragma once
 #include "Board.h"
 #include <string>
+
 class Move {
 	int _clockTime = -1;
 	char _boardTool = -1;

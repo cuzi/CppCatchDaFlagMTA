@@ -11,14 +11,14 @@ using namespace std;
 int GameManager::gameIndex = 0;
 
 class Menu {
-	Board b = Board(13, 13, false);
-	GameManager gm{ &b };
-	Player pa{ "Player A" }, pb{ "Player B" };
-	enum { PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, RECORD_GAME = 5, LOAD_FILE = 6, EXIT = 9 };
-	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Start record game","Load Board from file","","", "Exit" };
+	Board *b;
+	GameManager *gm;
+	Player *pa, *pb;
+	enum { PICK_NAMES = 1, START_GAME = 2, START_REVERSE_GAME = 3, RESET_SCORE = 4, RECORD_GAME = 5, EXIT = 9 };
+	char* txt[9] = { "Pick names", "Start game", "Start reversed game", "Reset score","Start record game","","","", "Exit" };
 
 public:
-	Menu() {}
+	Menu(Board *board, GameManager *gManager, Player *a, Player *b) : b(board), gm(gManager), pa(a), pb(b) {}
 
 	void ShowMenu() {
 		int option;
@@ -33,16 +33,16 @@ private:
 		_pickName(pb);
 	}
 
-	void _pickName(Player &p) {
+	void _pickName(Player *p) {
 		string name = "";
-		cout << "Enter name to " << p.getName() << endl;
+		cout << "Enter name to " << p->getName() << endl;
 		cin >> name;
-		p.setName(name);
+		p->setName(name);
 	}
 
 	void _printMenu() {
 		hideCursor();
-		b.cleanBoard();
+		b->cleanBoard();
 		cout << "Choose from the following:\n";
 		for (int i = 0; i < EXIT; ++i) {
 			_printLine(i);
@@ -56,8 +56,8 @@ private:
 	}
 
 	void _resetScore() {
-		pa.resetScore();
-		pb.resetScore();
+		pa->resetScore();
+		pb->resetScore();
 	}
 
 	void _triggerAction(int option) {
@@ -67,29 +67,27 @@ private:
 			_pickNames();
 			break;
 		case START_GAME:
-			gm.start(&pa, &pb);
+			gm->start(pa, pb);
 			break;
 		case START_REVERSE_GAME:
-			gm.start(&pb, &pa);
+			gm->start(pb ,pa);
 			break;
 		case RESET_SCORE:
 			_resetScore();
 			break;
 		case RECORD_GAME:
-			(!gm.isRecording()) ? gm.startRecord() : gm.endRecord();
-			txt[4] = (gm.isRecording()) ? "Stop record game" : "Start record game";
-			gm.editSubMenu(4, (gm.isRecording()) ? "Stop record game" : "Start record game");
+			(!gm->isRecording()) ? gm->startRecord() : gm->endRecord();
+			txt[RECORD_GAME - 1] = (gm->isRecording()) ? "Stop record game" : "Start record game";
+			gm->editSubMenu(RECORD_GAME - 1, (gm->isRecording()) ? "Stop record game" : "Start record game");
 			break;
 		// TODO: remove this case, only for debug, each gameManager initialization , in load mode- invoke thos function 
-		case LOAD_FILE:
-			gm.setBoard("C:\\Users\\benf\\Downloads\\board_bad_3.gboard");
-			gm.setMoves("C:\\Users\\benf\\Downloads\\board_ok_2.moves-a_small","");
-			break;
+		/*case LOAD_FILE:*/
 
 		case EXIT:
 			cout << "Bye Bye!\n";
 			Sleep(500);
-			exit(0);
+			return;
+
 		}
 		ShowMenu();
 	}

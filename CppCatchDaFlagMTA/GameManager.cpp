@@ -28,7 +28,7 @@ void GameManager::loadBoardLine(std::string line, int lineNumber, Position* pa, 
 			_b->setBoardCell(lineNumber, i, Board::FR);
 			break;
 		case 'S':
-			_b->setBoardCell(lineNumber,i,Board::SEA);
+			_b->setBoardCell(lineNumber, i,Board::SEA);
 			break;
 		case 'A':
 			_b->setBoardCell(lineNumber, i, Board::FlgA);
@@ -92,22 +92,31 @@ int GameManager::saveMoveToFile(string filePath,Move m) {
 	return 0;
 }
 
-void GameManager::start(Player* pa, Player* pb) {
+bool GameManager::start(Player* pa, Player* pb) {
 	int winner;	
+
+	++_cycle;
+
 	bool is_not_init = _initGame(pa, pb);
 	if (!is_not_init) {
-		if (LOADED)
+		if (LOADED) {
 			winner = autoGameLoop(pa, pb);
-		else
-			winner = gameLoop(pa, pb);
 
-		if (winner != -1)
+
+			_gameWinAuto(winner == -1 ? NULL : 
+				(winner == Player::A ? pa : pb), 5);
+		}
+		else {
+			winner = gameLoop(pa, pb);
 			_gameWin(winner == Player::A ? pa : pb);
+		}
+
 		
 		LOADED = false;
 		_b->initBoard();
 		setTextColor(WHITE);
 	}	
+	return !is_not_init;
 }
 
 int GameManager::gameLoop(Player* pa, Player* pb) {
@@ -118,10 +127,10 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 	// set first player
 	int playing = (clock % 2 ? A_KEY : B_KEY);
 
-	while (gameOn && gameStatus(pa, pb)) {
+	while (gameOn) {
 		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 
-		Sleep(200);
+		Sleep(delay);
 
 		if (_kbhit()) {
 			ch = _getch();
@@ -165,7 +174,6 @@ bool GameManager::isGameFreezed() {
 
 int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
-	char ch = 0;
 
 	clock = 0;
 	Move aNextMove = getNextMove(A_KEY);
@@ -174,13 +182,14 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	// set first player
 	int playing = (clock % 2 ? A_KEY : B_KEY);
 
-	while (gameOn && gameStatus(pa, pb)) {
+	while (gameOn) {
 		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 		
 
-		Sleep(200);
+		Sleep(QUIET ? 0 : delay);
 		if (aNextMove.getClockTime() == -1 && bNextMove.getClockTime() == -1 && isGameFreezed()) {
 			gameOn = false;
+			playing = -1;
 		}
 		else {
 			if (clock == aNextMove.getClockTime()) {
@@ -197,11 +206,6 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 			gameOn = !_moveTools(playing);
 			clock++;
 
-			if (ch == ESC) {
-				if (showSubMenu(pa, pb))
-					return -1;
-				ch = 0;
-			}
 			std::cin.clear();
 		}
 		
@@ -209,11 +213,6 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	return playing;
 }
 
-bool GameManager::gameStatus(Player* pa, Player* pb) {
-	// TODO check logic in tools positions if there is tools in same position 
-	//		need to check who win and return false if some player have no tools
-	return true;
-}
 
 bool GameManager::showSubMenu(Player* pa, Player* pb) {
 	int i;
@@ -247,7 +246,7 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 	case EXIT:
 		_b->cleanBoard();
 		cout << "bye bye";
-		Sleep(500);
+		Sleep(delay * BIG_DELAY);
 		exit(0);
 		break;
 	default:
@@ -282,7 +281,16 @@ void GameManager::_gameWin(Player *p) {
 	_printGameOver();
 	cout << p->getName() << " Won the game!\n";
 	_playWinSound();
-	Sleep(1250);
+	Sleep(delay * BIG_DELAY);
+}
+void GameManager::_gameWinAuto(Player *p, int totalMoves) {
+	_b->cleanBoard();
+	if (p != NULL) p->win();
+	cout << "Game cycle : "<< _cycle << endl ;
+	cout << "Num moves : " << totalMoves << endl;
+	cout << "Winner : " << (p == NULL ? "NONE" : p->getName()) << endl;
+
+	Sleep(delay * BIG_DELAY);
 }
 
 bool GameManager::_initGame(Player* pa, Player* pb) {
@@ -321,16 +329,17 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 	if (!err) {
 		if (isRecording())
 			saveBoardToFile(gamePrefixPath + ".gboard", pa, pb);
-		
-		_b->printBoard(pa, aColor, pb, bColor);
-		printToolsOnBoard();
+		if (!QUIET) {
+			_b->printBoard(pa, aColor, pb, bColor);
+			printToolsOnBoard();
+		}
 	}
 	else {
 		_b->cleanBoard();
 		printStackTrace();
 		unSetBoard();
 		unSetMoves();
-		Sleep(4000);
+		Sleep(delay * BIG_DELAY);
 		clearCls();
 	}
 	return err;
@@ -386,8 +395,8 @@ void GameManager::_setRandomToolPos(Board *b, BoardTool *bt, int key) {
 	}
 
 	do {
-		x = rand() % (b->getBoardWidth() - 1);
-		y = rand() % 4 + _key;
+		x = rand() % 4 + _key;
+		y = rand() % (b->getBoardWidth() - 1);
 	} while (!bt->isElgibleToPos(x, y, _b, this)
 		|| isAnyToolInPos(x, y));
 
@@ -541,7 +550,7 @@ void GameManager::toolHit(BoardTool* Atool, BoardTool* Btool) {
 bool GameManager::_moveTools(int key) {
 	bool win = false;
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
-		win = win || (_getTools(key))[i].move(_b, this);
+		win = win || (_getTools(key))[i].move(_b, this, !QUIET);
 	}
 
 	return win;

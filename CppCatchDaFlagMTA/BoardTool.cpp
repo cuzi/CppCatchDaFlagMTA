@@ -4,17 +4,19 @@
 #include "GameManager.h"
 
 // return true only when winning
-bool BoardTool::move(Board *b, GameManager *gm)
+bool BoardTool::move(Board *b, GameManager *gm, bool print = true)
 {	
 	signed int x = _x + _dir_x, y = _y + _dir_y, catched;
 	if (_dir_y != 0 || _dir_x != 0) {
 		if (isElgibleToPos(x, y, b, gm) && _isLive) {
-			b->resetCellByPos(_x, _y);
+			if(print) b->resetCellByPos(_x, _y);
 			_x = x;
 			_y = y;
 
-			cout.flush();
-			b->printCellByPos(_c, _x, _y, _color);
+			if (print) {
+				cout.flush();
+				b->printCellByPos(_c, _x, _y, _color);
+			}
 
 			catched = b->GetCell(_x, _y);
 
@@ -22,7 +24,7 @@ bool BoardTool::move(Board *b, GameManager *gm)
 		}
 		else {
 			stop();
-			if (!_isLive) {
+			if (!_isLive && print) {
 				b->resetCellByPos(_x, _y);
 			}
 		}
