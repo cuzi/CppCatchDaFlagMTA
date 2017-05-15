@@ -8,8 +8,6 @@
 
 using namespace std;
 
-int GameManager::gameIndex = 0;
-
 class Menu {
 	Board *b;
 	GameManager *gm;
@@ -67,10 +65,12 @@ private:
 			_pickNames();
 			break;
 		case START_GAME:
-			gm->start(pa, pb);
+			if (gm->start(pa, pb) == EXIT)
+				return;
 			break;
 		case START_REVERSE_GAME:
-			gm->start(pb ,pa);
+			if (gm->start(pb, pa) == EXIT)
+				return;
 			break;
 		case RESET_SCORE:
 			_resetScore();
@@ -80,8 +80,6 @@ private:
 			txt[RECORD_GAME - 1] = (gm->isRecording()) ? "Stop record game" : "Start record game";
 			gm->editSubMenu(RECORD_GAME - 1, (gm->isRecording()) ? "Stop record game" : "Start record game");
 			break;
-		// TODO: remove this case, only for debug, each gameManager initialization , in load mode- invoke thos function 
-		/*case LOAD_FILE:*/
 
 		case EXIT:
 			cout << "Bye Bye!\n";

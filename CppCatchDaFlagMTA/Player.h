@@ -19,7 +19,7 @@ public:
 
 	Player(string name) : _name(name) {};
 	
-	int getScore() {
+	int getScore() const {
 		return _score;
 	}
 
@@ -35,7 +35,7 @@ public:
 		_name = name;
 	}
 
-	string getName() {
+	string getName() const {
 		return _name;
 	}
 

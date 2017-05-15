@@ -2,11 +2,11 @@
 #include "Board.h"
 
 
-string Board::getScoreString(Player* p) {
+string Board::getScoreString(Player* p)  const {
 	return p->getName() + ": " + to_string(p->getScore());
 }
 
-void Board::printScoreBoard(Player* a, int aColor, Player* b, int bColor) {
+void Board::printScoreBoard(Player* a, int aColor, Player* b, int bColor)  const {
 	int halfWidth = (BOARD_TAB * (_colSize + 1) + 1) / 2;
 
 	gotoxy(0, 0);
@@ -16,7 +16,7 @@ void Board::printScoreBoard(Player* a, int aColor, Player* b, int bColor) {
 	cout << right << setw(halfWidth) << getScoreString(b) << endl;
 	setTextColor(WHITE);
 }
-void Board::printheadline()
+void Board::printheadline() const
 {
 	gotoxy(0, 1);
 
@@ -67,7 +67,7 @@ void Board::freeBoardMat()
 	// delete actual matrix
 	delete[] boardCells;
 }
-void Board::printCellByPos(char c, int x, int y, int color) {
+void Board::printCellByPos(char c, int x, int y, int color) const {
 	gotoxy((y + 1) * BOARD_TAB, HEADER_HEIGHT + (x * 2));
 	printCell(string(1, c), color, getBGcellColor(x, y));
 }
@@ -75,7 +75,7 @@ void Board::resetCellByPos(int x, int y) {
 	gotoxy((y + 1) * BOARD_TAB, HEADER_HEIGHT + (x * 2));
 	printCell(GetCell(x, y), WHITE, WHITE);
 }
-void Board::printCell(int cell, int colorA, int colorB)
+void Board::printCell(int cell, int colorA, int colorB) const
 {
 	switch (cell) {
 
@@ -108,7 +108,7 @@ void Board::printCell(int cell, int colorA, int colorB)
 		break;
 	}
 }
-void Board::printBoard(Player* pa, int aColor, Player* pb, int bColor)
+void Board::printBoard(Player* pa, int aColor, Player* pb, int bColor) const
 {
 	cleanBoard();
 	printScoreBoard(pa, aColor, pb, bColor);
@@ -124,7 +124,7 @@ void Board::printBoard(Player* pa, int aColor, Player* pb, int bColor)
 	}
 
 }
-char Board::getCharFromWriteLine(string str)
+char Board::getCharFromWriteLine(string str) const
 {
 	char c;
 	int writeLineI = (_rowSize) * 2 + HEADER_HEIGHT;

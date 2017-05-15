@@ -10,8 +10,9 @@
 
 using namespace std;
 
+static const string BOARD_EXT = "gboard", MOVES_A_EXT = "moves-a", MOVES_B_EXT = "moves-b";
+
 class Game {
-	const string BOARD_EXT = "gboard", MOVES_A_EXT = "moves-a", MOVES_B_EXT = "moves-b";
 	static const int BOARD_SIZE = 13;
 	Board b = Board(BOARD_SIZE, BOARD_SIZE, false);
 	GameManager gm{ &b };
@@ -20,13 +21,16 @@ class Game {
 	Menu menu{ &b, &gm, &pa, &pb };
 
 public:
-	Game(string path) : _path(path) {}
-	void setQuiet() {
-		gm.setQuiet();
+	Game(string path) : _path(path) {
+		gm.setGamePath(path);
+	}
+	void setQuiet(bool quiet) {
+		gm.setQuiet(quiet);
 	}
 
 	void setPath(string path) {
 		_path = path;
+		gm.setGamePath(path);
 	}
 	void setDelay(int delay) {
 		gm.setDelay(delay);

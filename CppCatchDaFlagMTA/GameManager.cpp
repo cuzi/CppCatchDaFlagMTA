@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "GameManager.h"
+#include <exception>
+#include "Game.h"
 
 GameManager::~GameManager() {
 	free(ATools);
@@ -92,10 +94,11 @@ int GameManager::saveMoveToFile(string filePath,Move m) {
 	return 0;
 }
 
-bool GameManager::start(Player* pa, Player* pb) {
+int GameManager::start(Player* pa, Player* pb) {
 	int winner;	
 
 	++_cycle;
+	setFilePath();
 
 	bool is_not_init = _initGame(pa, pb);
 	if (!is_not_init) {
@@ -108,7 +111,8 @@ bool GameManager::start(Player* pa, Player* pb) {
 		}
 		else {
 			winner = gameLoop(pa, pb);
-			_gameWin(winner == Player::A ? pa : pb);
+			if (winner != STOP && winner != CLOSE) _gameWin(winner == Player::A ? pa : pb);
+			else if (winner == CLOSE) return EXIT;
 		}
 
 		
@@ -130,7 +134,7 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 	while (gameOn) {
 		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 
-		Sleep(delay);
+		Sleep(delay - 10);
 
 		if (_kbhit()) {
 			ch = _getch();
@@ -141,8 +145,11 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 		clock++;
 
 		if (ch == ESC) {
-			if (showSubMenu(pa, pb))
-				return -1;
+			int subMenuAns = showSubMenu(pa, pb);
+			if (subMenuAns == STOP)
+				return STOP;
+			if (subMenuAns == CLOSE)
+				return CLOSE;
 			ch = 0;
 		}
 		std::cin.clear();
@@ -214,7 +221,7 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 }
 
 
-bool GameManager::showSubMenu(Player* pa, Player* pb) {
+int GameManager::showSubMenu(Player* pa, Player* pb) {
 	int i;
 	clearCls();
 	_printSubMenu();
@@ -225,29 +232,29 @@ bool GameManager::showSubMenu(Player* pa, Player* pb) {
 	case RESUME:
 		_b->printBoard(pa, aColor, pb, bColor);
 		printToolsOnBoard();
-		return false;
+		return RESUME;
 		break;
 	case RESTART:
 		start(pa, pb);
-		return true;
+		return STOP;
 		break;
 	case RECORD_GAME:
 		(!isRecording()) ? startRecord() : endRecord();
 		editSubMenu(4, (isRecording()) ? "Stop record game" : "Start record game");
 		_b->printBoard(pa, aColor, pb, bColor);
 		printToolsOnBoard();
-		return false;
+		return RESUME;
 		break;
 	case MAIN_MENU:
 		LOADED = false;
 		_b->initBoard();
-		return true;
+		return STOP;
 		break;
 	case EXIT:
 		_b->cleanBoard();
 		cout << "bye bye";
 		Sleep(delay * BIG_DELAY);
-		exit(0);
+		return CLOSE;
 		break;
 	default:
 		return showSubMenu(pa, pb);
@@ -328,7 +335,7 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 
 	if (!err) {
 		if (isRecording())
-			saveBoardToFile(gamePrefixPath + ".gboard", pa, pb);
+			saveBoardToFile(gamePrefixPath + "." + BOARD_EXT, pa, pb);
 		if (!QUIET) {
 			_b->printBoard(pa, aColor, pb, bColor);
 			printToolsOnBoard();
@@ -562,14 +569,14 @@ void GameManager::_changeDir(char c) {
 		if (ATools[selectedA].setDirection(getDirA((Direction_A)c))) {
 			Move(clock, selectedA, c);
 			if (RECORD)
-				saveMoveToFile(gamePrefixPath + ".moves-a_small", Move(clock, selectedA + 1, Move::getPlayerAdir(c)));
+				saveMoveToFile(gamePrefixPath + "." + MOVES_A_EXT, Move(clock, selectedA + 1, Move::getPlayerAdir(c)));
 			selectedA = -1;			
 		}
 	}
 	if (selectedB != -1 && getDirB((Direction_E)c) != Direction::NONE) {
 		if (BTools[selectedB].setDirection(getDirB((Direction_E)c))) {
 			if (RECORD)
-				saveMoveToFile(gamePrefixPath + ".moves-b_small", Move(clock, selectedB + 1, Move::getPlayerEdir(c)));
+				saveMoveToFile(gamePrefixPath + "." + MOVES_B_EXT, Move(clock, selectedB + 1, Move::getPlayerEdir(c)));
 			selectedB = -1;
 		}
 	}

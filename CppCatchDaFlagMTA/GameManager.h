@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <conio.h>
+#include <io.h> 
 #include "stdafx.h"
 #include "Board.h"
 #include "Player.h"
@@ -18,8 +19,9 @@ class Board;
 class BoardTool;
 
 class GameManager {
-	enum { RESUME = 1, RESTART = 2,RECORD_GAME=5, MAIN_MENU = 8, EXIT = 9 };
+	enum { CLOSE = -2, STOP = -1,RESUME = 1, RESTART = 2,RECORD_GAME=5, MAIN_MENU = 8, EXIT = 9 };
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
+	
 	string txt[9] = { "Resume", "Restart Game", "", "","Start Record Game","","","Main Menu", "Exit Game" };
 
 	//if loaded game
@@ -31,13 +33,9 @@ class GameManager {
 	string boardFilePath;
 	string moveAFilePath;
 	string moveBFilePath;
+	int _cycle = 0;
 
-	// SAVE
-	//TODO: write function that check if file exist on fs , if so, add suffic _new until current file wont exist
-	//TODO: do this check outside and when init GM ctor, give good paths, there is no need to set this vals
-	//TODO: each GM ctor init gameIndex will increased
-	string gameSavingPath = "";
-	string gamePrefixPath = (gameSavingPath == "") ? "CatchTheFlage_" + to_string(gameIndex) : "/CatchTheFlage_" + to_string(gameIndex);
+	string gamePrefixPath =  "CatchTheFlage_" + to_string(_cycle);
 	
 	vector<Move> aMoves;
 	vector<Move> bMoves;
@@ -52,7 +50,6 @@ class GameManager {
 
 	int clock = 0;
 	int delay = 20;
-	int _cycle = 0;
 	const int BIG_DELAY = 50;
 
 	static const int A_KEY = A;
@@ -66,10 +63,9 @@ class GameManager {
 	Board* _b;
 
 public:
-	static int gameIndex;
-	GameManager(Board * b) : _b(b) { gameIndex++; }
+	GameManager(Board * b) : _b(b) {  }
 	~GameManager();
-	bool start(Player* pa, Player *pb);
+	int start(Player* pa, Player *pb);
 	bool isFriends(BoardTool* bta, BoardTool* btb);
 	void fight(BoardTool* bta, BoardTool* btb);
 	BoardTool* getToolInPos(int x, int y);
@@ -77,8 +73,8 @@ public:
 	void setDelay(int delayMs) {
 		delay = delayMs;
 	}
-	void setQuiet() {
-		QUIET = true;
+	void setQuiet(bool quiet) {
+		QUIET = quiet;
 	}
 	void editSubMenu(int key, string msg) {
 		txt[key] = msg;
@@ -104,7 +100,9 @@ public:
 		moveAFilePath = "";
 		moveBFilePath = "";
 		LOADED = false;
-
+	}
+	void setGamePath(string path) {
+		gamePrefixPath = path;
 	}
 	bool isAnyToolInPos(int x, int y) {
 		return getToolInPos(x, y) != NULL;
@@ -130,7 +128,7 @@ private:
 	int gameLoop(Player* pa, Player* pb);
 	void toolHit(BoardTool* bt, BoardTool* btb);
 	// If submenu return true the game need to be stopped
-	bool showSubMenu(Player* pa, Player* pb);
+	int showSubMenu(Player* pa, Player* pb);
 	void _setRandomTools(BoardTool* playerTools, int color, int key);
 	void _gameWin(Player *p);
 	void _gameWinAuto(Player *p, int totalMoves);
@@ -149,6 +147,8 @@ private:
 	void _setToolPos(Board *b, BoardTool *bt, Position p);
 	void printStackTrace();
 	bool CheckBoard();
+	int loadMoves(string filePath, int playerKey);
+	Move _parseMove(string move);
 
 	void _printLine(int i) {
 		if (txt[i] != "") {
@@ -182,6 +182,13 @@ private:
 			return Direction::NONE;
 		}
 	}
+
+	void setFilePath() {
+		while (_access_s(gamePrefixPath.c_str(), 0) == 0) {
+			gamePrefixPath += "_new";
+		}
+	}
+
 	Direction getDirA(Direction_A dir) {
 		switch (dir) {
 		case Direction_A::UP:
@@ -209,6 +216,4 @@ private:
 	void clearCls() {
 		system("cls");
 	}
-	int loadMoves(string filePath, int playerKey);
-	Move _parseMove(string move);
 };

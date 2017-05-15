@@ -25,16 +25,16 @@ class Board {
 	int** boardCells;
 
 	//Private Functions
-	void printBoardline()
+	void printBoardline() const
 	{
 		for (int i = 0; i <= _rowSize; i++)
 			cout << right << setw(BOARD_TAB) << setfill('-') << " ";
 		cout << endl;
 	}
-	void printCell(string str) {
+	void printCell(string str) const {
 		printCell(str, WHITE);
 	}
-	int getBGcellColor(int x, int y) {
+	int getBGcellColor(int x, int y) const {
 		int cell = GetCell(x, y);
 
 		switch (cell)
@@ -47,24 +47,24 @@ class Board {
 			return BLACK;
 		}
 	}
-	void printCell(string str, int color, int bgColor) {
+	void printCell(string str, int color, int bgColor)  const {
 		setTextColor(color, bgColor);
 		cout << left << setw(BOARD_TAB - 1) << setfill(' ') << str;
 		setTextColor(WHITE, BLACK);
 		cout << "|";
 	}
-	void printCell(string str, int color) {
+	void printCell(string str, int color) const {
 		printCell(str, color, BLACK);
 	}
-	void printCellNumber(string str) {
+	void printCellNumber(string str)  const {
 		cout << right << setw(BOARD_TAB - 1) << setfill(' ') << str;
 		cout << "|";
 	}
-	void printScoreBoard(Player* pa, int aColor, Player* b, int bColor);
-	void printheadline();
-	void printCell(int cell, int colorA, int colorB);
+	void printScoreBoard(Player* pa, int aColor, Player* b, int bColor) const;
+	void printheadline() const;
+	void printCell(int cell, int colorA, int colorB) const;
 	void freeBoardMat();
-	string getScoreString(Player* p);
+	string getScoreString(Player* p) const;
 
 public:
 	enum { FR = 4, SEA = 5, FlgA = 6, FlgB = 10, EMPTY = 0, A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };
@@ -165,7 +165,7 @@ public:
 	const int getBoardHeigth() {
 		return _rowSize;
 	}
-	void clearLine(int line) {
+	void clearLine(int line) const {
 		gotoxy(0, line);
 		for (int j = 0; j <= _colSize; j++) {
 			cout << setw(BOARD_TAB) << setfill(' ') << " ";
@@ -173,25 +173,25 @@ public:
 
 		gotoxy(0, line);
 	}
-	void cleanBoard() {
+	void cleanBoard()  const {
 		gotoxy(0, 0);
 		for (int i = 0; i < _rowSize * 2 + HEADER_HEIGHT; i++) {
 			clearLine(i);
 		}
 		gotoxy(0, 0);
 	}
-	bool isCellEmpty(int x, int y) {
+	bool isCellEmpty(int x, int y) const {
 		return (boardCells[x][y] == EMPTY);
 	}
-	int GetCell(int x, int y) {
+	int GetCell(int x, int y) const  {
 		return boardCells[x][y];
 	}
 	void setBoardCell(int x, int y, char c) {
 		boardCells[x][y] = c;
 	}
-	void printBoard(Player* pa, int aColor, Player* pb, int bColor);
-	char getCharFromWriteLine(string str);
-	void printCellByPos(char c, int x, int y, int color);
+	void printBoard(Player* pa, int aColor, Player* pb, int bColor) const;
+	char getCharFromWriteLine(string str) const;
+	void printCellByPos(char c, int x, int y, int color) const;
 	void resetCellByPos(int x, int y);
 	friend std::ostream &operator<<(std::ostream &cout, Board const &b) {
 		for (int i = 0;i<b._colSize;i++) {
