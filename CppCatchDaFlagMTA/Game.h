@@ -63,7 +63,7 @@ public:
 			gm.setMoves(isFileExists(playerAmoves) ? playerAmoves : "",
 						isFileExists(playerBmoves) ? playerBmoves : "");
 
-			valid = gm.start(&pa, &pb);
+			valid = gm.start(&pa, &pb) == 1;
 		}
 
 		printSum();

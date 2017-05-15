@@ -35,7 +35,9 @@ class GameManager {
 	string moveBFilePath;
 	int _cycle = 0;
 
-	string gamePrefixPath =  "CatchTheFlage_" + to_string(_cycle);
+	string gamePath = "";
+	string gamePrefix =  "CatchTheFlage_" ;
+	string gamePrefixPath =  "";
 	
 	vector<Move> aMoves;
 	vector<Move> bMoves;
@@ -102,7 +104,7 @@ public:
 		LOADED = false;
 	}
 	void setGamePath(string path) {
-		gamePrefixPath = path;
+		gamePath = path;
 	}
 	bool isAnyToolInPos(int x, int y) {
 		return getToolInPos(x, y) != NULL;
@@ -184,6 +186,7 @@ private:
 	}
 
 	void setFilePath() {
+		gamePrefixPath = gamePath + "\\" + gamePrefix + to_string(_cycle);
 		while (_access_s(gamePrefixPath.c_str(), 0) == 0) {
 			gamePrefixPath += "_new";
 		}
