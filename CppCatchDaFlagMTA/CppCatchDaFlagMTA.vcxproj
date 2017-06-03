@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="AbstractPlayer.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardData.h" />
     <ClInclude Include="BoardTool.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Game.h" />
