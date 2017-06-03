@@ -340,9 +340,10 @@ bool GameManager::_initGame(Player* pa, Player* pb) {
 			
 	}
 	else {
+		_b->configRandBoardCells();
+
 		_setRandomTools(ATools, aColor, A_KEY);
 		_setRandomTools(BTools, bColor, B_KEY);
-		_b->configRandBoardCells();
 	}
 
 	if (!err) {
