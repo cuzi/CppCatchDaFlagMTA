@@ -18,15 +18,16 @@ int main(int argSize, char *argv[]) {
     auto parameters = std::map<std::string,std::function<void (int*)>> {
 		{"-path",   [&](int *i) {
 			(*i)++;
-
 			string path = *(argv + *i);
-
 			if (path[0] == '.')
 				path = basePath + path.substr(1, path.size());
 
 			game.setPath(path);
 		}},
-        {"-delay",  [&]( int *i ) { (*i)++; game.setDelay((int)*(argv + *i)); }},
+        {"-delay",  [&]( int *i ) { 
+			(*i)++; 
+			game.setDelay(stoi(*(argv + *i)));
+		}},
         {"-moves",  [&]( int *i ) { (*i)++; moves = ! strcmp( "f", *(argv + *i)); }},
         {"-board",  [&]( int *i ) { (*i)++; board = ! strcmp( "f", *(argv + *i)); }},
 		{"-quiet",  [&](int *i) { quiet = true; }}

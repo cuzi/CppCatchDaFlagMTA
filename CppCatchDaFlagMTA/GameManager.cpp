@@ -131,7 +131,7 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 	// set first player
 	int playing = (clock % 2 ? A_KEY : B_KEY);
 
-	while (gameOn) {
+	while (gameOn && _isOpAlive(playing)) {
 		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 
 		Sleep(delay - 10);
@@ -157,6 +157,18 @@ int GameManager::gameLoop(Player* pa, Player* pb) {
 	return playing;
 }
 
+bool GameManager::_isOpAlive(char player) {
+	BoardTool* opTools = player == Player::A ? BTools : ATools;
+	return _isLiveTools(opTools);
+}
+
+bool GameManager::_isLiveTools(BoardTool* tools) {
+	for (int i = 0; i < TOOLS_COUNT; ++i) {
+		if ((tools + i)->isLive())
+			return true;
+	}
+	return false;
+}
 Move GameManager::getNextMove(int playerKey) {
 	vector<Move>& moves = (playerKey == A_KEY) ? aMoves : bMoves;
 
@@ -189,7 +201,7 @@ int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	// set first player
 	int playing = (clock % 2 ? A_KEY : B_KEY);
 
-	while (gameOn) {
+	while (gameOn ) {
 		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
 		
 
@@ -404,7 +416,7 @@ void GameManager::_setRandomToolPos(Board *b, BoardTool *bt, int key) {
 	do {
 		x = rand() % 4 + _key;
 		y = rand() % (b->getBoardWidth() - 1);
-	} while (!bt->isElgibleToPos(x, y, _b, this)
+	} while (! b->isCellEmpty(x, y)
 		|| isAnyToolInPos(x, y));
 
 	bt->set(x, y);
@@ -563,24 +575,30 @@ bool GameManager::_moveTools(int key) {
 	return win;
 }
 
+void GameManager::_stopTools(BoardTool* tools) {
+	for (int i = 0; i < TOOLS_COUNT; ++i) {
+		(tools + i)->stop();
+	}
+}
+
 void GameManager::_changeDir(char c) {
 
 	if (selectedA != -1 && getDirA((Direction_A)c) != Direction::NONE) {
+		_stopTools(ATools);
 		if (ATools[selectedA].setDirection(getDirA((Direction_A)c))) {
-			Move(clock, selectedA, c);
 			if (RECORD)
 				saveMoveToFile(gamePrefixPath + "." + MOVES_A_EXT, Move(clock, selectedA + 1, Move::getPlayerAdir(c)));
-			selectedA = -1;			
 		}
 	}
 	if (selectedB != -1 && getDirB((Direction_E)c) != Direction::NONE) {
+		_stopTools(BTools);
 		if (BTools[selectedB].setDirection(getDirB((Direction_E)c))) {
 			if (RECORD)
 				saveMoveToFile(gamePrefixPath + "." + MOVES_B_EXT, Move(clock, selectedB + 1, Move::getPlayerEdir(c)));
-			selectedB = -1;
 		}
 	}
 }
+
 
 void GameManager::keyPressed(char c) {
 	switch (c)
