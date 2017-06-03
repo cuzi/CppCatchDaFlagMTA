@@ -46,7 +46,7 @@ public:
 		gm.setBoard(boardPath);
 		start();
 	}
-	void startAuto() {
+	void startAuto(char moves_type) {
 
 		vector<string> boardPaths = getSortedFilesByType(BOARD_EXT);
 		string playerAmoves, playerBmoves, boardName;
@@ -59,10 +59,13 @@ public:
 			playerBmoves = pathBuilder({ boardName + "." + MOVES_B_EXT });
 
 			gm.setBoard(pathBuilder({ boardPaths[i] }));
-
-			gm.setMoves(isFileExists(playerAmoves) ? playerAmoves : "",
-						isFileExists(playerBmoves) ? playerBmoves : "");
-
+			if (moves_type == 'f') {
+				gm.setMoves(isFileExists(playerAmoves) ? playerAmoves : "",
+					isFileExists(playerBmoves) ? playerBmoves : "");
+			}
+			else {
+				// TODO: add moves from algo
+			}
 			valid = gm.start(&pa, &pb) == 1;
 		}
 

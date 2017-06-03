@@ -12,9 +12,9 @@
 int main(int argSize, char *argv[]) {
 	string argv_str(argv[0]);
 	string basePath = argv_str.substr(0, argv_str.find_last_of("\\"));
-
+	char moves;
 	Game game { basePath };
-	bool moves = false, board = false, quiet = false;
+	bool board = false, quiet = false;
     auto parameters = std::map<std::string,std::function<void (int*)>> {
 		{"-path",   [&](int *i) {
 			(*i)++;
@@ -28,7 +28,7 @@ int main(int argSize, char *argv[]) {
 			(*i)++; 
 			game.setDelay(stoi(*(argv + *i)));
 		}},
-        {"-moves",  [&]( int *i ) { (*i)++; moves = ! strcmp( "f", *(argv + *i)); }},
+        {"-moves",  [&]( int *i ) { (*i)++; moves = **(argv + *i); }},
         {"-board",  [&]( int *i ) { (*i)++; board = ! strcmp( "f", *(argv + *i)); }},
 		{"-quiet",  [&](int *i) { quiet = true; }}
     };
@@ -37,13 +37,12 @@ int main(int argSize, char *argv[]) {
 		parameters[argv[i]](&i);
 
 
-	if (moves && board) {
+	if (moves != 'k' && board) {
 		if (quiet)
 			game.setQuiet(quiet);
-		game.startAuto();
+		game.startAuto(moves);
 	}
-
-	else if (moves && board) 
+	else if (board) 
 		game.startBoard();
 
 	else game.start();
