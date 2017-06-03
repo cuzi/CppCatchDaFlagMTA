@@ -145,6 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractPlayer.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardTool.h" />
     <ClInclude Include="Direction.h" />
