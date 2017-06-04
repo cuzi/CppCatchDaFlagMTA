@@ -161,7 +161,6 @@ bool GameManager::_isOpAlive(char player) {
 	BoardTool* opTools = player == Player::A ? BTools : ATools;
 	return _isLiveTools(opTools);
 }
-
 bool GameManager::_isLiveTools(BoardTool* tools) {
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
 		if ((tools + i)->isLive())

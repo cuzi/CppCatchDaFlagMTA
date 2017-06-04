@@ -146,12 +146,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractPlayer.h" />
+    <ClInclude Include="AlgorithmPlayer.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardData.h" />
     <ClInclude Include="BoardTool.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="FilePlayer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="ManualPlayer.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="Menu.h" />

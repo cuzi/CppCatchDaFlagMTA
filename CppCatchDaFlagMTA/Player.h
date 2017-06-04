@@ -2,15 +2,11 @@
 
 #include <iostream>
 #include <string>
-#include "BoardTool.h"
-#include "Board.h"
-#include "Direction.h"
+#include "AbstractPlayer.h"
 
 using namespace std;
 
-class Board;
-
-class Player {
+class Player: public AbstractPlayer {
 	string _name;
 	int _score = 0;
 
@@ -22,21 +18,19 @@ public:
 	int getScore() const {
 		return _score;
 	}
-
 	void resetScore() {
 		_score = 0;
 	}
-
 	void win() {
 		++_score;
 	}
-
 	void setName(string name) { 
 		_name = name;
 	}
 
-	string getName() const {
-		return _name;
-	}
+	virtual void setPlayer(int player) {};
+	virtual void init(const BoardData& board) {};
+	virtual GameMove play(const GameMove& opponentsMove) { return GameMove(0, 0, 0, 0); };
+	virtual std::string getName() const { return _name; };
 
 };
