@@ -606,7 +606,6 @@ void GameManager::keyPressed(char c) {
 	case '0' + Board::A:
 	case '0' + Board::B:
 	case '0' + Board::C:
-		selectedA = c - '1';
 		break;
 	case '0' + Board::E:
 	case '0' + Board::F:
