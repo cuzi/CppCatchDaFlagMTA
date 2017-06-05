@@ -11,13 +11,10 @@ using namespace std;
 
 class ManualPlayer: public Player{
 
+	int selectedA = -1, selectedB = -1;
+
 	virtual void setPlayer(int player) {};
 	virtual void init(const BoardData& board) {};
-	virtual GameMove play(const GameMove& opponentsMove) { 
-		if (_kbhit()) {
-			char ch = _getch();
-			keyPressed(ch);
-		}
-		return futilityMove; };
+	virtual GameMove play(const GameMove& opponentsMove);
 	void keyPressed(char c);
 };

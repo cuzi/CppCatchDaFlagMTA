@@ -167,6 +167,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardTool.cpp" />
     <ClCompile Include="CppCatchDaFlagMTA.cpp" />
+    <ClCompile Include="FilePlayer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="ManualPlayer.cpp" />
     <ClCompile Include="stdafx.cpp">

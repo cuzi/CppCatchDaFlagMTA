@@ -9,6 +9,6 @@ class FilePlayer : public Player {
 
 	virtual void setPlayer(int player) {};
 	virtual void init(const BoardData& board) {};
-	virtual GameMove play(const GameMove& opponentsMove) { return GameMove(0, 0, 0, 0); };
+	virtual GameMove play(const GameMove& opponentsMove);
 
 };
