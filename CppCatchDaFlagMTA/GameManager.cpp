@@ -96,7 +96,7 @@ int GameManager::saveMoveToFile(string filePath,Move m) {
 
 int GameManager::start(Player* pa, Player* pb) {
 	int winner;	
-	bool ALGO = TRUE;
+	bool ALGO = FALSE;
 	++_cycle;
 	setFilePath();
 
@@ -110,8 +110,14 @@ int GameManager::start(Player* pa, Player* pb) {
 		}
 		//TODO: CREATE NEW MENU FOR ALGO RUNNIG , FOR NOW ITS ONLY BOOL THAT DIRECT FOR THIS ELSE CLAUSE
 		else if (ALGO) {
-			AlgoBoardData * abd = new AlgoBoardData(_b->getBoard());
-			winner = NewGameLoop(pa, pb, abd);
+			
+			BoardData * P1abd = new AlgoBoardData(_b->getBoard(), 1);
+			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), 2);
+			
+			pa->init(*P1abd);
+			pb->init(*P2abd);
+
+			winner = NewGameLoop(pa, pb);
 
 			_gameWinAuto(winner == -1 ? NULL :
 				(winner == Player::A ? pa : pb), 5);
@@ -198,7 +204,7 @@ bool GameManager::isGameFreezed() {
 	return true;
 }
 
-int GameManager::NewGameLoop(Player* pa, Player* pb, AlgoBoardData* bd) {
+int GameManager::NewGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
 	char ch = 0;
 	clock = 0;

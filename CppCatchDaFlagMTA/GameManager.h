@@ -126,7 +126,7 @@ private:
 	int saveBoardToFile(string filePath, Player* pa, Player* pb);
 	int saveMoveToFile(string filePath, Move m);
 	bool isGameFreezed();
-	int NewGameLoop(Player * pa, Player * pb, AlgoBoardData * bd);
+	int NewGameLoop(Player * pa, Player * pb);
 	Move getNextMove(int playerKey);
 	int autoGameLoop(Player* pa, Player* pb);
 	int gameLoop(Player* pa, Player* pb);
