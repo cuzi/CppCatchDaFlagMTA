@@ -10,6 +10,7 @@
 #include "Utils.h"
 #include "Player.h"
 #include "Position.h"
+#include "BoardData.h"
 
 using namespace std;
 
@@ -99,6 +100,9 @@ public:
 			for (int j = 0; j < _colSize; ++j)
 				boardCells[i][j] = EMPTY;
 		}
+	}
+	int ** const &getBoard() { 
+		return boardCells; 
 	}
 	static char getBoardChar(int key) {
 		switch (key)

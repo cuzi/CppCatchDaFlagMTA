@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractPlayer.h" />
+    <ClInclude Include="AlgoBoardData.h" />
     <ClInclude Include="AlgorithmPlayer.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardData.h" />

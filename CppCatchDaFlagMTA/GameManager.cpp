@@ -96,7 +96,7 @@ int GameManager::saveMoveToFile(string filePath,Move m) {
 
 int GameManager::start(Player* pa, Player* pb) {
 	int winner;	
-
+	bool ALGO = TRUE;
 	++_cycle;
 	setFilePath();
 
@@ -105,9 +105,17 @@ int GameManager::start(Player* pa, Player* pb) {
 		if (LOADED) {
 			winner = autoGameLoop(pa, pb);
 
-
 			_gameWinAuto(winner == -1 ? NULL : 
 				(winner == Player::A ? pa : pb), 5);
+		}
+		//TODO: CREATE NEW MENU FOR ALGO RUNNIG , FOR NOW ITS ONLY BOOL THAT DIRECT FOR THIS ELSE CLAUSE
+		else if (ALGO) {
+			AlgoBoardData * abd = new AlgoBoardData(_b->getBoard());
+			winner = NewGameLoop(pa, pb, abd);
+
+			_gameWinAuto(winner == -1 ? NULL :
+				(winner == Player::A ? pa : pb), 5);
+
 		}
 		else {
 			winner = gameLoop(pa, pb);
@@ -189,6 +197,41 @@ bool GameManager::isGameFreezed() {
 	}
 	return true;
 }
+
+int GameManager::NewGameLoop(Player* pa, Player* pb, AlgoBoardData* bd) {
+	bool gameOn = true;
+	char ch = 0;
+	clock = 0;
+
+	// set first player
+	int playing = (clock % 2 ? A_KEY : B_KEY);
+
+	while (gameOn && _isOpAlive(playing)) {
+		playing = (clock % 2 ? A_KEY : B_KEY);  // don't move it to the end of the loop!
+
+		Sleep(delay - 10);
+
+		if (_kbhit()) {
+			ch = _getch();
+			keyPressed(ch);
+		}
+
+		gameOn = !_moveTools(playing);
+		clock++;
+
+		if (ch == ESC) {
+			int subMenuAns = showSubMenu(pa, pb);
+			if (subMenuAns == STOP)
+				return STOP;
+			if (subMenuAns == CLOSE)
+				return CLOSE;
+			ch = 0;
+		}
+		std::cin.clear();
+	}
+	return playing;
+}
+
 
 int GameManager::autoGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
@@ -606,6 +649,7 @@ void GameManager::keyPressed(char c) {
 	case '0' + Board::A:
 	case '0' + Board::B:
 	case '0' + Board::C:
+		selectedA = c - '1';
 		break;
 	case '0' + Board::E:
 	case '0' + Board::F:

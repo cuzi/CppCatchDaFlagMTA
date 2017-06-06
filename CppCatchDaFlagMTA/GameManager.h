@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <errno.h>
 #include "Move.h"
+#include "AlgoBoardData.h"
 
 class Player;
 class Board;
@@ -125,6 +126,7 @@ private:
 	int saveBoardToFile(string filePath, Player* pa, Player* pb);
 	int saveMoveToFile(string filePath, Move m);
 	bool isGameFreezed();
+	int NewGameLoop(Player * pa, Player * pb, AlgoBoardData * bd);
 	Move getNextMove(int playerKey);
 	int autoGameLoop(Player* pa, Player* pb);
 	int gameLoop(Player* pa, Player* pb);

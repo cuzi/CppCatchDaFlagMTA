@@ -65,6 +65,9 @@
     <ClInclude Include="AlgorithmPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AlgoBoardData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
