@@ -2,23 +2,20 @@
 #include <iostream>
 #include <string>
 #include "Player.h"
-#include "AlgoBoardData.h"
-#include "BoardTool.h"
+#include "BoardData.h"
 
 using namespace std;
 
 class AlgorithmPlayer : public Player {
 	int playerKey = -1;
-	BoardData& const abd;
 
 public:
-	AlgorithmPlayer(std::string name) { Player(name); };
+	AlgorithmPlayer(string name) : Player(name) {};
 	virtual void setPlayer(int player) { playerKey = player; };
 	virtual void init(const BoardData& board) {
-		abd = board;
-		for (int i = 0;i < abd.rows;i++) {
-			for (int j = 0;j < abd.cols;j++) {
-				cout << abd.charAt[i][j];
+		for (int i = 0;i < board.rows;i++) {
+			for (int j = 0;j < board.cols;j++) {
+				const char c = board.charAt[i][j];
 			}
 			cout << " ! " << endl;
 		}

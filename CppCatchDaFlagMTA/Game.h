@@ -18,7 +18,7 @@ class Game {
 	GameManager gm{ &b };
 	string _path;
 	Player * pa = new AlgorithmPlayer("Player A");
-	Player * pb = AlgorithmPlayer("Player B");
+	Player * pb = new AlgorithmPlayer("Player B");
 	Menu menu{ &b, &gm, pa, pb };
 
 public:
