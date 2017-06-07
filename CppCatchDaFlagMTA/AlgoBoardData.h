@@ -1,9 +1,8 @@
 #pragma once
 #include "BoardData.h"
-#include "Board.h"
+#include "BoardTool.h"
 
 class BoardTool;
-class Board;
 
 class AlgoBoardData : public BoardData {
 	int ** const _gameBoard;
@@ -11,10 +10,15 @@ class AlgoBoardData : public BoardData {
 	BoardTool* const btPb;
 	int _playerKey;
 
+	const int TOOLS_COUNT = 3;
+
+	int searchInTools(int x, int y) const;
+
 public:
 	AlgoBoardData(int ** const b, BoardTool* const bta, BoardTool* const btb, int key) : _gameBoard(b), btPa(bta), btPb(btb), _playerKey(key) {};
 	virtual char charAt(int x, int y) const {
-		int cell = _gameBoard[x][y];
+		int cell = searchInTools(x, y);
+		cell = (cell != -1) ? cell : _gameBoard[x][y];
 
 		switch (cell) {
 		case Board::A:
@@ -30,4 +34,5 @@ public:
 
 		}
 	};
+	
 };

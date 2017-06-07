@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "Board.h"
-#include "Player.h"
+#include "AlgorithmPlayer.h"
 #include "GameManager.h"
 #include "Menu.h"
 #include <Windows.h>
@@ -17,8 +17,9 @@ class Game {
 	Board b = Board(BOARD_SIZE, BOARD_SIZE, false);
 	GameManager gm{ &b };
 	string _path;
-	Player pa{ "Player A" }, pb{ "Player B" };
-	Menu menu{ &b, &gm, &pa, &pb };
+	Player * pa = new AlgorithmPlayer("Player A");
+	Player * pb = AlgorithmPlayer("Player B");
+	Menu menu{ &b, &gm, pa, pb };
 
 public:
 	Game(string path) : _path(path) {
@@ -66,7 +67,7 @@ public:
 			else {
 				// TODO: add moves from algo
 			}
-			valid = gm.start(&pa, &pb) == 1;
+			valid = gm.start(pa, pb) == 1;
 		}
 
 		printSum();
@@ -86,8 +87,8 @@ private:
 
 	void printSum() {
 		b.cleanBoard();
-		cout << "Game Summary\nA points : " << pa.getScore() << endl;
-		cout << "B points : " << pb.getScore() << endl;
+		cout << "Game Summary\nA points : " << pa->getScore() << endl;
+		cout << "B points : " << pb->getScore() << endl;
 		Sleep(1250);
 
 	}

@@ -10,12 +10,19 @@ using namespace std;
 class AlgorithmPlayer : public Player {
 	int playerKey = -1;
 	BoardData& const abd;
-	BoardTool* & const tools;
 
+public:
+	AlgorithmPlayer(std::string name) { Player(name); };
 	virtual void setPlayer(int player) { playerKey = player; };
-	void setTools(BoardTool* bt) { tools = bt; };
 	virtual void init(const BoardData& board) {
 		abd = board;
+		for (int i = 0;i < abd.rows;i++) {
+			for (int j = 0;j < abd.cols;j++) {
+				cout << abd.charAt[i][j];
+			}
+			cout << " ! " << endl;
+		}
+		cout << "FFFFFFFFFFF";
 	};
 	virtual GameMove play(const GameMove& opponentsMove) { return GameMove(0, 0, 0, 0); };
 

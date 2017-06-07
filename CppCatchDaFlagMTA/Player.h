@@ -9,8 +9,10 @@ using namespace std;
 
 
 class Player: public AbstractPlayer {
+protected:
+	int bobo = 1;
+	int  _score = 0;
 	string _name;
-	int _score = 0;
 
 public:
 	enum { A = 1, B = 2, C = 3, E = 7, F = 8, G = 9 };

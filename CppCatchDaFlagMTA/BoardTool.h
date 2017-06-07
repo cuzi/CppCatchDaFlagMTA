@@ -47,19 +47,19 @@ public:
 	bool isMoving() {
 		return (_dir_x != 0 || _dir_y != 0);
 	}
-	int getX() {
+	int getX() const {
 		return _x;
 	}
-	char getC() {
+	char getC() const {
 		return _c;
 	}
-	int getColor() {
+	int getColor() const {
 		return _color;
 	}
 	void setColor(int color) {
 		_color = color;;
 	}
-	int getY() {
+	int getY() const{
 		return _y;
 	}
 	void setChar(char c) {

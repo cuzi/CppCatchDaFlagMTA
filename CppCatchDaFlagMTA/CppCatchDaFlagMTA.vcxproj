@@ -165,6 +165,7 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlgoBoardData.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardTool.cpp" />
     <ClCompile Include="CppCatchDaFlagMTA.cpp" />
