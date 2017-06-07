@@ -1,6 +1,7 @@
 #pragma once
 #include "BoardData.h"
 #include "BoardTool.h"
+#include "Board.h"
 
 class BoardTool;
 
@@ -19,18 +20,17 @@ public:
 	virtual char charAt(int x, int y) const {
 		int cell = searchInTools(x, y);
 		cell = (cell != -1) ? cell : _gameBoard[x][y];
-
 		switch (cell) {
 		case Board::A:
 		case Board::B:
 		case Board::C:
-			return (_playerKey == 1) ? cell - '0' : '#';
+			return (_playerKey == 1) ? Board::getBoardChar(cell) : '#';
 		case Board::E:
 		case Board::F:
 		case Board::G:
-			return (_playerKey == 2) ? cell - '0' : '#';
+			return (_playerKey == 2) ? Board::getBoardChar(cell) : '#';
 		default:
-			return cell - '0';
+			return Board::getBoardChar(cell);
 
 		}
 	};
