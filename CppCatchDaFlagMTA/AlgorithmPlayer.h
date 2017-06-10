@@ -50,7 +50,6 @@ class AlgorithmPlayer : public Player {
 public:
 	AlgorithmPlayer(string name) : Player(name) {};
 	virtual void setPlayer(int player) { playerKey = player; };
-<<<<<<< HEAD
 	virtual void init(const BoardData& board);
 	virtual GameMove play(const GameMove& opponentsMove);
 
