@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ManualPlayer.h"
 
 void ManualPlayer::keyPressed(char c) {
