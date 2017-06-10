@@ -225,8 +225,9 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 
 		curr_player = (playing == A_KEY ? pa : pb);
 		last_move = &curr_player->play(*last_move);
+		_runMove(*last_move, playing);
 
-		gameOn = !_moveTools(playing);
+		gameOn = !_moveTools(playing,TRUE);
 		clock++;
 
 		if (ch == ESC) {
@@ -619,10 +620,10 @@ void GameManager::toolHit(BoardTool* Atool, BoardTool* Btool) {
 	}
 }
 
-bool GameManager::_moveTools(int key) {
+bool GameManager::_moveTools(int key,bool one_step) {
 	bool win = false;
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
-		win = win || (_getTools(key))[i].move(_b, this, !QUIET);
+		win = win || (_getTools(key))[i].move(_b, this, !QUIET, one_step);
 	}
 
 	return win;
@@ -632,6 +633,36 @@ void GameManager::_stopTools(BoardTool* tools) {
 	for (int i = 0; i < TOOLS_COUNT; ++i) {
 		(tools + i)->stop();
 	}
+}
+
+char GameManager::convertGameMoveToDir(const GameMove& m, int player_key) {
+	int _dir_x = m.to_x - m.from_x;
+	int _dir_y = m.to_y - m.from_y;
+
+	if (player_key == A_KEY) {
+		if (_dir_x != 0) {
+			return (_dir_x > 0) ? (char)Direction_A::RIGHT : (char)Direction_A::LEFT;
+		}
+		else {
+			return (int)(_dir_y > 0) ? (char)Direction_A::UP : (char)Direction_A::DOWN;
+		}
+	}
+	else {
+		if (_dir_x != 0) {
+			return (_dir_x > 0) ? (char)Direction_E::RIGHT : (char)Direction_E::LEFT;
+		}
+		else {
+			return (_dir_y > 0) ? (char)Direction_E::UP : (char)Direction_E::DOWN;
+		}
+	}
+	
+}
+
+void GameManager::_runMove(const GameMove& m,int player_key) {
+	char dir;
+	keyPressed((int)_b->GetCell(m.from_x, m.from_y));
+	dir = convertGameMoveToDir(m, player_key);
+	_changeDir(dir);
 }
 
 void GameManager::_changeDir(char c) {

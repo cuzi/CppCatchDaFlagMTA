@@ -4,7 +4,7 @@
 #include "GameManager.h"
 
 // return true only when winning
-bool BoardTool::move(Board *b, GameManager *gm, bool print = true)
+bool BoardTool::move(Board *b, GameManager *gm, bool print = true, bool one_step)
 {	
 	signed int x = _x + _dir_x, y = _y + _dir_y, catched;
 	if (_dir_y != 0 || _dir_x != 0) {
@@ -19,6 +19,11 @@ bool BoardTool::move(Board *b, GameManager *gm, bool print = true)
 			}
 
 			catched = b->GetCell(_x, _y);
+
+			if (one_step){
+				_dir_x = 0;
+				_dir_y = 0;
+			}
 
 			return (catched == Board::FlgA || catched == Board::FlgB);
 		}

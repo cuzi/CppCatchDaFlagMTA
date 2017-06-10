@@ -20,7 +20,7 @@ public:
 	BoardTool() {}
 	BoardTool(int x, int y, char ch = '*',int color = WHITE) : _x(x), _y(y), _c(ch), _color(color) {}
 	
-	bool move(Board *b, GameManager *gm, bool print);
+	bool move(Board *b, GameManager *gm, bool print, bool one_step = FALSE);
 	bool isElgibleToPos(int x, int y, Board* b, GameManager *gm);
 
 	bool operator==(const BoardTool& p) {
