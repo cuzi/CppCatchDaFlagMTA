@@ -50,7 +50,19 @@ class AlgorithmPlayer : public Player {
 public:
 	AlgorithmPlayer(string name) : Player(name) {};
 	virtual void setPlayer(int player) { playerKey = player; };
+<<<<<<< HEAD
 	virtual void init(const BoardData& board);
 	virtual GameMove play(const GameMove& opponentsMove);
+=======
+	virtual void init(const BoardData& board) {
+		for (int i = 0;i < 13;i++) {
+			for (int j = 0;j < 13;j++) {
+				cout << board.charAt(i, j);
+			}
+			cout << endl;
+		}
+	};
+	virtual GameMove play(const GameMove& opponentsMove) { return GameMove(0, 0, 0, 0); };
+>>>>>>> e4ad4ba168c65cc826b1e5ff7a94682a3f42d0c0
 
 };
