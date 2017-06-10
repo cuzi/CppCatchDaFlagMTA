@@ -151,6 +151,7 @@ private:
 	bool _isLiveTools(BoardTool* tools);
 	void keyPressed(char c);
 	void _printSubMenu();
+	int  searchInTools(int x, int y) const;
 	void _stopTools(BoardTool* tools);
 	void _setTools(BoardTool* playerTools, int color, Position* aPos);
 	void _setToolPos(Board *b, BoardTool *bt, Position p);

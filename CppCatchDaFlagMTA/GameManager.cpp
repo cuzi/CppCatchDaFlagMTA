@@ -660,14 +660,25 @@ char GameManager::convertGameMoveToDir(const GameMove& m, int player_key) {
 	
 }
 
+int  GameManager::searchInTools(int x, int y) const {
+
+	for (int i = 0;i < TOOLS_COUNT;i++) {
+		if (x == ATools[i].getX() && y == ATools[i].getY())
+			return ATools[i].getC() - '0';
+		if (x == BTools[i].getX() && y == BTools[i].getY())
+			return BTools[i].getC() - '0';
+	}
+	return -1;
+}
+
 bool GameManager::_runMove(const GameMove& m,int player_key) {
 	char dir;
-	int toolKey = _b->GetCell(m.from_x, m.from_y);
-	keyPressed(_b->GetCell(m.from_x, m.from_y));
+	int toolKey = searchInTools(m.from_x, m.from_y);
+	keyPressed('0' + toolKey);
 	dir = convertGameMoveToDir(m, player_key);
 	_changeDir(dir);
 
-	if (toolKey == _b->GetCell(m.to_x, m.to_y)) {
+	if (toolKey == searchInTools(m.to_x, m.to_y)) {
 		return true;
 	}
 	else {
