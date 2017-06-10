@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlgoBoardData.cpp" />
+    <ClCompile Include="AlgorithimPlayer.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardTool.cpp" />
     <ClCompile Include="CppCatchDaFlagMTA.cpp" />

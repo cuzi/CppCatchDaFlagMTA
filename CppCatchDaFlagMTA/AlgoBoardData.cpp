@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "AlgoBoardData.h"
 
 int  AlgoBoardData::searchInTools(int x, int y) const {
