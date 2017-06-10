@@ -116,7 +116,6 @@ int GameManager::start(Player* pa, Player* pb) {
 			
 			BoardData * P1abd = new AlgoBoardData(_b->getBoard(),ATools, BTools, 1);
 			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), ATools, BTools, 2);
-			_b->cleanBoard();
 
 			pa->init(*P1abd);
 			pb->init(*P2abd);
