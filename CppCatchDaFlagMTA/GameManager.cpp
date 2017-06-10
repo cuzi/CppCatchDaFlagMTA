@@ -117,6 +117,9 @@ int GameManager::start(Player* pa, Player* pb) {
 			BoardData * P1abd = new AlgoBoardData(_b->getBoard(),ATools, BTools, 1);
 			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), ATools, BTools, 2);
 
+			pa->setPlayer(1);
+			pb->setPlayer(2);
+
 			pa->init(*P1abd);
 			pb->init(*P2abd);
 
@@ -211,6 +214,7 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
 	char ch = 0;
 	clock = 0;
+	int round = 0;
 	Player * curr_player;
 	GameMove * last_move = &GameMove(0,0,0,0);
 
@@ -241,6 +245,8 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 			ch = 0;
 		}
 		std::cin.clear();
+		round++;
+		gameOn = (round < ALGOLOOP) ? true : false;
 	}
 	return playing;
 }

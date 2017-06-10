@@ -29,6 +29,8 @@ class GameManager {
 	bool QUIET  = false;
 	bool LOADED = false;
 	bool RECORD = false;
+	int ALGOLOOP = 50;
+
 	std::vector< string > err_stack;
 
 	string boardFilePath;
@@ -73,6 +75,9 @@ public:
 	void fight(BoardTool* bta, BoardTool* btb);
 	BoardTool* getToolInPos(int x, int y);
 
+	void setAlgoGameLoops(int loops) {
+		ALGOLOOP = loops;
+	}
 	void setDelay(int delayMs) {
 		delay = delayMs;
 	}
