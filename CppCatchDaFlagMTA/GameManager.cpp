@@ -225,7 +225,10 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 
 		curr_player = (playing == A_KEY ? pa : pb);
 		last_move = &curr_player->play(*last_move);
-		_runMove(*last_move, playing);
+		if (!_runMove(*last_move, playing)) {
+			last_move = &GameMove(last_move->from_x, last_move->from_y,
+				last_move->from_x, last_move->from_y);
+		}
 
 		gameOn = !_moveTools(playing,TRUE);
 		clock++;
@@ -658,11 +661,19 @@ char GameManager::convertGameMoveToDir(const GameMove& m, int player_key) {
 	
 }
 
-void GameManager::_runMove(const GameMove& m,int player_key) {
+bool GameManager::_runMove(const GameMove& m,int player_key) {
 	char dir;
-	keyPressed((int)_b->GetCell(m.from_x, m.from_y));
+	int toolKey = _b->GetCell(m.from_x, m.from_y);
+	keyPressed(_b->GetCell(m.from_x, m.from_y));
 	dir = convertGameMoveToDir(m, player_key);
 	_changeDir(dir);
+
+	if (toolKey == _b->GetCell(m.to_x, m.to_y)) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 void GameManager::_changeDir(char c) {

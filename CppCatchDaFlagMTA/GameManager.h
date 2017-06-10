@@ -143,7 +143,7 @@ private:
 	BoardTool *_getTools(int key);
 	void _setRandomToolPos(Board *b, BoardTool *bt, int key);
 	bool isToolInA(BoardTool* bt);
-	void _runMove(const GameMove&, int player_key);
+	bool _runMove(const GameMove&, int player_key);
 	static char GameManager::convertGameMoveToDir(const GameMove& m, int player_key);
 	bool _moveTools(int key, bool one_step = FALSE);
 	void _changeDir(char c);
