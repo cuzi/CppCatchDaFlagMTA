@@ -2,6 +2,8 @@
 #include "GameManager.h"
 #include <exception>
 #include "Game.h"
+#include <functional>
+#include <map>
 
 GameManager::~GameManager() {
 	free(ATools);
@@ -210,6 +212,8 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 	bool gameOn = true;
 	char ch = 0;
 	clock = 0;
+	Player * curr_player;
+	GameMove * last_move = &GameMove(0,0,0,0);
 
 	// set first player
 	int playing = (clock % 2 ? A_KEY : B_KEY);
@@ -219,10 +223,8 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 
 		Sleep(delay - 10);
 
-		if (_kbhit()) {
-			ch = _getch();
-			keyPressed(ch);
-		}
+		curr_player = (playing == A_KEY ? pa : pb);
+		last_move = &curr_player->play(*last_move);
 
 		gameOn = !_moveTools(playing);
 		clock++;
