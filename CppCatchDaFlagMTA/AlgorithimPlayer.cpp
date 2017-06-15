@@ -4,7 +4,7 @@
 
 GameMove AlgorithmPlayer::play(const GameMove& opponentsMove) {
 	
-	return GameMove(myTools[0].cords.x, myTools[0].cords.y, myTools[0].cords.x, myTools[0].cords.y + 1);
+	return GameMove(myTools[0].cords.x, myTools[0].cords.y, myTools[0].cords.x-1, myTools[0].cords.y);
 
 }
 
