@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "BoardTool.h"
 #include "Position.h"
+#include "AlgorithmPlayer.h"
 #include <vector>
 #include <iterator>
 #include <algorithm>
@@ -131,7 +132,7 @@ private:
 	int saveBoardToFile(string filePath, Player* pa, Player* pb);
 	int saveMoveToFile(string filePath, Move m);
 	bool isGameFreezed();
-	int NewGameLoop(Player * pa, Player * pb);
+	int NewGameLoop(Player * a, Player * b, AlgorithmPlayer* pa, AlgorithmPlayer* pb);
 	Move getNextMove(int playerKey);
 	int autoGameLoop(Player* pa, Player* pb);
 	int gameLoop(Player* pa, Player* pb);

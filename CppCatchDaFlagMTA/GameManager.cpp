@@ -113,17 +113,18 @@ int GameManager::start(Player* pa, Player* pb) {
 		}
 		//TODO: CREATE NEW MENU FOR ALGO RUNNIG , FOR NOW ITS ONLY BOOL THAT DIRECT FOR THIS ELSE CLAUSE
 		else if (ALGO) {
-			
+			AlgorithmPlayer alga{ "203539564" };
+			AlgorithmPlayer algb{"ben"};
 			BoardData * P1abd = new AlgoBoardData(_b->getBoard(),ATools, BTools, 1);
 			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), ATools, BTools, 2);
 
-			pa->setPlayer(1);
-			pb->setPlayer(2);
+			alga.setPlayer(1);
+			algb.setPlayer(2);
 
-			pa->init(*P1abd);
-			pb->init(*P2abd);
+			alga.init(*P1abd);
+			algb.init(*P2abd);
 
-			winner = NewGameLoop(pa, pb);
+			winner = NewGameLoop(pa,pb,&alga,&algb );
 
 			_gameWinAuto(winner == -1 ? NULL :
 				(winner == Player::A ? pa : pb), 5);
@@ -210,12 +211,12 @@ bool GameManager::isGameFreezed() {
 	return true;
 }
 
-int GameManager::NewGameLoop(Player* pa, Player* pb) {
+int GameManager::NewGameLoop(Player* a, Player* b, AlgorithmPlayer* pa, AlgorithmPlayer* pb) {
 	bool gameOn = true;
 	char ch = 0;
 	clock = 0;
 	int round = 0;
-	Player * curr_player;
+	AlgorithmPlayer * curr_player;
 	GameMove * last_move = &GameMove(0,0,0,0);
 
 	// set first player
@@ -237,7 +238,7 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 		clock++;
 
 		if (ch == ESC) {
-			int subMenuAns = showSubMenu(pa, pb);
+			int subMenuAns = showSubMenu(a, b);
 			if (subMenuAns == STOP)
 				return STOP;
 			if (subMenuAns == CLOSE)
