@@ -114,7 +114,7 @@ int GameManager::start(Player* pa, Player* pb) {
 		//TODO: CREATE NEW MENU FOR ALGO RUNNIG , FOR NOW ITS ONLY BOOL THAT DIRECT FOR THIS ELSE CLAUSE
 		else if (ALGO) {
 			AlgorithmPlayer alga{ "203539564" };
-			AlgorithmPlayer algb{"ben"};
+			AlgorithmPlayer algb{"203838495"};
 			BoardData * P1abd = new AlgoBoardData(_b->getBoard(),ATools, BTools, 1);
 			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), ATools, BTools, 2);
 
