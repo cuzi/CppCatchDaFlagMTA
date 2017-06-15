@@ -37,7 +37,7 @@ int main(int argSize, char *argv[]) {
 		parameters[argv[i]](&i);
 
 
-	if (moves != 'k' && board) {
+	if ((moves == 'f' && board) || moves == 'a') {
 		if (quiet)
 			game.setQuiet(quiet);
 		game.startAuto(moves);

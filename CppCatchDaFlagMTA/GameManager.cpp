@@ -98,7 +98,6 @@ int GameManager::saveMoveToFile(string filePath,Move m) {
 
 int GameManager::start(Player* pa, Player* pb) {
 	int winner;	
-	bool ALGO = TRUE;
 	++_cycle;
 	setFilePath();
 
