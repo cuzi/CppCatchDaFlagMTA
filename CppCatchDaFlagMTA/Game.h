@@ -17,8 +17,8 @@ class Game {
 	Board b = Board(BOARD_SIZE, BOARD_SIZE, false);
 	GameManager gm{ &b };
 	string _path;
-	Player * pa = new AlgorithmPlayer("Player A");
-	Player * pb = new AlgorithmPlayer("Player B");
+	Player * pa = new Player("Player A");
+	Player * pb = new Player("Player B");
 	Menu menu{ &b, &gm, pa, pb };
 
 public:

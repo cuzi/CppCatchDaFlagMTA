@@ -2,15 +2,16 @@
 #include <iostream>
 #include <string>
 #include "stdafx.h"
-#include "Player.h"
+#include "AbstractPlayer.h"
 #include "BoardData.h"
 #include "AlgorithmRegisteration.h"
 
 using namespace std;
 
-class AlgorithmPlayer : public Player {
+class AlgorithmPlayer : public AbstractPlayer {
 	int playerKey = -1;
 	static const int TOOLS_SIZE = 3;
+	string _name;
 	enum {SEA = 'S', FR = 'T', EMPTY};
 	int board[BoardData::cols][BoardData::rows]{EMPTY};
 
@@ -50,8 +51,9 @@ class AlgorithmPlayer : public Player {
 	}
 
 public:
-	AlgorithmPlayer(string name) : Player(name) {};
+	AlgorithmPlayer(string name) : AbstractPlayer() {};
 	virtual void setPlayer(int player) { playerKey = player; };
+	virtual string getName() const { return _name; };
 	virtual void init(const BoardData& board);
 	virtual GameMove play(const GameMove& opponentsMove);
 
