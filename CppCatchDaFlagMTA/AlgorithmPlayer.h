@@ -1,8 +1,10 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "stdafx.h"
 #include "Player.h"
 #include "BoardData.h"
+#include "AlgorithmRegisteration.h"
 
 using namespace std;
 

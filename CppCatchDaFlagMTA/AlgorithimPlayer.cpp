@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "AlgorithmPlayer.h"
+
+//AlgorithmRegistration algr{ "203838495",[] {return new AlgorithmPlayer;} }
 
 GameMove AlgorithmPlayer::play(const GameMove& opponentsMove) {
 	
