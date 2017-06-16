@@ -34,7 +34,9 @@ int main(int argSize, char *argv[]) {
         {"-board",  [&]( int *i ) { (*i)++; board = ! strcmp( "f", *(argv + *i)); }},
 		{"-quiet",  [&](int *i) { quiet = true; }}
     };
-
+	AlgorithmRegistration algo_rgstr("203838495",
+		[] {return new AlgorithmPlayer();}
+	);
 	for (int i = 1; i < argSize; ++i) 
 		parameters[argv[i]](&i);
 

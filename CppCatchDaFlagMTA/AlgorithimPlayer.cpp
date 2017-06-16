@@ -44,7 +44,3 @@ void AlgorithmPlayer::init(const BoardData& board){
 	}
 
 };
-
-//AlgorithmRegistration algo_rgstr("203838495",
-//	[] {return new AlgorithmPlayer();}
-//);
