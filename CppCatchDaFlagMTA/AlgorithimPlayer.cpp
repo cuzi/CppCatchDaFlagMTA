@@ -1,7 +1,5 @@
 #include "AlgorithmPlayer.h"
 
-//AlgorithmRegistration algr{ "203838495",[] {return new AlgorithmPlayer;} }
-
 GameMove AlgorithmPlayer::play(const GameMove& opponentsMove) {
 	
 	return GameMove(myTools[0].cords.x, myTools[0].cords.y, myTools[0].cords.x-1, myTools[0].cords.y);
@@ -47,6 +45,6 @@ void AlgorithmPlayer::init(const BoardData& board){
 
 };
 
-AlgorithmRegistration algo_rgstr("203838495",
-	[] {return new AlgorithmPlayer();}
-);
+//AlgorithmRegistration algo_rgstr("203838495",
+//	[] {return new AlgorithmPlayer();}
+//);
