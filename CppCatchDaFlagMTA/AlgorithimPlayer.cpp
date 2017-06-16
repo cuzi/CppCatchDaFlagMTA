@@ -8,7 +8,7 @@ GameMove AlgorithmPlayer::play(const GameMove& opponentsMove) {
 
 }
 
-void AlgorithmPlayer::init(const BoardData& board) {
+void AlgorithmPlayer::init(const BoardData& board){
 	char c;
 	for (int i = 0; i < board.cols; ++i) {
 		for (int j = 0; j < board.rows; ++j) {
@@ -46,3 +46,7 @@ void AlgorithmPlayer::init(const BoardData& board) {
 	}
 
 };
+
+AlgorithmRegistration algo_rgstr("203838495",
+	[] {return new AlgorithmPlayer();}
+);

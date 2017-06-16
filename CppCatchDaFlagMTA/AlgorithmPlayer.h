@@ -51,9 +51,10 @@ class AlgorithmPlayer : public AbstractPlayer {
 	}
 
 public:
-	AlgorithmPlayer(string name) : AbstractPlayer() {};
+	AlgorithmPlayer() : AbstractPlayer() {};
 	virtual void setPlayer(int player) { playerKey = player; };
 	virtual string getName() const { return _name; };
+	string setName(string name) { _name = name; };
 	virtual void init(const BoardData& board);
 	virtual GameMove play(const GameMove& opponentsMove);
 

@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include <exception>
 #include "Game.h"
+#include "AlgorithmRegisteration.h"
 #include <functional>
 #include <map>
 
@@ -112,8 +113,9 @@ int GameManager::start(Player* pa, Player* pb) {
 		}
 		//TODO: CREATE NEW MENU FOR ALGO RUNNIG , FOR NOW ITS ONLY BOOL THAT DIRECT FOR THIS ELSE CLAUSE
 		else if (ALGO) {
-			AlgorithmPlayer * alga = new AlgorithmPlayer("203539564");
-			AlgorithmPlayer * algb = new AlgorithmPlayer("203838495");
+
+			AlgorithmPlayer * alga = new AlgorithmPlayer();
+			AlgorithmPlayer * algb = new AlgorithmPlayer();
 			BoardData * P1abd = new AlgoBoardData(_b->getBoard(),ATools, BTools, 1);
 			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), ATools, BTools, 2);
 

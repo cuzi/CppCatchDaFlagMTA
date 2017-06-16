@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Utils.h"
+#include "AlgorithmRegisteration.h"
+#include "AlgorithmPlayer.h"
 #include <cmath>
 #include <functional>
 #include <map>

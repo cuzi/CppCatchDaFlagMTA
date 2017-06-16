@@ -30,7 +30,7 @@ class GameManager {
 	bool QUIET  = false;
 	bool LOADED = false;
 	bool RECORD = false;
-	int ALGOLOOP = 1;
+	int ALGOLOOP = 100;
 	bool ALGO = true;
 
 	std::vector< string > err_stack;
