@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "Board.h"
 #include "AlgorithmPlayer.h"
+#include "Player.h"
 #include "GameManager.h"
 #include "Menu.h"
 #include <Windows.h>
@@ -17,8 +18,12 @@ class Game {
 	Board b = Board(BOARD_SIZE, BOARD_SIZE, false);
 	GameManager gm{ &b };
 	string _path;
-	Player * pa = new AlgorithmPlayer("Player A");
-	Player * pb = new AlgorithmPlayer("Player B");
+	
+	Player * pa = new Player("Player A");
+	Player * pb = new Player("Player B");
+	
+	int algoGames = 10;
+
 	Menu menu{ &b, &gm, pa, pb };
 
 public:
@@ -27,6 +32,9 @@ public:
 	}
 	void setQuiet(bool quiet) {
 		gm.setQuiet(quiet);
+	}
+	void setMaxGames(int games) {
+		algoGames = games;
 	}
 
 	void setPath(string path) {
@@ -53,19 +61,21 @@ public:
 		string playerAmoves, playerBmoves, boardName;
 		bool valid = true;
 
-		for (vector<string>::size_type i = 0; i != boardPaths.size() && valid; i++) {
-			boardName = getFileName(boardPaths[i]);
+		for (vector<string>::size_type i = 0; (moves_type == 'a' ? i < algoGames : i != boardPaths.size()) && valid; i++) {
 
-			playerAmoves = pathBuilder({ boardName + "." + MOVES_A_EXT });
-			playerBmoves = pathBuilder({ boardName + "." + MOVES_B_EXT });
-
-			gm.setBoard(pathBuilder({ boardPaths[i] }));
 			if (moves_type == 'f') {
+				boardName = getFileName(boardPaths[i]);
+
+				playerAmoves = pathBuilder({ boardName + "." + MOVES_A_EXT });
+				playerBmoves = pathBuilder({ boardName + "." + MOVES_B_EXT });
+
+				gm.setBoard(pathBuilder({ boardPaths[i] }));
 				gm.setMoves(isFileExists(playerAmoves) ? playerAmoves : "",
 					isFileExists(playerBmoves) ? playerBmoves : "");
 			}
 			else {
 				// TODO: add moves from algo
+				
 			}
 			valid = gm.start(pa, pb) == 1;
 		}

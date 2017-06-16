@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "BoardTool.h"
 #include "Position.h"
+#include "AlgorithmPlayer.h"
 #include <vector>
 #include <iterator>
 #include <algorithm>
@@ -29,6 +30,9 @@ class GameManager {
 	bool QUIET  = false;
 	bool LOADED = false;
 	bool RECORD = false;
+	int ALGOLOOP = 1250;
+	bool ALGO = true;
+
 	std::vector< string > err_stack;
 
 	string boardFilePath;
@@ -73,6 +77,9 @@ public:
 	void fight(BoardTool* bta, BoardTool* btb);
 	BoardTool* getToolInPos(int x, int y);
 
+	void setAlgoGameLoops(int loops) {
+		ALGOLOOP = loops;
+	}
 	void setDelay(int delayMs) {
 		delay = delayMs;
 	}
@@ -126,7 +133,7 @@ private:
 	int saveBoardToFile(string filePath, Player* pa, Player* pb);
 	int saveMoveToFile(string filePath, Move m);
 	bool isGameFreezed();
-	int NewGameLoop(Player * pa, Player * pb);
+	int NewGameLoop(Player * a, Player * b, AlgorithmPlayer* pa, AlgorithmPlayer* pb);
 	Move getNextMove(int playerKey);
 	int autoGameLoop(Player* pa, Player* pb);
 	int gameLoop(Player* pa, Player* pb);

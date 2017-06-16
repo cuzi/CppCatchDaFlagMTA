@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include <exception>
 #include "Game.h"
+#include "AlgorithmRegisteration.h"
 #include <functional>
 #include <map>
 
@@ -98,7 +99,6 @@ int GameManager::saveMoveToFile(string filePath,Move m) {
 
 int GameManager::start(Player* pa, Player* pb) {
 	int winner;	
-	bool ALGO = TRUE;
 	++_cycle;
 	setFilePath();
 
@@ -113,14 +113,19 @@ int GameManager::start(Player* pa, Player* pb) {
 		}
 		//TODO: CREATE NEW MENU FOR ALGO RUNNIG , FOR NOW ITS ONLY BOOL THAT DIRECT FOR THIS ELSE CLAUSE
 		else if (ALGO) {
-			
+
+			AlgorithmPlayer * alga = new AlgorithmPlayer();
+			AlgorithmPlayer * algb = new AlgorithmPlayer();
 			BoardData * P1abd = new AlgoBoardData(_b->getBoard(),ATools, BTools, 1);
 			BoardData * P2abd = new AlgoBoardData(_b->getBoard(), ATools, BTools, 2);
 
-			pa->init(*P1abd);
-			pb->init(*P2abd);
+			alga->setPlayer(1);
+			algb->setPlayer(2);
 
-			winner = NewGameLoop(pa, pb);
+			alga->init(*P1abd);
+			algb->init(*P2abd);
+
+			winner = NewGameLoop(pa,pb,alga,algb );
 
 			_gameWinAuto(winner == -1 ? NULL :
 				(winner == Player::A ? pa : pb), 5);
@@ -207,11 +212,12 @@ bool GameManager::isGameFreezed() {
 	return true;
 }
 
-int GameManager::NewGameLoop(Player* pa, Player* pb) {
+int GameManager::NewGameLoop(Player* a, Player* b, AlgorithmPlayer* pa, AlgorithmPlayer* pb) {
 	bool gameOn = true;
 	char ch = 0;
 	clock = 0;
-	Player * curr_player;
+	int round = 0;
+	AlgorithmPlayer * curr_player;
 	GameMove * last_move = &GameMove(0,0,0,0);
 
 	// set first player
@@ -233,7 +239,7 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 		clock++;
 
 		if (ch == ESC) {
-			int subMenuAns = showSubMenu(pa, pb);
+			int subMenuAns = showSubMenu(a, b);
 			if (subMenuAns == STOP)
 				return STOP;
 			if (subMenuAns == CLOSE)
@@ -241,6 +247,8 @@ int GameManager::NewGameLoop(Player* pa, Player* pb) {
 			ch = 0;
 		}
 		std::cin.clear();
+		round++;
+		gameOn = (round < ALGOLOOP) ? true : false;
 	}
 	return playing;
 }
@@ -643,18 +651,18 @@ char GameManager::convertGameMoveToDir(const GameMove& m, int player_key) {
 
 	if (player_key == A_KEY) {
 		if (_dir_x != 0) {
-			return (_dir_x > 0) ? (char)Direction_A::UP : (char)Direction_A::DOWN;
+			return (_dir_x > 0) ? (char)Direction_A::RIGHT : (char)Direction_A::LEFT;
 		}
 		else {
-			return (int)(_dir_y > 0) ? (char)Direction_A::RIGHT : (char)Direction_A::LEFT;
+			return (int)(_dir_y > 0) ? (char)Direction_A::UP : (char)Direction_A::DOWN;
 		}
 	}
 	else {
 		if (_dir_x != 0) {
-			return (_dir_x > 0) ? (char)Direction_E::UP : (char)Direction_E::DOWN;
+			return (_dir_x > 0) ? (char)Direction_E::RIGHT : (char)Direction_E::LEFT;
 		}
 		else {
-			return (_dir_y > 0) ? (char)Direction_E::RIGHT : (char)Direction_E::LEFT;
+			return (_dir_y > 0) ? (char)Direction_E::UP : (char)Direction_E::DOWN;
 		}
 	}
 	

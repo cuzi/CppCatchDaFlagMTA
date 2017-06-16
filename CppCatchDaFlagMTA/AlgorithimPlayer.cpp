@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <map>
 #include <string>
 #include "AlgorithmPlayer.h"

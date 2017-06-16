@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Utils.h"
+#include "AlgorithmRegisteration.h"
+#include "AlgorithmPlayer.h"
 #include <cmath>
 #include <functional>
 #include <map>
@@ -32,12 +34,14 @@ int main(int argSize, char *argv[]) {
         {"-board",  [&]( int *i ) { (*i)++; board = ! strcmp( "f", *(argv + *i)); }},
 		{"-quiet",  [&](int *i) { quiet = true; }}
     };
-
+	AlgorithmRegistration algo_rgstr("203838495",
+		[] {return new AlgorithmPlayer();}
+	);
 	for (int i = 1; i < argSize; ++i) 
 		parameters[argv[i]](&i);
 
 
-	if (moves != 'k' && board) {
+	if ((moves == 'f' && board) || moves == 'a') {
 		if (quiet)
 			game.setQuiet(quiet);
 		game.startAuto(moves);

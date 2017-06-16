@@ -2,14 +2,17 @@
 #include <iostream>
 #include <string>
 #include <queue>
-#include "Player.h"
+#include "stdafx.h"
+#include "AbstractPlayer.h"
 #include "BoardData.h"
+#include "AlgorithmRegisteration.h"
 
 using namespace std;
 
-class AlgorithmPlayer : public Player {
+class AlgorithmPlayer : public AbstractPlayer {
 	int playerKey = -1;
 	static const int TOOLS_SIZE = 3;
+	string _name;
 	enum {SEA = 'S', FR = 'T', EMPTY};
 	int board[BoardData::cols][BoardData::rows]{EMPTY};
 
@@ -25,6 +28,7 @@ class AlgorithmPlayer : public Player {
 		int distance(int target_x, int target_y) {return abs(x - target_x) + abs(y - target_y);}
 		int distance(PlayerCoordinate cord) {return distance(cord.x, cord.y);}
 	};
+
 	struct AlgoTool {
 		PlayerCoordinate cords;
 		enum { BLOCKED_CELL = -10, EMPTY_CELL = 0 };
@@ -90,8 +94,12 @@ class AlgorithmPlayer : public Player {
 	PlayerCoordinate* anemyRounds(int x, int y);
 
 public:
-	AlgorithmPlayer(string name) : Player(name) {};
+	AlgorithmPlayer() : AbstractPlayer() {};
 	virtual void setPlayer(int player) { playerKey = player; };
+	virtual string getName() const { return _name; };
+	string setName(string name) { _name = name; };
 	virtual void init(const BoardData& board);
 	virtual GameMove play(const GameMove& opponentsMove);
+
+
 };

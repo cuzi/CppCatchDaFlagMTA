@@ -148,6 +148,7 @@
     <ClInclude Include="AbstractPlayer.h" />
     <ClInclude Include="AlgoBoardData.h" />
     <ClInclude Include="AlgorithmPlayer.h" />
+    <ClInclude Include="AlgorithmRegisteration.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardData.h" />
     <ClInclude Include="BoardTool.h" />
@@ -167,6 +168,7 @@
   <ItemGroup>
     <ClCompile Include="AlgoBoardData.cpp" />
     <ClCompile Include="AlgorithimPlayer.cpp" />
+    <ClCompile Include="AlgorithmRegistration.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardTool.cpp" />
     <ClCompile Include="CppCatchDaFlagMTA.cpp" />
