@@ -26,6 +26,7 @@ class AlgorithmPlayer : public AbstractPlayer {
 			x = _x; 
 			y = _y; 
 		}
+		void set(PlayerCoordinate newCord) { set(newCord.x, newCord.y); }
 		bool operator==(PlayerCoordinate cord) { return cord.x == x && cord.y == y; }
 		int distance(int target_x, int target_y) {return abs(x - target_x) + abs(y - target_y);}
 		int distance(PlayerCoordinate cord) {return distance(cord.x, cord.y);}
@@ -55,6 +56,10 @@ class AlgorithmPlayer : public AbstractPlayer {
 			cords = expectedMoves.top();
 			expectedMoves.pop();
 			return GameMove(pre_x, pre_y, cords.x, cords.y);
+		}
+		void clearMoves() {
+			while (!expectedMoves.empty()) expectedMoves.pop();
+
 		}
 
 	};
@@ -87,14 +92,16 @@ class AlgorithmPlayer : public AbstractPlayer {
 	}
 
 	void setToolBoards(AlgoTool* tool);
+	void setToolBoardsToTarget(AlgoTool* tool, PlayerCoordinate target, bool considerOppTools);
 	void calcOppWay(AlgoTool* tool);
 	GameMove getNextMove();
 	GameMove moveAttack();
-	void setNextStep(AlgoTool* tool, int x, int y, int level);
+	void setDefend();
+	void setNextStepLeeAlgo(AlgoTool* tool, int x, int y, int level, PlayerCoordinate target);
 	void setAnemiesOnToolsBoards(AlgoTool* tool);
 	void setenemyOnToolsBoard(AlgoTool* tool, int x, int y);
 	void setKillerWayToolsBoards(AlgoTool* tool);
-	void setLeePathOnBoard(AlgoTool* tool);
+	void setLeePathOnBoard(AlgoTool* tool, PlayerCoordinate target);
 	void changeBoard(const GameMove& move);
 	void setToolBoardBlocks(AlgoTool* tool);
 	void calcMoves();
@@ -104,6 +111,7 @@ class AlgorithmPlayer : public AbstractPlayer {
 	int getPosAvilable(AlgoTool* tool, int x, int y, char pre_dir, char next_dir);
 	void setToolMovesQueue(AlgoTool* tool, int x, int y, char dir);
 	PlayerCoordinate* enemyRounds(int x, int y);
+	PlayerCoordinate getOppRunnerCords();
 
 public:
 	AlgorithmPlayer() : AbstractPlayer() {};

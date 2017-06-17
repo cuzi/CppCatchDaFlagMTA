@@ -13,19 +13,28 @@ GameMove AlgorithmPlayer::play(const GameMove& opponentsMove) {
 }
 
 void AlgorithmPlayer::changeBoard(const GameMove& move) {
-	PlayerCoordinate nextMove{ move.to_x, move.to_y };
+	PlayerCoordinate toMove{ move.to_x, move.to_y };
+	PlayerCoordinate fromMove{ move.to_x, move.to_y };
 
 	for (int i = 0; i < TOOLS_SIZE; ++i) {
-		if (oppTools[i] == nextMove)
-			oppTools[i].cords.set(nextMove.x, nextMove.y);
+		if ('#' == boardInst->charAt(toMove.x, toMove.y)) {
+			if (oppTools[i] == fromMove)
+				oppTools[i].cords.set(toMove);
+			if (myTools[i] == toMove)
+				myTools[i].alive = false;
+		}
+		else {
+			if (oppTools[i] == fromMove)
+				oppTools[i].alive = false;
+
+		}
 
 	}
 
-	calcMoves();
 
 }
 int AlgorithmPlayer::getStandardFix() {
-	return (((getExpToolsCost(myTools) - getToolsCost(myTools)) + 1) / 2);
+	return ((getExpToolsCost(myTools) - getToolsCost(myTools)) / 2);
 }
 int AlgorithmPlayer::getToolsCost(AlgoTool* tools) {
 	int lowestRun = tools[0].alive ? tools[0].runCost : BIG_MOVES;
@@ -43,6 +52,23 @@ int AlgorithmPlayer::getExpToolsCost(AlgoTool* tools) {
 
 	return lowestRun;
 }
+AlgorithmPlayer::PlayerCoordinate AlgorithmPlayer::getOppRunnerCords() {
+
+	AlgoTool* runner = &oppTools[0];
+
+	for (int i = 1; i < TOOLS_SIZE; ++i)
+		if (oppTools[i].runCost < runner->runCost || !runner->alive)
+			runner = &oppTools[i];
+
+	return runner->cords;
+}
+void AlgorithmPlayer::setDefend() {
+	PlayerCoordinate oppRunner = getOppRunnerCords();
+
+	for (int i = 1; i < TOOLS_SIZE; ++i)
+		setToolBoardsToTarget(&myTools[i],oppRunner, false);
+
+}
 GameMove AlgorithmPlayer::moveAttack() {
 	AlgoTool* runner = &myTools[0];
 
@@ -53,13 +79,11 @@ GameMove AlgorithmPlayer::moveAttack() {
 	return runner->getAttckNextMove();
 }
 GameMove AlgorithmPlayer::getNextMove() {
-	if (getToolsCost(myTools) <= getToolsCost(oppTools) + getStandardFix()) {
-		return moveAttack();
-	}
-	else {
-		// TODO: move defend
-		return GameMove(0, 0, 0, 0);
-	}
+	calcMoves();
+
+	//if (getToolsCost(myTools) > getToolsCost(oppTools) ) setDefend();
+
+	return moveAttack();
 
 }
 
@@ -100,34 +124,33 @@ void AlgorithmPlayer::init(const BoardData& board) {
 			}
 		}
 	}
-	calcMoves();
 
 };
 
 void AlgorithmPlayer::calcMoves() {
 
 	for (int i = 0; i < TOOLS_SIZE; ++i) {
-		setToolBoards(&(myTools[i]));
-		calcOppWay(&(oppTools[i]));
+		if (myTools[i].alive) {
+			setToolBoards(&(myTools[i]));
+		}
+		if (oppTools[i].alive)
+			calcOppWay(&(oppTools[i]));
 	}
 }
 
 void AlgorithmPlayer::calcOppWay(AlgoTool* tool) {
-	//if (tool->type == '#') {
-		tool->runCost = tool->cords.distance(MyFlag);
-	//}
+	tool->runCost = tool->cords.distance(MyFlag);
 }
 void AlgorithmPlayer::setToolBoards(AlgoTool* tool) {
+	setToolBoardsToTarget(tool, targetFlag, true);
+}
+void AlgorithmPlayer::setToolBoardsToTarget(AlgoTool* tool, PlayerCoordinate target, bool considerOppTools) {
 	/* tool is the index 0-2 */
-
 	setToolBoardBlocks(tool);
-	setAnemiesOnToolsBoards(tool);
-	setLeePathOnBoard(tool);
-	// TODO: set killer cordinates for each tool
-	// setAnemiesOnToolsBoards(tool);
-	// TODO: make a Lee algo for fastest way and send the closest to catch the flag
-
-	cout << "";
+	if (considerOppTools)
+		setAnemiesOnToolsBoards(tool);
+	setLeePathOnBoard(tool, target);
+	// TODO: Optional set killer cordinates for each tool
 }
 
 void AlgorithmPlayer::setToolBoardBlocks(AlgoTool* tool) {
@@ -143,17 +166,18 @@ void AlgorithmPlayer::setToolBoardBlocks(AlgoTool* tool) {
 }
 
 
-void AlgorithmPlayer::setLeePathOnBoard(AlgoTool* tool) {
+void AlgorithmPlayer::setLeePathOnBoard(AlgoTool* tool, PlayerCoordinate target) {
 	int x = tool->cords.x, y = tool->cords.y;
 	tool->pathBoard[x][y] = 1;
-	setNextStep(tool, x - 1, y, 1);
-	setNextStep(tool, x + 1, y, 1);
-	setNextStep(tool, x, y - 1, 1);
-	setNextStep(tool, x, y + 1, 1);
+	setNextStepLeeAlgo(tool, x - 1, y, 1, target);
+	setNextStepLeeAlgo(tool, x + 1, y, 1, target);
+	setNextStepLeeAlgo(tool, x, y - 1, 1, target);
+	setNextStepLeeAlgo(tool, x, y + 1, 1, target);
 
-	tool->runCost = 0;
-	setToolMovesQueue(tool, targetFlag.x, targetFlag.y, '\0');
-	cout << "";
+	tool->clearMoves();
+	setToolMovesQueue(tool, target.x, target.y, '\0');
+
+	tool->runCost = tool->expectedMoves.size();
 }
 
 int AlgorithmPlayer::getPosAvilable(AlgoTool* tool, int x, int y, char pre_dir, char next_dir) {
@@ -183,19 +207,19 @@ void AlgorithmPlayer::setToolMovesQueue(AlgoTool* tool, int x, int y, char dir) 
 
 }
 
-void AlgorithmPlayer::setNextStep(AlgoTool* tool, int x, int y, int preLevel) {
+void AlgorithmPlayer::setNextStepLeeAlgo(AlgoTool* tool, int x, int y, int preLevel, PlayerCoordinate target) {
 	if (!isXYOnBoard(x, y) || tool->pathBoard[x][y] == AlgoTool::BLOCKED_CELL 
 		|| (tool->pathBoard[x][y] < preLevel && tool->pathBoard[x][y] != AlgoTool::EMPTY_CELL) 
-		|| (x == targetFlag.x && y == targetFlag.y))
+		|| (x == target.x && y == target.y))
 		return;
 	++preLevel;
 
 	tool->pathBoard[x][y] = preLevel;
 
-	setNextStep(tool, x - 1, y, preLevel);
-	setNextStep(tool, x + 1, y, preLevel);
-	setNextStep(tool, x, y - 1, preLevel);
-	setNextStep(tool, x, y + 1, preLevel);
+	setNextStepLeeAlgo(tool, x - 1, y, preLevel,target);
+	setNextStepLeeAlgo(tool, x + 1, y, preLevel,target);
+	setNextStepLeeAlgo(tool, x, y - 1, preLevel,target);
+	setNextStepLeeAlgo(tool, x, y + 1, preLevel,target);
 
 }
 
@@ -206,7 +230,7 @@ void AlgorithmPlayer::setAnemiesOnToolsBoards(AlgoTool* tool) {
 }
 
 void AlgorithmPlayer::setKillerWayToolsBoards(AlgoTool* tool) {
-
+	// TODO: Optional
 }
 
 
