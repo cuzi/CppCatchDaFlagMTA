@@ -1,13 +1,14 @@
+#include "stdafx.h"
+#include "AlgorithmPlayer.h"
 #include <map>
 #include <string>
-#include "AlgorithmPlayer.h"
 
 GameMove AlgorithmPlayer::play(const GameMove& opponentsMove) {
 	if (opponentsMove.from_x != opponentsMove.to_x ||
 		opponentsMove.from_y != opponentsMove.to_y)
 		changeBoard(opponentsMove);
 	
-	return GameMove(myTools[0].cords.x, myTools[0].cords.y, myTools[0].cords.x, myTools[0].cords.y + 1);
+	return getNextMove();
 
 }
 
@@ -17,22 +18,47 @@ void AlgorithmPlayer::changeBoard(const GameMove& move) {
 	for (int i = 0; i < TOOLS_SIZE; ++i) {
 		if (oppTools[i] == nextMove)
 			oppTools[i].cords.set(nextMove.x, nextMove.y);
+
 	}
 
 	calcMoves();
 
 }
-void AlgorithmPlayer::getNextMove(AlgoTool* tool) {
+int AlgorithmPlayer::getToolsCost(AlgoTool* tools) {
+	int lowestRun = tools[0].alive ? tools[0].runCost : BIG_MOVES;
+	for (int i = 1; i < TOOLS_SIZE; ++i)
+		if (tools[i].runCost < lowestRun && tools[i].alive)
+			lowestRun = tools[i].runCost;
+
+	return lowestRun;
+}
+GameMove AlgorithmPlayer::moveAttack() {
+	AlgoTool* runner = &myTools[0];
+
+	for (int i = 1; i < TOOLS_SIZE; ++i)
+		if (myTools[i].runCost < runner->runCost || !runner->alive)
+			runner = &myTools[i];
+
+	return runner->getAttckNextMove();
+}
+GameMove AlgorithmPlayer::getNextMove() {
+	if (getToolsCost(myTools) <= getToolsCost(oppTools)) {
+		return moveAttack();
+	}
+	else {
+		// TODO: move defend
+	}
 
 }
+
 void AlgorithmPlayer::init(const BoardData& board) {
 	char c;
-	for (int i = 0; i < board.cols; ++i) {
-		for (int j = 0; j < board.rows; ++j) {
-			c = board.charAt(i, j);
+	for (int j = 0; j < board.cols; ++j) {
+		for (int i = 0; i < board.rows; ++i) {
+			c = board.charAt(j, i);
 			switch (c) {
 			case '#':
-				setAnemy(i, j);
+				setenemy(i, j);
 				break;
 			case 'A':
 				(playerKey == 1 ? MyFlag : targetFlag).x = i;
@@ -118,29 +144,29 @@ void AlgorithmPlayer::setLeePathOnBoard(AlgoTool* tool) {
 }
 
 int AlgorithmPlayer::getPosAvilable(AlgoTool* tool, int x, int y, char pre_dir, char next_dir) {
-	return isCordOnBoard({ x, y }) && pre_dir != next_dir && tool->pathBoard[x][y] != AlgoTool::BLOCKED_CELL ? tool->pathBoard[x][y] : 99;
+	return isXYOnBoard(x, y) && pre_dir != next_dir && tool->pathBoard[x][y] != AlgoTool::BLOCKED_CELL ? tool->pathBoard[x][y] : BIG_MOVES;
 }
 void AlgorithmPlayer::setToolMovesQueue(AlgoTool* tool, int x, int y, char dir) {
+
 	if (x == tool->cords.x && y == tool->cords.y)
 		return;
-	
 
 	tool->runCost += 1;
+	tool->expectedMoves.push({x , y});
 
-	if (dir != '\0') tool->expectedMoves.push(dir);
 
 	int up = getPosAvilable(tool, x, y + 1, dir, 'u'),
 		down = getPosAvilable(tool, x, y - 1, dir, 'd') ,
 		right = getPosAvilable(tool, x - 1, y, dir, 'r'),
 		left = getPosAvilable(tool, x + 1, y, dir, 'l');
 
-	if (up < down && up < right && up < left && up != 99)
+	if (up < down && up < right && up < left && up != BIG_MOVES)
 		setToolMovesQueue(tool, x, y + 1, 'd');
-	else if (down < right && down < left && down != 99)
+	else if (down < right && down < left && down != BIG_MOVES)
 		setToolMovesQueue(tool, x, y - 1, 'u');
-	else if (right < left && right != 99)
+	else if (right < left && right != BIG_MOVES)
 		setToolMovesQueue(tool, x - 1, y, 'l');
-	else if (left != 99) setToolMovesQueue(tool, x + 1, y, 'r');
+	else if (left != BIG_MOVES) setToolMovesQueue(tool, x + 1, y, 'r');
 
 }
 
@@ -162,26 +188,28 @@ void AlgorithmPlayer::setNextStep(AlgoTool* tool, int x, int y, int preLevel) {
 
 void AlgorithmPlayer::setAnemiesOnToolsBoards(AlgoTool* tool) {
 	for (int i = 0; i < TOOLS_SIZE; ++i) {
-		setAnemyOnToolsBoard(tool, oppTools[i].cords.x, oppTools[i].cords.y);
+		setenemyOnToolsBoard(tool, oppTools[i].cords.x, oppTools[i].cords.y);
 	}
 }
 
 void AlgorithmPlayer::setKillerWayToolsBoards(AlgoTool* tool) {
+
 }
 
 
-void AlgorithmPlayer::setAnemyOnToolsBoard(AlgoTool* tool, int x, int y) {
-	PlayerCoordinate* cords = anemyRounds(x, y);
+void AlgorithmPlayer::setenemyOnToolsBoard(AlgoTool* tool, int x, int y) {
+	PlayerCoordinate* cords = enemyRounds(x, y);
 	for (int i = 0 ; i < 5; ++i)
 	{
 		if (isCordOnBoard(cords[i]))
 			tool->pathBoard[cords[i].x][cords[i].y] = AlgoTool::BLOCKED_CELL;
 	}
+	delete[] cords;
 }
 
 
-AlgorithmPlayer::PlayerCoordinate* AlgorithmPlayer::anemyRounds(int x, int y) {
-	PlayerCoordinate cords[5];
+AlgorithmPlayer::PlayerCoordinate* AlgorithmPlayer::enemyRounds(int x, int y) {
+	PlayerCoordinate *cords = new PlayerCoordinate[5];
 
 	cords[0].set(x, y);
 	cords[1].set(x, y - 1);

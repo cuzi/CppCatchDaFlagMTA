@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <queue>
+#include <stack>
 #include "stdafx.h"
 #include "AbstractPlayer.h"
 #include "BoardData.h"
@@ -12,6 +12,7 @@ using namespace std;
 class AlgorithmPlayer : public AbstractPlayer {
 	int playerKey = -1;
 	static const int TOOLS_SIZE = 3;
+	const int BIG_MOVES = BoardData::cols * BoardData::rows;
 	string _name;
 	enum {SEA = 'S', FR = 'T', EMPTY};
 	int board[BoardData::cols][BoardData::rows]{EMPTY};
@@ -34,7 +35,7 @@ class AlgorithmPlayer : public AbstractPlayer {
 		enum { BLOCKED_CELL = -10, EMPTY_CELL = 0 };
 		enum PRIORIY_CELL { KILLER_CELL = -4, TREES_ELGIBLE = -3, SEA_ELGIBLE = -2, KILL_OPT = -2};
 		int pathBoard[BoardData::cols][BoardData::rows]{ EMPTY_CELL };
-		queue <char> expectedMoves;
+		stack <PlayerCoordinate> expectedMoves;
 		/*
 		 * elgLevel: 
 		 * 3 - elgible sea and forest
@@ -48,6 +49,12 @@ class AlgorithmPlayer : public AbstractPlayer {
 		char type = '#'; // Player type '#' is unkown
 		bool operator==(char type) { return this->type == type; }
 		bool operator==(PlayerCoordinate cord) { return this->cords == cord; }
+		GameMove getAttckNextMove() {
+			int pre_x = cords.x, pre_y = cords.y;
+			cords = expectedMoves.top();
+			expectedMoves.pop();
+			return GameMove(pre_x, pre_y, cords.x, cords.y);
+		}
 
 	};
 	PlayerCoordinate MyFlag, targetFlag;
@@ -63,9 +70,9 @@ class AlgorithmPlayer : public AbstractPlayer {
 		myTools[index].cords = { x, y };
 	}
 
-	void setAnemy(int x, int y) {
+	void setenemy(int x, int y) {
 		int i = 0;
-		for (; oppTools[i].cords.x == -1; ++i);
+		for (; oppTools[i].cords.x != -1; ++i);
 		oppTools[i].cords = { x, y };
 	}
 	bool isCordOnBoard(PlayerCoordinate pos) {
@@ -80,18 +87,20 @@ class AlgorithmPlayer : public AbstractPlayer {
 
 	void setToolBoards(AlgoTool* tool);
 	void calcOppWay(AlgoTool* tool);
-	void getNextMove(AlgoTool* tool);
+	GameMove getNextMove();
+	GameMove moveAttack();
 	void setNextStep(AlgoTool* tool, int x, int y, int level);
 	void setAnemiesOnToolsBoards(AlgoTool* tool);
-	void setAnemyOnToolsBoard(AlgoTool* tool, int x, int y);
+	void setenemyOnToolsBoard(AlgoTool* tool, int x, int y);
 	void setKillerWayToolsBoards(AlgoTool* tool);
 	void setLeePathOnBoard(AlgoTool* tool);
 	void changeBoard(const GameMove& move);
 	void setToolBoardBlocks(AlgoTool* tool);
 	void calcMoves();
+	int getToolsCost(AlgoTool* tools);
 	int getPosAvilable(AlgoTool* tool, int x, int y, char pre_dir, char next_dir);
 	void setToolMovesQueue(AlgoTool* tool, int x, int y, char dir);
-	PlayerCoordinate* anemyRounds(int x, int y);
+	PlayerCoordinate* enemyRounds(int x, int y);
 
 public:
 	AlgorithmPlayer() : AbstractPlayer() {};
