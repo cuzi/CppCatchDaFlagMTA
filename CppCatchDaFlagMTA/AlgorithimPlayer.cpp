@@ -24,10 +24,21 @@ void AlgorithmPlayer::changeBoard(const GameMove& move) {
 	calcMoves();
 
 }
+int AlgorithmPlayer::getStandardFix() {
+	return (((getExpToolsCost(myTools) - getToolsCost(myTools)) + 1) / 2);
+}
 int AlgorithmPlayer::getToolsCost(AlgoTool* tools) {
 	int lowestRun = tools[0].alive ? tools[0].runCost : BIG_MOVES;
 	for (int i = 1; i < TOOLS_SIZE; ++i)
 		if (tools[i].runCost < lowestRun && tools[i].alive)
+			lowestRun = tools[i].runCost;
+
+	return lowestRun;
+}
+int AlgorithmPlayer::getExpToolsCost(AlgoTool* tools) {
+	int lowestRun = tools[0].alive ? tools[0].runCost : AlgoTool::BLOCKED_CELL;
+	for (int i = 1; i < TOOLS_SIZE; ++i)
+		if (tools[i].runCost > lowestRun && tools[i].alive)
 			lowestRun = tools[i].runCost;
 
 	return lowestRun;
@@ -42,17 +53,19 @@ GameMove AlgorithmPlayer::moveAttack() {
 	return runner->getAttckNextMove();
 }
 GameMove AlgorithmPlayer::getNextMove() {
-	if (getToolsCost(myTools) <= getToolsCost(oppTools)) {
+	if (getToolsCost(myTools) <= getToolsCost(oppTools) + getStandardFix()) {
 		return moveAttack();
 	}
 	else {
 		// TODO: move defend
+		return GameMove(0, 0, 0, 0);
 	}
 
 }
 
 void AlgorithmPlayer::init(const BoardData& board) {
 	char c;
+	this->boardInst = &board;
 	for (int j = 0; j < board.cols; ++j) {
 		for (int i = 0; i < board.rows; ++i) {
 			c = board.charAt(j, i);
@@ -121,9 +134,9 @@ void AlgorithmPlayer::setToolBoardBlocks(AlgoTool* tool) {
 	// set tool uneligible ways on path board
 	for (int i = 0; i < BoardData::cols; ++i) {
 		for (int j = 0; j < BoardData::rows; ++j) {
-			if (board[i][j] == FR)
+			if (board[i][j] == SEA)
 				tool->pathBoard[i][j] = (tool->elgLevel != 3) ? AlgoTool::BLOCKED_CELL : AlgoTool::EMPTY_CELL;
-			else if (board[i][j] == SEA)
+			else if (board[i][j] == FR)
 				tool->pathBoard[i][j] = !(tool->elgLevel == 3 || tool->elgLevel == 2) ? AlgoTool::BLOCKED_CELL : AlgoTool::EMPTY_CELL;
 		}
 	}

@@ -14,6 +14,7 @@ class AlgorithmPlayer : public AbstractPlayer {
 	static const int TOOLS_SIZE = 3;
 	const int BIG_MOVES = BoardData::cols * BoardData::rows;
 	string _name;
+	mutable const BoardData* boardInst = nullptr;
 	enum {SEA = 'S', FR = 'T', EMPTY};
 	int board[BoardData::cols][BoardData::rows]{EMPTY};
 
@@ -33,13 +34,13 @@ class AlgorithmPlayer : public AbstractPlayer {
 	struct AlgoTool {
 		PlayerCoordinate cords;
 		enum { BLOCKED_CELL = -10, EMPTY_CELL = 0 };
-		enum PRIORIY_CELL { KILLER_CELL = -4, TREES_ELGIBLE = -3, SEA_ELGIBLE = -2, KILL_OPT = -2};
+		enum PRIORIY_CELL { KILLER_CELL = -4, SEA_ELGIBLE = -3, TREE_ELGIBLE = -2, KILL_OPT = -2};
 		int pathBoard[BoardData::cols][BoardData::rows]{ EMPTY_CELL };
 		stack <PlayerCoordinate> expectedMoves;
 		/*
 		 * elgLevel: 
 		 * 3 - elgible sea and forest
-		 * 2 - Elgible sea
+		 * 2 - Elgible forest
 		 * 1 - Normal
 		 * 0 - Unkown
 		 */
@@ -98,6 +99,8 @@ class AlgorithmPlayer : public AbstractPlayer {
 	void setToolBoardBlocks(AlgoTool* tool);
 	void calcMoves();
 	int getToolsCost(AlgoTool* tools);
+	int getExpToolsCost(AlgoTool* tools);
+	int getStandardFix();
 	int getPosAvilable(AlgoTool* tool, int x, int y, char pre_dir, char next_dir);
 	void setToolMovesQueue(AlgoTool* tool, int x, int y, char dir);
 	PlayerCoordinate* enemyRounds(int x, int y);
