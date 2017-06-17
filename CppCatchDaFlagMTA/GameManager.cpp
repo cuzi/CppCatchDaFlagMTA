@@ -681,12 +681,12 @@ int  GameManager::searchInTools(int x, int y) const {
 
 bool GameManager::_runMove(const GameMove& m,int player_key) {
 	char dir;
-	int toolKey = searchInTools(m.from_x, m.from_y);
+	int toolKey = searchInTools(m.from_y, m.from_x);
 	keyPressed('0' + toolKey);
 	dir = convertGameMoveToDir(m, player_key);
 	_changeDir(dir);
 
-	if (toolKey == searchInTools(m.to_x, m.to_y)) {
+	if (toolKey == searchInTools(m.to_y, m.to_x)) {
 		return true;
 	}
 	else {
