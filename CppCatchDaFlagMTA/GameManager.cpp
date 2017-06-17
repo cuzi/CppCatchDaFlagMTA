@@ -654,7 +654,7 @@ char GameManager::convertGameMoveToDir(const GameMove& m, int player_key) {
 			return (_dir_x > 0) ? (char)Direction_A::RIGHT : (char)Direction_A::LEFT;
 		}
 		else {
-			return (int)(_dir_y > 0) ? (char)Direction_A::UP : (char)Direction_A::DOWN;
+			return (int)(_dir_y > 0) ? (char)Direction_A::DOWN : (char)Direction_A::UP;
 		}
 	}
 	else {
@@ -662,7 +662,7 @@ char GameManager::convertGameMoveToDir(const GameMove& m, int player_key) {
 			return (_dir_x > 0) ? (char)Direction_E::RIGHT : (char)Direction_E::LEFT;
 		}
 		else {
-			return (_dir_y > 0) ? (char)Direction_E::UP : (char)Direction_E::DOWN;
+			return (_dir_y > 0) ? (char)Direction_E::DOWN : (char)Direction_E::UP;
 		}
 	}
 	
