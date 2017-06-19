@@ -53,9 +53,15 @@ class AlgorithmPlayer : public AbstractPlayer {
 		bool operator==(PlayerCoordinate cord) { return this->cords == cord; }
 		GameMove getAttckNextMove() {
 			int pre_x = cords.x, pre_y = cords.y;
-			cords = expectedMoves.top();
-			expectedMoves.pop();
-			return GameMove(pre_x, pre_y, cords.x, cords.y);
+			if (!expectedMoves.empty()) {
+				cords = expectedMoves.top();
+				expectedMoves.pop();
+				return GameMove(pre_x, pre_y, cords.x, cords.y);
+			}
+			else {
+				return GameMove(pre_x, pre_y, pre_x, pre_y);
+			}
+			
 		}
 		void clearMoves() {
 			while (!expectedMoves.empty()) expectedMoves.pop();
