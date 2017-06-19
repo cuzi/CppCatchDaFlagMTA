@@ -712,7 +712,6 @@ void GameManager::_changeDir(char c) {
 	}
 }
 
-
 void GameManager::keyPressed(char c) {
 	switch (c)
 	{
