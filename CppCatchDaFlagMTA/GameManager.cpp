@@ -235,6 +235,10 @@ int GameManager::NewGameLoop(Player* a, Player* b, AlgorithmPlayer* pa, Algorith
 				last_move->from_x, last_move->from_y);
 		}
 
+		if (last_move->to_y == 0 && last_move->to_x == 9) {
+			int a = 1;
+		}
+
 		gameOn = !_moveTools(playing,TRUE);
 		clock++;
 
@@ -248,7 +252,9 @@ int GameManager::NewGameLoop(Player* a, Player* b, AlgorithmPlayer* pa, Algorith
 		}
 		std::cin.clear();
 		round++;
-		gameOn = (round < ALGOLOOP) ? true : false;
+		if (gameOn){
+			gameOn = (round < ALGOLOOP) ? true : false;
+		}
 	}
 	return playing;
 }
